@@ -1,0 +1,1265 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفاصيل المنتج - يوسف للبصريات</title>
+  <meta name="description" content="صفحة تفاصيل المنتج في متجر يوسف للبصريات - أحدث النظارات الطبية والشمسية بجودة عالية">
+
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+  <!-- SwiperJS CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* Custom Styles to complement Bootstrap */
+    :root {
+      --bs-primary: #111827; /* Dark Gray for text */
+      --bs-secondary: #6c757d;
+      --color-brand: #F2B705; /* Gold */
+      --color-brand-dark: #D9A404; /* Darker Gold for hover */
+      --bs-font-sans: 'Tajawal', sans-serif;
+      --bs-font-monospace: 'Cairo', sans-serif;
+      --bs-body-font-family: var(--bs-font-sans);
+	   --y-secondary: #ffc107;
+    }
+    
+    [data-bs-theme="dark"] {
+        --bs-body-bg: #020617;
+        --bs-body-color: #cbd5e1;
+        --bs-tertiary-bg: #0f172a;
+        --bs-border-color: #1e293b;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    main {
+        flex-grow: 1;
+    }
+    
+    h1, h2, h3, h4, h5, h6, .font-cairo {
+      font-family: var(--bs-font-monospace);
+      font-weight: 700;
+    }
+
+    /* Navbar and Footer */
+     .navbar {
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+      border-bottom: 1px solid var(--bs-border-color-translucent);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+    }
+    
+    [data-bs-theme="dark"] .navbar {
+      background: rgba(15, 23, 42, 0.8);
+    }
+    
+    .navbar-brand img { max-height: 50px; }
+    
+    #darkModeToggle {
+      border-radius: 50%; width: 42px; height: 42px; 
+      transition: all 0.3s ease;
+    }
+    
+    .cart-count {
+      position: absolute; top: -5px; right: -5px; background: var(--bs-danger); color: white; 
+      width: 22px; height: 22px; border-radius: 50%; display: flex; 
+      justify-content: center; align-items: center; font-size: 12px; font-weight: bold;
+      border: 2px solid var(--bs-body-bg);
+    }
+
+    .site-footer {
+        background: #111827; color: #d1d5db; 
+        padding-top: 4rem; padding-bottom: 2rem;
+    }
+    [data-bs-theme="dark"] .site-footer { background: #020617; }
+    .site-footer h5 {
+        color: #fff; margin-bottom: 1.5rem;
+        position: relative; padding-bottom: 0.5rem;
+    }
+    .site-footer h5::after {
+        content: ''; position: absolute; bottom: 0; right: 0;
+        width: 50px; height: 3px; background: var(--color-brand);
+    }
+    .site-footer p { color: #9ca3af; }
+    .site-footer .footer-links { list-style: none; padding: 0; }
+    .site-footer .footer-links li { margin-bottom: 0.75rem; }
+    .site-footer .footer-links a { color: #9ca3af; text-decoration: none; transition: all 0.3s ease; }
+    .site-footer .footer-links a:hover { color: var(--color-brand); padding-right: 5px; }
+    .site-footer .social-icon { width: 40px; height: 40px; border-radius: 50%; background-color: #374151; display: inline-flex; align-items-center; justify-content: center; color: #fff; transition: all 0.3s ease; margin-left: 0.5rem; }
+    .site-footer .social-icon:hover { background-color: var(--color-brand); color: #111827; transform: translateY(-3px); }
+    .site-footer .footer-bottom { border-top: 1px solid #374151; padding-top: 1.5rem; margin-top: 2rem; color: #6b7280; }
+    .site-footer .footer-bottom a { color: var(--color-brand); text-decoration: none; }
+    
+    /* Loading Spinner */
+    .loading-overlay { 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(248, 249, 250, 0.9);
+      z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; 
+    }
+    html[data-bs-theme="dark"] .loading-overlay { background: rgba(2, 6, 23, 0.9); }
+    .loading-spinner { 
+      width: 60px; height: 60px; border: 5px solid rgba(0,0,0,0.1); 
+      border-radius: 50%; border-top-color: var(--color-brand); 
+      animation: spin 1s ease-in-out infinite; 
+    }
+    html[data-bs-theme="dark"] .loading-spinner { border-color: rgba(255,255,255,0.1); border-top-color: var(--color-brand); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #productDescription { white-space: pre-line; }
+    
+    /* Swiper Customization */
+    .main-swiper {
+        aspect-ratio: 1 / 1;
+        max-height: 500px;
+    }
+    .main-swiper .swiper-button-next, .main-swiper .swiper-button-prev {
+        color: #111827; background-color: rgba(255, 255, 255, 0.7);
+        width: 44px; height: 44px; border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.2s ease;
+    }
+    .main-swiper .swiper-button-next:hover, .main-swiper .swiper-button-prev:hover { background-color: white; transform: scale(1.1); }
+    [data-bs-theme="dark"] .main-swiper .swiper-button-next, 
+    [data-bs-theme="dark"] .main-swiper .swiper-button-prev { color: #e5e7eb; background-color: rgba(30, 41, 59, 0.7); }
+    .main-swiper .swiper-button-next::after, .main-swiper .swiper-button-prev::after { font-size: 18px; font-weight: bold; }
+    
+    .thumbs-swiper .swiper-slide {
+        opacity: 0.5; transition: all 0.3s ease; cursor: pointer;
+        border: 3px solid transparent; border-radius: 0.85rem; overflow: hidden;
+    }
+    .thumbs-swiper .swiper-slide-thumb-active { opacity: 1; border-color: var(--color-brand); }
+
+    /* Other custom component styles */
+    .rating-stars { color: #f59e0b; }
+    .price-old { text-decoration: line-through; }
+    .section-title {
+      position: relative; padding-bottom: 0.75rem; margin-bottom: 1.5rem;
+      font-size: 1.75rem; font-weight: 800;
+    }
+    .section-title::after {
+      content: ''; position: absolute; bottom: 0; right: 0;
+      width: 80px; height: 4px; background: var(--color-brand);
+      border-radius: 2px;
+    }
+    
+    /* Modal styles */
+    .modal-content { border-radius: 1rem; overflow: hidden; border: none; }
+    .lens-option input[type="radio"] { position: absolute; opacity: 0; }
+    .lens-option label { display: block; padding: 1rem; border: 2px solid var(--bs-border-color); border-radius: 0.75rem; text-align: center; cursor: pointer; transition: all 0.2s ease-in-out; }
+    .lens-option label:hover { border-color: var(--color-brand); transform: translateY(-3px); }
+    .lens-option input[type="radio"]:checked + label { 
+        border-color: var(--color-brand); background-color: #fefce8;
+        font-weight: bold; color: #a16207;
+        box-shadow: 0 0 15px rgba(242, 183, 5, 0.2);
+    }
+    [data-bs-theme="dark"] .lens-option input[type="radio"]:checked + label { background-color: #4a3a19; color: var(--color-brand); }
+    .lens-notice-modal { 
+        background-color: #fffbeb; border-right: 4px solid var(--color-brand); 
+        padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; 
+    }
+    [data-bs-theme="dark"] .lens-notice-modal { background-color: #1e293b; border-right-color: var(--color-brand); color: #fefce8; }
+    .toast-container { z-index: 1100; }
+
+    /* Floating Cart Button */
+    #floatingCartBtn {
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    #floatingCartBtn.visible {
+        opacity: 1;
+        transform: translateY(-70px);
+    }
+    #floatingCartBtn:hover {
+        transform: scale(1.1) !important;
+    }
+    
+    /* Group Variations */
+    .variation-thumb {
+        border: 2px solid var(--bs-border-color);
+        transition: all 0.2s ease;
+    }
+    .variation-thumb:hover {
+        border-color: var(--bs-tertiary-color);
+    }
+    .variation-thumb.active {
+        border-color: var(--color-brand);
+        box-shadow: 0 0 10px rgba(242, 183, 5, 0.4);
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    /* Helper classes */
+    .text-brand { color: var(--color-brand) !important; }
+    .bg-brand { background-color: var(--color-brand) !important; }
+    .btn-brand {
+        background-color: var(--color-brand);
+        color: #111827;
+        border-color: var(--color-brand);
+        font-weight: bold;
+    }
+    .btn-brand:hover {
+        background-color: var(--color-brand-dark);
+        border-color: var(--color-brand-dark);
+        color: #111827;
+    }
+    .related-product-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .related-product-card .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .related-product-card .card-title {
+        flex-grow: 1;
+    }
+	
+	/* === Bottom Mobile Navigation Styles (Improved Look) === */
+/* === Modern Bottom Navigation Bar === */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background-color: #ffffff; /* أو أي لون تختاره */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1040;
+    padding: 0 15px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+[data-bs-theme="dark"] .bottom-nav {
+    background-color: #1a2235;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--y-light-text);
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    width: 70px;
+    height: 100%;
+    padding-top: 15px;
+}
+
+.bottom-nav-item i {
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+[data-bs-theme="dark"] .bottom-nav-item {
+    color: var(--y-dark-header);
+}
+
+/* العنصر النشط - تصميم مشابه للصورة */
+.bottom-nav-item.active {
+    color: var(--y-secondary);
+}
+
+.bottom-nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background-color: var(--y-secondary);
+    border-radius: 3px;
+}
+
+.bottom-nav-item.active i {
+    transform: scale(1.1);
+}
+
+.bottom-nav-item.active span {
+    font-weight: 600;
+}
+
+/* تأثيرات التحويم */
+.bottom-nav-item:hover {
+    color: var(--y-secondary);
+    transform: translateY(-3px);
+}
+
+/* شارة الإشعارات - تصميم عصري */
+.bottom-nav-item .badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.6em;
+    padding: 0.2em 0.4em;
+    border-radius: 50px;
+    background-color: #ff4757;
+    color: white;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--y-light-card);
+}
+
+[data-bs-theme="dark"] .bottom-nav-item .badge {
+    border-color: #1a2235;
+}
+
+/* تعديل الحشو السفلي للجسم */
+body {
+    padding-bottom: 80px;
+}
+
+@media (min-width: 992px) {
+    body {
+        padding-bottom: 0;
+    }
+    .bottom-nav {
+        display: none;
+    }
+}
+	
+	
+  </style>
+
+</head>
+<body class="bg-body-tertiary">
+
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <p class="mt-3 font-cairo">جاري تحميل المنتج...</p>
+  </div>
+<nav class="bottom-nav d-lg-none">
+    <a href="index.html" class="bottom-nav-item">
+      <i class="fas fa-home"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="store.html" class="bottom-nav-item active">
+      <i class="fas fa-store"></i>
+      <span>المتجر</span>
+    </a>
+    <a href="cart.html" class="bottom-nav-item">
+      <i class="fas fa-shopping-cart"></i>
+      <span>السلة</span>
+      <span id="cartCountBottomNav" class="badge rounded-pill bg-danger text-white" style="display: none;">0</span>
+    </a>
+    <a href="track.html" class="bottom-nav-item">
+      <i class="fas fa-truck-fast"></i>
+      <span>تتبع</span>
+    </a>
+    <a href="blog.html" class="bottom-nav-item">
+      <i class="fas fa-newspaper"></i>
+      <span>المدونة</span>
+    </a>
+  </nav>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="store.html">
+        <img src="images/logo.png" alt="يوسف للبصريات" onerror="this.onerror=null;this.src='https://placehold.co/150x50/000000/F2B705?text=يوسف+البصريات';">
+      </a>
+      <div class="d-flex align-items-center gap-3">
+        <button id="darkModeToggle" class="btn btn-light">
+          <i class="fas fa-moon"></i>
+          <i class="fas fa-sun d-none"></i>
+        </button>
+        <a href="cart.html" class="position-relative text-body fs-4">
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cartCountNav" class="cart-count d-none">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-5 pb-5 mt-5">
+    <div id="product-content" class="container d-none">
+      
+      <!-- Breadcrumbs -->
+      <nav id="breadcrumbsNav" aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">الرئيسية</a></li>
+          <li class="breadcrumb-item"><a href="store.html">المتجر</a></li>
+          <li class="breadcrumb-item"><a id="breadcrumbCategoryLink" href="#"></a></li>
+          <li class="breadcrumb-item active" aria-current="page" id="breadcrumbProductName"></li>
+        </ol>
+      </nav>
+
+      <!-- Product Header -->
+      <div class="mb-4">
+        <span id="productCategory" class="badge text-bg-warning text-dark-emphasis rounded-pill mb-3 px-3 py-2"></span>
+        <h1 id="productName" class="display-5 fw-bolder font-cairo mb-3"></h1>
+        <div class="d-flex align-items-center gap-4">
+          <div id="ratingStars" class="rating-stars fs-5"></div>
+          <a href="#reviewsSection" id="reviewCount" class="text-muted text-decoration-none"></a>
+        </div>
+      </div>
+
+      <div class="row g-4 g-lg-5">
+        <!-- Image Gallery with Swiper -->
+        <div class="col-lg-6">
+            <div class="position-relative">
+              <div id="discountBadge" class="position-absolute top-0 start-0 m-3 badge bg-danger fs-6 rounded-pill z-2 d-none">
+                خصم <span id="discountPercent"></span>%
+              </div>
+              <div class="swiper main-swiper w-100 bg-body-secondary rounded-4 flex-shrink-0 mb-3 shadow-sm overflow-hidden">
+                <div class="swiper-wrapper" id="mainSwiperWrapper"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+              </div>
+              <div class="swiper thumbs-swiper" style="height: 80px;">
+                <div class="swiper-wrapper" id="thumbsSwiperWrapper"></div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-lg-6">
+          <h3 class="h4 font-cairo mb-3">مواصفات المنتج</h3>
+          <p id="productDescription" class="lead fs-5 mb-4"></p>
+
+          <div id="group-variations-section" class="mt-4 mb-4 d-none">
+            <h3 class="h5 font-cairo mb-3">متوفر بألوان أخرى</h3>
+            <div id="group-variations-container" class="d-flex flex-wrap gap-3"></div>
+          </div>
+
+          <div id="product-action-area" class="bg-body p-4 rounded-4 mt-4 shadow-sm border"></div>
+          
+          <div class="mt-4 border-top pt-4">
+            <div class="row text-center">
+              <div class="col-4 d-flex flex-column align-items-center gap-2">
+                <i class="fas fa-shield-alt fs-2 text-brand"></i>
+                <span class="small fw-semibold text-muted">ضمان الجودة</span>
+              </div>
+              <div class="col-4 d-flex flex-column align-items-center gap-2">
+                <i class="fas fa-shipping-fast fs-2 text-brand"></i>
+                <span class="small fw-semibold text-muted">شحن سريع</span>
+              </div>
+              <div class="col-4 d-flex flex-column align-items-center gap-2">
+                <i class="fas fa-undo fs-2 text-brand"></i>
+                <span class="small fw-semibold text-muted">إرجاع سهل</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="my-5">
+
+      <!-- Reviews Section -->
+      <div id="reviewsSection" class="my-5">
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <h3 class="section-title">التقييمات والتعليقات</h3>
+            <div id="reviewsList" class="vstack gap-4"></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="bg-body p-4 rounded-4 shadow-lg border">
+              <h4 class="section-title fs-4">أضف تقييمك</h4>
+              <form id="reviewForm" class="vstack gap-3">
+                <div>
+                  <label for="userName" class="form-label fw-bold">اسمك</label>
+                  <input type="text" id="userName" required class="form-control">
+                </div>
+                <div>
+                  <label for="rating" class="form-label fw-bold">تقييمك</label>
+                  <select id="rating" required class="form-select">
+                    <option value="" disabled selected>اختر عدد النجوم...</option>
+                    <option value="5">⭐⭐⭐⭐⭐ (ممتاز)</option>
+                    <option value="4">⭐⭐⭐⭐ (جيد جداً)</option>
+                    <option value="3">⭐⭐⭐ (جيد)</option>
+                    <option value="2">⭐⭐ (مقبول)</option>
+                    <option value="1">⭐ (سيء)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="comment" class="form-label fw-bold">تعليقك</label>
+                  <textarea id="comment" rows="4" required class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark w-100 py-2 fw-bold">إرسال التقييم</button>
+              </form>
+              <div id="formFeedback" class="mt-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Sections -->
+      <div id="similar-products-section" class="my-5 d-none">
+        <h3 class="section-title">قد يعجبك أيضاً</h3>
+        <div id="similar-products-container" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4"></div>
+      </div>
+      <div id="recently-viewed-section" class="my-5 d-none">
+        <h3 class="section-title">شاهدت مؤخراً</h3>
+        <div id="recently-viewed-container" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4"></div>
+      </div>
+
+    </div>
+    
+    <div id="error-container" class="text-center d-none"></div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="site-footer mt-auto">
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+              <h5>يوسف للبصريات</h5>
+              <p>حيث تلتقي الرؤية بالأناقة. نقدم أفضل الحلول البصرية مع أحدث التصاميم العالمية.</p>
+              <div class="d-flex gap-2">
+                  <a href="https://www.facebook.com/share/193kMj5kWg/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                  <a href="https://www.instagram.com/youalhassan?igsh=N2djbHd2azV6aGJx" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                  <a href="https://wa.me/201092837489" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+              <h5>روابط سريعة</h5>
+              <ul class="footer-links">
+                  <li><a href="index.html">الرئيسية</a></li>
+                  <li><a href="store.html">المتجر</a></li>
+                  <li><a href="index.html#founder">من نحن</a></li>
+                  <li><a href="index.html#services">خدماتنا</a></li>
+                  <li><a href="index.html#contact">اتصل بنا</a></li>
+              </ul>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <h5>سياساتنا</h5>
+              <ul class="footer-links">
+                  <li><a href="privacy.html">سياسة الخصوصية</a></li>
+                  <li><a href="returns.html">سياسة الاستبدال والاسترجاع</a></li>
+                  <li><a href="terms.html">الشروط والأحكام</a></li>
+                  <li><a href="track.html">تتبع طلبك</a></li>
+              </ul>
+          </div>
+          <div class="col-lg-3 col-md-6">
+              <h5>اشترك في النشرة البريدية</h5>
+              <p>اشترك لتصلك أحدث العروض والتخفيضات.</p>
+              <form>
+                  <div class="input-group">
+                      <input type="email" class="form-control" placeholder="بريدك الإلكتروني" style="background-color: #1f2937; border-color: #374151; color: #fff;">
+                      <button class="btn btn-brand" type="button"><i class="fas fa-paper-plane"></i></button>
+                  </div>
+              </form>
+          </div>
+      </div>
+      <div class="footer-bottom text-center">
+          <p class="mb-0">&copy; 2025 جميع الحقوق محفوظة | يوسف للبصريات</p>
+          <p class="mb-0 mt-1 small">
+              تصميم وتطوير بواسطة <a href="https://www.facebook.com/share/19LSLJAU8J/" target="_blank">Ehab Mohamad Fkrey</a>
+          </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Cart Button -->
+  <a href="cart.html" id="floatingCartBtn" class="d-none position-fixed bottom-0 start-0 m-4 z-3">
+    <div class="position-relative">
+      <button class="btn btn-brand rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="width: 64px; height: 64px;">
+        <i class="fas fa-shopping-cart fs-4"></i>
+      </button>
+      <span id="cartCountFloating" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-white border border-2 border-white">
+        0
+      </span>
+    </div>
+  </a>
+
+  <!-- Options Modal -->
+  <div class="modal fade" id="optionsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h1 class="modal-title fs-5 font-cairo" id="optionsModalLabel"></h1>
+          <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="lens-notice-modal">
+            <strong>ملاحظة هامة:</strong>
+            قد يختلف سعر العدسات الطبية حسب مقاس النظر. سنتواصل معك بعد إتمام الطلب لتأكيد المقاس والسعر النهائي.
+          </div>
+          <div id="lensOptionsContainer" class="row g-3"></div>
+        </div>
+        <div class="modal-footer border-top-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+          <button type="button" class="btn btn-brand" id="confirmOptions">تأكيد وإضافة للسلة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    <div id="alertToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body fw-bold"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs, doc, getDoc, addDoc, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const firebaseConfig = {
+            apiKey: "AIzaSyAlrzDNrFGxE-tihV6cAj_6r77RcFW8FgA",
+            authDomain: "youssef-optics.firebaseapp.com",
+            projectId: "youssef-optics",
+            storageBucket: "youssef-optics.appspot.com",
+            messagingSenderId: "956537200762",
+            appId: "1:956537200762:web:bfbb1ca17debc2b30a1bc3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let currentProduct = null;
+        let currentProductId = null;
+        let lensOptions = {};
+        const optionsModal = new bootstrap.Modal(document.getElementById('optionsModal'));
+        let mainSwiper, thumbsSwiper;
+        
+        const init = () => {
+            loadTheme();
+            updateCartCount();
+            setupEventListeners();
+            fetchProductData();
+        };
+
+        const fetchProductData = async () => {
+            const params = new URLSearchParams(window.location.search);
+            const productIdParam = params.get('id');
+
+            if (!productIdParam) {
+                showError('لم يتم العثور على المنتج المطلوب.');
+                return;
+            }
+
+            try {
+                const productRef = doc(db, "products", productIdParam);
+                const productSnap = await getDoc(productRef);
+
+                if (productSnap.exists()) {
+                    currentProduct = productSnap.data();
+                    currentProductId = productSnap.id; 
+                    
+                    if (currentProduct.hasOptions) {
+                        const lensesRef = doc(db, "settings", "lenses");
+                        const lensesSnap = await getDoc(lensesRef);
+                        if(lensesSnap.exists()) {
+                            lensOptions = lensesSnap.data();
+                        }
+                    }
+
+                    await renderProduct();
+                    fetchReviews();
+                    
+                    trackRecentlyViewed(currentProductId);
+                    displayRecentlyViewed();
+                    
+                    if (currentProduct.groupId) {
+                        fetchGroupVariations(currentProduct.groupId, currentProductId);
+                    }
+                    if (currentProduct.category) {
+                        fetchSimilarProducts(currentProduct.category, currentProductId);
+                    }
+
+                } else {
+                    showError('لم يتم العثور على المنتج.');
+                }
+            } catch (error) {
+                console.error("Error fetching product data: ", error);
+                showError('حدث خطأ في الشبكة. يرجى المحاولة مرة أخرى.');
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('product-content').classList.remove('d-none');
+            }
+        };
+
+        const renderProduct = async () => {
+            document.title = `${currentProduct.name} - يوسف للبصريات`;
+            document.getElementById('productName').textContent = currentProduct.name;
+            document.getElementById('productCategory').textContent = currentProduct.category;
+            document.getElementById('productDescription').textContent = currentProduct.description;
+            
+            document.getElementById('breadcrumbCategoryLink').textContent = currentProduct.category;
+            document.getElementById('breadcrumbProductName').textContent = currentProduct.name;
+            const categoryLink = document.getElementById('breadcrumbCategoryLink');
+            categoryLink.href = `store.html?category=${encodeURIComponent(currentProduct.category)}`;
+            
+            const mainSwiperWrapper = document.getElementById('mainSwiperWrapper');
+            const thumbsSwiperWrapper = document.getElementById('thumbsSwiperWrapper');
+            
+            const mainImagesHtml = currentProduct.images.map(img => `
+                <div class="swiper-slide d-flex align-items-center justify-content-center">
+                    <img src="${img}" alt="${currentProduct.name}" class="img-fluid object-fit-contain" style="max-height: 100%;">
+                </div>
+            `).join('');
+
+            const thumbImagesHtml = currentProduct.images.map(img => `
+                 <div class="swiper-slide">
+                    <div class="ratio ratio-1x1 bg-body-secondary rounded-2 d-flex align-items-center justify-content-center p-1">
+                        <img src="${img}" alt="صورة مصغرة" class="img-fluid object-fit-contain rounded-1">
+                    </div>
+                </div>
+            `).join('');
+
+            mainSwiperWrapper.innerHTML = mainImagesHtml;
+            thumbsSwiperWrapper.innerHTML = thumbImagesHtml;
+
+            initSwipers();
+
+            const actionArea = document.getElementById('product-action-area');
+            const whatsappNumber = "201092837489";
+
+            if (currentProduct.priceOnRequest) {
+                const messageText = `طلب جديد من موقع يوسف للبصريات\n\nمرحبا، أود الاستفسار عن سعر المنتج التالي:\n\n*اسم المنتج:* ${currentProduct.name}\n*الوصف:* ${currentProduct.description || 'لا يوجد وصف'}`;
+                const message = encodeURIComponent(messageText);
+                
+                let stockHtml = '';
+                if (currentProduct.stock <= 10 && currentProduct.stock > 0) {
+                    stockHtml = `<div id="stockInfo" class="small fw-semibold text-center mb-3 text-warning"><i class="fas fa-exclamation-triangle me-2"></i> الكمية المتبقية: ${currentProduct.stock}</div>`;
+                } else if (currentProduct.stock === 0) {
+                     stockHtml = `<div id="stockInfo" class="small fw-semibold text-center mb-3 text-danger"><i class="fas fa-times-circle me-2"></i> غير متوفر حالياً</div>`;
+                }
+
+                actionArea.innerHTML = `
+                    ${stockHtml}
+                    <a href="https://wa.me/${whatsappNumber}?text=${message}" target="_blank" class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2 py-3 fs-5 fw-bold">
+                        <i class="fab fa-whatsapp fs-4"></i> اطلب السعر عبر واتساب
+                    </a>
+                `;
+                document.getElementById('discountBadge').classList.add('d-none');
+            } else {
+                const price = parseFloat(currentProduct.price);
+                const discount = parseFloat(currentProduct.discount || 0);
+                const discountedPrice = price * (1 - discount / 100);
+
+                let stockHtml = '';
+                if (currentProduct.stock > 10) {
+                    stockHtml = '<div id="stockInfo" class="small fw-semibold mb-3 text-success"><i class="fas fa-check-circle me-2"></i> متوفر في المخزون</div>';
+                } else if (currentProduct.stock > 0) {
+                    stockHtml = `<div id="stockInfo" class="small fw-semibold mb-3 text-warning"><i class="fas fa-exclamation-triangle me-2"></i> الكمية المتبقية: ${currentProduct.stock}</div>`;
+                } else {
+                    stockHtml = '<div id="stockInfo" class="small fw-semibold mb-3 text-danger"><i class="fas fa-times-circle me-2"></i> غير متوفر حالياً</div>';
+                }
+
+                actionArea.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-baseline gap-2">
+                            <span class="h2 fw-bolder text-brand mb-0">${discountedPrice.toFixed(2)}</span>
+                            <span class="font-cairo">ج.م</span>
+                        </div>
+                        <span class="price-old text-muted fs-5 ${discount > 0 ? '' : 'd-none'}">${price.toFixed(2)} ج.م</span>
+                    </div>
+                    ${stockHtml}
+                    <div class="d-flex gap-3">
+                        <div class="input-group" style="width: 130px;">
+                            <button class="btn btn-outline-secondary" type="button" id="decrementQty">-</button>
+                            <input type="number" id="productQty" class="form-control text-center fw-bold" value="1" min="1" max="${currentProduct.stock || 10}" readonly>
+                            <button class="btn btn-outline-secondary" type="button" id="incrementQty">+</button>
+                        </div>
+                        <button id="addToCartBtn" class="btn btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2 fw-bold">
+                            <i class="fas fa-cart-plus"></i>
+                            <span>أضف إلى السلة</span>
+                        </button>
+                    </div>
+                `;
+
+                if (discount > 0) {
+                    const discountBadge = document.getElementById('discountBadge');
+                    discountBadge.classList.remove('d-none');
+                    document.getElementById('discountPercent').textContent = discount;
+                }
+                
+                document.getElementById('addToCartBtn').addEventListener('click', handleAddToCart);
+                document.getElementById('incrementQty').addEventListener('click', () => updateQuantity(1));
+                document.getElementById('decrementQty').addEventListener('click', () => updateQuantity(-1));
+
+                if (currentProduct.stock === 0) {
+                    if(document.getElementById('addToCartBtn')) {
+                        document.getElementById('addToCartBtn').disabled = true;
+                        document.getElementById('addToCartBtn').classList.add('opacity-50');
+                    }
+                }
+            }
+            
+            if(document.getElementById('productQty')) {
+                document.getElementById('productQty').max = currentProduct.stock;
+            }
+        };
+
+        const initSwipers = () => {
+            if (mainSwiper) mainSwiper.destroy(true, true);
+            if (thumbsSwiper) thumbsSwiper.destroy(true, true);
+
+            thumbsSwiper = new Swiper(".thumbs-swiper", {
+                spaceBetween: 10,
+                slidesPerView: 5,
+                freeMode: true,
+                watchSlidesProgress: true,
+            });
+
+            mainSwiper = new Swiper(".main-swiper", {
+                spaceBetween: 10,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                thumbs: {
+                    swiper: thumbsSwiper,
+                },
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: true,
+                },
+            });
+        };
+
+        const fetchReviews = async () => {
+            const reviewsList = document.getElementById('reviewsList');
+            reviewsList.innerHTML = ''; 
+            try {
+                const q = query(collection(db, "reviews"), where("productId", "==", currentProduct.name), where("status", "==", "approved"));
+                const querySnapshot = await getDocs(q);
+                
+                const reviews = [];
+                querySnapshot.forEach((doc) => reviews.push(doc.data()));
+
+                if (reviews.length > 0) {
+                    let totalRating = 0;
+                    reviews.forEach(review => {
+                        totalRating += review.rating;
+                        const reviewElement = document.createElement('div');
+                        reviewElement.className = 'p-4 bg-body rounded-4 shadow-sm border';
+                        const reviewDate = review.createdAt.toDate().toLocaleDateString('ar-EG');
+                        const userInitial = review.userName.charAt(0).toUpperCase();
+
+                        reviewElement.innerHTML = `
+                            <div class="d-flex gap-3">
+                                <div class="rounded-circle bg-brand flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <span class="fw-bold fs-5 text-dark">${userInitial}</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0 fw-bold">${review.userName}</h5>
+                                        <small class="text-muted">${reviewDate}</small>
+                                    </div>
+                                    <div class="my-2 text-warning">${generateStars(review.rating)}</div>
+                                    <p class="mb-0 text-body-secondary">${review.comment}</p>
+                                </div>
+                            </div>
+                        `;
+                        reviewsList.appendChild(reviewElement);
+                    });
+                    const averageRating = totalRating / reviews.length;
+                    document.getElementById('ratingStars').innerHTML = generateStars(averageRating);
+                    document.getElementById('reviewCount').textContent = `(${reviews.length} تقييمات)`;
+
+                } else {
+                    reviewsList.innerHTML = '<div class="alert alert-info text-center">لا توجد تقييمات لهذا المنتج حتى الآن. كن أول من يضيف تقييماً!</div>';
+                    document.getElementById('ratingStars').innerHTML = generateStars(0);
+                    document.getElementById('reviewCount').textContent = `(0 تقييمات)`;
+                }
+            } catch(error) {
+                console.error("Error fetching reviews: ", error);
+                reviewsList.innerHTML = '<div class="alert alert-danger text-center">حدث خطأ أثناء تحميل التقييمات.</div>';
+            }
+        };
+
+        const renderGroupVariationThumbnail = (product, isCurrent) => {
+            const activeClass = isCurrent ? 'active' : '';
+            const title = product.variationTitle || '';
+            return `
+                <a href="product.html?id=${product.id}" class="variation-thumb d-flex flex-column align-items-center gap-2 text-center text-decoration-none p-1 rounded-3 ${activeClass}" title="${product.name}">
+                    <div style="width: 70px; height: 70px;">
+                        <img src="${product.images[0]}" alt="${title}" class="w-100 h-100 object-fit-cover rounded-2" onerror="this.onerror=null;this.src='https://placehold.co/70x70/eee/ccc?text=Img';">
+                    </div>
+                    ${title ? `<span class="small fw-semibold text-body mt-1">${title}</span>` : ''}
+                </a>
+            `;
+        };
+        
+        const fetchGroupVariations = async (groupId, currentId) => {
+            const container = document.getElementById('group-variations-container');
+            const section = document.getElementById('group-variations-section');
+            try {
+                const q = query(collection(db, "products"), where("groupId", "==", groupId));
+                const snapshot = await getDocs(q);
+                let productsHtml = '';
+                snapshot.forEach(doc => {
+                    productsHtml += renderGroupVariationThumbnail({ id: doc.id, ...doc.data() }, doc.id === currentId);
+                });
+
+                if (snapshot.size > 1) {
+                    container.innerHTML = productsHtml;
+                    section.classList.remove('d-none');
+                }
+            } catch (error) {
+                console.error("Error fetching group variations:", error);
+            }
+        };
+        
+        const renderRelatedProductCard = (product) => {
+            const discountedPrice = (product.price || 0) * (1 - (product.discount || 0) / 100);
+            const priceHtml = product.priceOnRequest 
+                ? `<span class="text-brand fw-semibold">اطلب السعر</span>`
+                : `<span class="text-brand fw-bold">${discountedPrice.toFixed(2)} ج.م</span>`;
+
+            return `
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0 related-product-card">
+                        <a href="product.html?id=${product.id}">
+                            <img src="${product.images[0]}" class="card-img-top object-fit-cover" alt="${product.name}" style="height: 200px;" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x200/eee/ccc?text=Image';">
+                        </a>
+                        <div class="card-body p-3">
+                            <h5 class="card-title fs-6 fw-bold mb-3">
+                                <a href="product.html?id=${product.id}" class="text-body text-decoration-none stretched-link">${product.name}</a>
+                            </h5>
+                            <p class="card-text fs-5 mt-auto">${priceHtml}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        const fetchSimilarProducts = async (category, currentId) => {
+            const container = document.getElementById('similar-products-container');
+            const section = document.getElementById('similar-products-section');
+            try {
+                const q = query(collection(db, "products"), where("category", "==", category), limit(5));
+                const snapshot = await getDocs(q);
+                let productsHtml = '';
+                let count = 0;
+                snapshot.forEach(doc => {
+                    if (doc.id !== currentId && count < 4) {
+                        productsHtml += renderRelatedProductCard({ id: doc.id, ...doc.data() });
+                        count++;
+                    }
+                });
+
+                if (productsHtml) {
+                    container.innerHTML = productsHtml;
+                    section.classList.remove('d-none');
+                }
+            } catch (error) {
+                console.error("Error fetching similar products:", error);
+            }
+        };
+
+        const trackRecentlyViewed = (productId) => {
+            let viewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+            viewed = viewed.filter(id => id !== productId);
+            viewed.unshift(productId);
+            localStorage.setItem('recentlyViewed', JSON.stringify(viewed.slice(0, 6)));
+        };
+
+        const displayRecentlyViewed = async () => {
+            const container = document.getElementById('recently-viewed-container');
+            const section = document.getElementById('recently-viewed-section');
+            const viewedIds = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+
+            if (viewedIds.length <= 1) { 
+                section.classList.add('d-none');
+                return;
+            };
+            
+            try {
+                const productPromises = viewedIds
+                    .filter(id => id !== currentProductId)
+                    .slice(0, 4)
+                    .map(id => getDoc(doc(db, "products", id)));
+                
+                const productSnaps = await Promise.all(productPromises);
+                
+                let productsHtml = '';
+                productSnaps.forEach(snap => {
+                    if (snap.exists()) {
+                        productsHtml += renderRelatedProductCard({ id: snap.id, ...snap.data() });
+                    }
+                });
+
+                if (productsHtml) {
+                    container.innerHTML = productsHtml;
+                    section.classList.remove('d-none');
+                }
+            } catch (error) {
+                console.error("Error displaying recently viewed products:", error);
+            }
+        };
+
+        const handleAddToCart = () => {
+            if (currentProduct.priceOnRequest) return; 
+
+            if (currentProduct.hasOptions === true || currentProduct.hasOptions === 'true') {
+                showOptionsModal();
+            } else {
+                const quantity = parseInt(document.getElementById('productQty').value, 10);
+                const price = parseFloat(currentProduct.price) * (1 - (parseFloat(currentProduct.discount || 0) / 100));
+                const itemToAdd = {
+                    id: currentProductId, baseId: currentProductId, name: currentProduct.name,
+                    price: price, quantity: quantity, image: currentProduct.images[0],
+                    category: currentProduct.category
+                };
+                addToCart(itemToAdd);
+            }
+        };
+        
+        const showOptionsModal = () => {
+            document.getElementById('optionsModalLabel').textContent = `تخصيص: ${currentProduct.name}`;
+            const lensContainer = document.getElementById('lensOptionsContainer');
+            lensContainer.innerHTML = '';
+            if (lensOptions) {
+                Object.entries(lensOptions).forEach(([name, price], index) => {
+                    const optionId = `lens-${index}`;
+                    lensContainer.innerHTML += `
+                        <div class="col-6">
+                            <div class="lens-option">
+                                <input type="radio" id="${optionId}" name="lensOption" value="${name}" data-price="${price}" ${index === 0 ? 'checked' : ''}>
+                                <label for="${optionId}">
+                                    <div class="fw-bold mb-1">${name}</div>
+                                    <small class="text-muted">+${price} ج.م</small>
+                                </label>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            optionsModal.show();
+        };
+        
+        const confirmProductOptions = () => {
+            const selectedOptionEl = document.querySelector('input[name="lensOption"]:checked');
+            if (!selectedOptionEl) {
+                showAlert('الرجاء اختيار نوع العدسة.', 'danger');
+                return;
+            }
+            const quantity = parseInt(document.getElementById('productQty').value, 10);
+            const basePrice = parseFloat(currentProduct.price) * (1 - (parseFloat(currentProduct.discount || 0) / 100));
+            const lensPrice = parseFloat(selectedOptionEl.dataset.price);
+
+            const itemToAdd = {
+                id: `${currentProductId}-${selectedOptionEl.value}`, baseId: currentProductId, name: currentProduct.name,
+                price: basePrice + lensPrice, quantity: quantity, image: currentProduct.images[0],
+                category: currentProduct.category, options: { lensType: selectedOptionEl.value }
+            };
+            addToCart(itemToAdd);
+            optionsModal.hide();
+        };
+
+        const addToCart = (item) => {
+            const availableStock = currentProduct.stock;
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const quantityOfThisProductInCart = cart
+                .filter(cartItem => cartItem.baseId === item.baseId)
+                .reduce((total, cartItem) => total + cartItem.quantity, 0);
+
+            const requestedQuantity = item.quantity;
+
+            if ((quantityOfThisProductInCart + requestedQuantity) > availableStock) {
+                let message = `عذرًا، الكمية المطلوبة غير متوفرة. الكمية المتاحة: ${availableStock}`;
+                if (quantityOfThisProductInCart > 0) {
+                    message += `. لديك بالفعل ${quantityOfThisProductInCart} في سلتك.`;
+                }
+                showAlert(message, 'danger');
+                return;
+            }
+
+            const existingIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += requestedQuantity;
+            } else {
+                cart.push(item);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showAlert(`تمت إضافة "${item.name}" إلى السلة بنجاح!`, 'success');
+        };
+
+       // --- الكود المعدل ---
+const updateCartCount = () => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
+
+    // تحديث عداد النافبار العلوي (موجود بالفعل)
+    document.getElementById('cartCountNav').textContent = count;
+    document.getElementById('cartCountNav').classList.toggle('d-none', count === 0);
+
+    // >> ابدأ الإضافة من هنا <<
+    // تحديث عداد النافبار السفلي
+    const bottomNavCart = document.getElementById('cartCountBottomNav');
+    if (bottomNavCart) {
+        bottomNavCart.textContent = count;
+        bottomNavCart.style.display = count > 0 ? 'flex' : 'none';
+    }
+    // >> انتهت الإضافة <<
+
+    // تحديث عداد الزر العائم (موجود بالفعل)
+    const floatingCartBtn = document.getElementById('floatingCartBtn');
+    const cartCountFloating = document.getElementById('cartCountFloating');
+    if (floatingCartBtn && cartCountFloating) {
+        cartCountFloating.textContent = count;
+        if (count > 0) {
+            floatingCartBtn.classList.remove('d-none');
+            setTimeout(() => floatingCartBtn.classList.add('visible'), 10);
+        } else {
+            floatingCartBtn.classList.remove('visible');
+            setTimeout(() => floatingCartBtn.classList.add('d-none'), 300);
+        }
+    }
+};
+        
+        const handleReviewSubmission = async (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جار الإرسال...';
+            
+            const reviewData = {
+                productId: currentProduct.name, userName: document.getElementById('userName').value,
+                rating: parseInt(document.getElementById('rating').value, 10),
+                comment: document.getElementById('comment').value,
+                createdAt: serverTimestamp(), status: 'pending'
+            };
+
+            try {
+                await addDoc(collection(db, "reviews"), reviewData);
+                document.getElementById('formFeedback').innerHTML = `<div class="alert alert-success">شكراً لك! تم إرسال تقييمك للمراجعة.</div>`;
+                e.target.reset();
+                setTimeout(() => { document.getElementById('formFeedback').innerHTML = ''; }, 3000);
+            } catch (error) {
+                document.getElementById('formFeedback').innerHTML = `<div class="alert alert-danger">حدث خطأ. يرجى المحاولة مرة أخرى.</div>`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'إرسال التقييم';
+            }
+        };
+
+        const showError = (message) => {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            const errorContainer = document.getElementById('error-container');
+            errorContainer.innerHTML = `<div class="container py-5 text-center"><i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i><h3 class="h3 fw-bold">${message}</h3><a href="store.html" class="btn btn-brand mt-4">العودة للمتجر</a></div>`;
+            errorContainer.classList.remove('d-none');
+        };
+
+        const generateStars = (rating) => {
+            let starsHtml = '';
+            rating = parseFloat(rating) || 0;
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) starsHtml += '<i class="fas fa-star"></i>';
+                else if (i - 0.5 <= rating) starsHtml += '<i class="fas fa-star-half-alt"></i>';
+                else starsHtml += '<i class="far fa-star text-muted"></i>';
+            }
+            return starsHtml;
+        };
+        
+        const showAlert = (message, type = 'success') => {
+            const toastEl = document.getElementById('alertToast');
+            const toastBody = toastEl.querySelector('.toast-body');
+            const toastInstance = bootstrap.Toast.getOrCreateInstance(toastEl);
+            
+            toastBody.textContent = message;
+            toastEl.className = 'toast align-items-center text-white border-0';
+            const bgColor = type === 'success' ? 'bg-success' : 'bg-danger';
+            toastEl.classList.add(bgColor);
+            toastInstance.show();
+        };
+
+        const updateQuantity = (amount) => {
+            if (!currentProduct) return;
+            const input = document.getElementById('productQty');
+            if(!input) return;
+            let value = parseInt(input.value) + amount;
+            const maxQty = currentProduct.stock || 1;
+            
+            if (value > maxQty) {
+                value = maxQty;
+                showAlert(`الكمية القصوى المتاحة هي ${maxQty}`, 'warning');
+            }
+            if (value < 1) value = 1;
+            input.value = value;
+        };
+
+        const loadTheme = () => {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            updateThemeIcon(theme);
+        };
+
+        const toggleTheme = () => {
+            const newTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        };
+
+        const updateThemeIcon = (theme) => {
+            const moonIcon = document.querySelector('#darkModeToggle .fa-moon');
+            const sunIcon = document.querySelector('#darkModeToggle .fa-sun');
+            const btn = document.getElementById('darkModeToggle');
+            if (theme === 'dark') {
+                moonIcon.classList.add('d-none');
+                sunIcon.classList.remove('d-none');
+                btn.classList.remove('btn-light');
+                btn.classList.add('btn-dark');
+            } else {
+                moonIcon.classList.remove('d-none');
+                sunIcon.classList.add('d-none');
+                btn.classList.remove('btn-dark');
+                btn.classList.add('btn-light');
+            }
+        };
+
+        const setupEventListeners = () => {
+            document.getElementById('darkModeToggle').addEventListener('click', toggleTheme);
+            document.getElementById('reviewForm').addEventListener('submit', handleReviewSubmission);
+            document.getElementById('confirmOptions').addEventListener('click', confirmProductOptions);
+        };
+
+        init();
+    });
+  </script>
+
+</body>
+</html>
+

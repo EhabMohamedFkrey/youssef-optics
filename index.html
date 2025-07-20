@@ -1,0 +1,2702 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>يوسف للبصريات | نظارات طبية وشمسية فاخرة</title>
+
+  <meta name="description" content="اكتشف أحدث تشكيلات الشنبر الطبي والنظارات الشمسية وعدسات القراءة والعدسات اللاصقة بأسعار تنافسية وجودة عالية من يوسف للبصريات.">
+
+<meta name="keywords" content="نظارات طبية, عدسات لاصقة, نظارات شمسية, شنبر طبي, نظارات قراءة, يوسف للبصريات">
+
+<meta name="google-site-verification" content="dZBiwBUVWtoB3JDrGa7OQZVWGKNPQbfCF0bfBRo76mU" />
+
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Fonts & Icons -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#000000',
+            secondary: '#F2B705',
+            dark: '#0f172a',
+            darkCard: '#1e293b',
+            darkText: '#e2e8f0'
+          },
+          fontFamily: {
+            'tajawal': ['Tajawal', 'sans-serif'],
+            'cairo': ['Cairo', 'sans-serif'],
+          }
+        }
+      }
+    }
+	
+	
+  </script>
+
+  <style>
+    body {
+      overflow-x: hidden;
+      /* الحل 1 */
+    }
+
+    .slide-element {
+      opacity: 0;
+      transform: translateX(-30px);
+      /* الحل 2 */
+      transition: all 1.1s ease-out;
+    }
+
+    .slide-element.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    * {
+      font-family: 'Tajawal', sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body {
+      background-color: white;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+
+    .dark body {
+      background-color: #0f172a;
+      color: #e2e8f0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+    }
+
+    .hero-section {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
+        url('https://img.freepik.com/free-photo/patient-ophthalmologist-s-office_23-2150917661.jpg?t=st=1749766049~exp=1749769649~hmac=c9caca47613f02ff6ceda621c3078818754544810efcc368f9486a6f1621c2ee&w=740');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .founder-section {
+      background: linear-gradient(to right, #f1f1f1, #ffffff);
+    }
+
+    .dark .founder-section {
+      background: linear-gradient(to right, #1e293b, #0f172a);
+    }
+
+    .service-card {
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .section-title {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 3rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 0;
+      width: 70%;
+      height: 4px;
+      background: #F2B705;
+      border-radius: 2px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .dark .product-card {
+      background: #1e293b;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .product-card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 15px 40px rgba(242, 183, 5, 0.2);
+    }
+
+    .product-image {
+      height: 280px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .product-image img {
+      transition: transform 0.5s ease;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.05);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #F2B705;
+      color: black;
+      padding: 8px 15px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 14px;
+      z-index: 10;
+    }
+
+    .product-content {
+      padding: 25px;
+    }
+
+    .product-title {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .dark .product-title {
+      color: #e2e8f0;
+    }
+
+    .product-description {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .dark .product-description {
+      color: #94a3b8;
+    }
+
+    .product-price {
+      color: #F2B705;
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .order-button {
+      display: block;
+      width: 100%;
+      background: black;
+      color: white;
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dark .order-button {
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+
+    .order-button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: 0.5s;
+    }
+
+    .order-button:hover::after {
+      left: 100%;
+    }
+
+    .order-button:hover {
+      background: #333;
+    }
+
+    .dark .order-button:hover {
+      background: #334155;
+    }
+
+    .order-button i {
+      margin-left: 8px;
+      color: #25D366;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @media (max-width: 768px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-image {
+        height: 220px;
+      }
+    }
+
+    .testimonial-card {
+      transition: all 0.3s;
+    }
+
+    .testimonial-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .offer-banner {
+      background: linear-gradient(45deg, #000000, #2c2c2c);
+    }
+
+    .dark .offer-banner {
+      background: linear-gradient(45deg, #0f172a, #1e293b);
+    }
+
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 70px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .dark .countdown-item {
+      background: rgba(242, 183, 5, 0.2);
+    }
+
+    .countdown-label {
+      font-size: 0.7rem;
+      color: #F2B705;
+    }
+
+    .contact-form input,
+    .contact-form textarea,
+    .contact-form select {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(242, 183, 5, 0.3);
+    }
+
+    .dark .contact-form input,
+    .dark .contact-form textarea,
+    .dark .contact-form select {
+      background: rgba(30, 41, 59, 0.5);
+      color: #e2e8f0;
+    }
+
+    footer {
+      background: linear-gradient(to right, #000, #1a1a1a);
+    }
+
+    .dark footer {
+      background: linear-gradient(to right, #0f172a, #1e293b);
+    }
+
+    /* تحسينات الوضع الداكن */
+    .dark .service-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+
+    .dark .testimonial-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+
+    .dark .contact-form {
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+
+    /* تحسين زر الوضع الداكن */
+    .dark-toggle {
+      position: fixed;
+      top: 60px;
+      left: 10px;
+      z-index: 100;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: black;
+      color: #F2B705;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(242, 183, 5, 0.5);
+      font-size: 1.4rem;
+      transition: all 0.3s ease;
+    }
+
+    .dark .dark-toggle {
+      background: #F2B705;
+      color: black;
+      box-shadow: 0 0 15px rgba(242, 183, 5, 0.8);
+    }
+
+    .dark-toggle:hover {
+      transform: rotate(15deg) scale(1.1);
+    }
+
+    /* تحسينات التصميم العام */
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header .section-title {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .section-header .section-title::after {
+      right: 50%;
+      transform: translateX(50%);
+    }
+
+    /* أنماط للرسوم المتحركة */
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .animate-bounce {
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-20px);
+      }
+
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* أنماط الانيميشن عند التمرير - محسنة */
+    .animate-on-scroll {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-on-scroll.hidden {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .animate-left {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-left.hidden {
+      opacity: 0;
+      transform: translateX(-50px) rotate(-5deg);
+    }
+
+    .animate-right {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-right.hidden {
+      opacity: 0;
+      transform: translateX(50px) rotate(5deg);
+    }
+
+    .animate-scale {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-scale.hidden {
+      opacity: 0;
+      transform: scale(0.8) rotate(-3deg);
+    }
+
+    /* تأثيرات انيميشن جديدة ومتطورة */
+    .animate-fade-in {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-fade-in.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .animate-zoom-in {
+      opacity: 1;
+      transform: scale(1);
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-zoom-in.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    .animate-slide-up {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-slide-up.hidden {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .animate-rotate-in {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-rotate-in.hidden {
+      opacity: 0;
+      transform: rotate(-10deg) scale(0.9);
+    }
+
+    /* تأثيرات اتجاهية جديدة للمنتجات */
+    .animate-slide-left {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .animate-slide-left.hidden {
+      opacity: 0;
+      transform: translateX(-100px) rotate(-5deg);
+    }
+
+    .animate-slide-right {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .animate-slide-right.hidden {
+      opacity: 0;
+      transform: translateX(100px) rotate(5deg);
+    }
+
+    .animate-slide-down {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .animate-slide-down.hidden {
+      opacity: 0;
+      transform: translateY(-60px) scale(0.95);
+    }
+
+    .animate-flip-in {
+      opacity: 1;
+      transform: rotateY(0deg) scale(1);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .animate-flip-in.hidden {
+      opacity: 0;
+      transform: rotateY(-90deg) scale(0.8);
+    }
+
+    .animate-bounce-in {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .animate-bounce-in.hidden {
+      opacity: 0;
+      transform: scale(0.3) translateY(-50px);
+    }
+
+    .animate-elastic-in {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+      transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .animate-elastic-in.hidden {
+      opacity: 0;
+      transform: scale(0.7) rotate(-10deg);
+    }
+
+    /* تأثيرات خاصة للصور */
+    .animate-image-reveal {
+      opacity: 1;
+      transform: scale(1);
+      clip-path: inset(0 0 0 0);
+      transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-image-reveal.hidden {
+      opacity: 0;
+      transform: scale(1.1);
+      clip-path: inset(0 100% 0 0);
+    }
+
+    .animate-image-slide {
+      opacity: 1;
+      transform: translateX(0);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-image-slide.hidden {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+
+    /* تأثيرات متقدمة للبطاقات */
+    .animate-card-flip {
+      opacity: 1;
+      transform: perspective(1000px) rotateX(0deg);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-card-flip.hidden {
+      opacity: 0;
+      transform: perspective(1000px) rotateX(-90deg);
+    }
+
+    .animate-card-slide-up {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .animate-card-slide-up.hidden {
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+    }
+
+    /* تأثيرات انيميشن للأقسام الكاملة */
+    .section-animate-left {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .section-animate-left.hidden {
+      opacity: 0;
+      transform: translateX(-100px) scale(0.95);
+    }
+
+    .section-animate-right {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .section-animate-right.hidden {
+      opacity: 0;
+      transform: translateX(100px) scale(0.95);
+    }
+
+    .section-animate-up {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .section-animate-up.hidden {
+      opacity: 0;
+      transform: translateY(80px) scale(0.95);
+    }
+
+    .section-animate-down {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .section-animate-down.hidden {
+      opacity: 0;
+      transform: translateY(-80px) scale(0.95);
+    }
+
+    .section-animate-zoom {
+      opacity: 1;
+      transform: scale(1);
+      transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .section-animate-zoom.hidden {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    .section-animate-rotate {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+      transition: all 1.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .section-animate-rotate.hidden {
+      opacity: 0;
+      transform: rotate(-5deg) scale(0.9);
+    }
+
+    /* تأثيرات خاصة للعناصر داخل الأقسام */
+    .grid-item-stagger {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .grid-item-stagger.hidden {
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+    }
+
+    .grid-item-slide-left {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+      transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .grid-item-slide-left.hidden {
+      opacity: 0;
+      transform: translateX(-60px) rotate(-3deg);
+    }
+
+    .grid-item-slide-right {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+      transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .grid-item-slide-right.hidden {
+      opacity: 0;
+      transform: translateX(60px) rotate(3deg);
+    }
+
+    .grid-item-flip {
+      opacity: 1;
+      transform: perspective(1000px) rotateY(0deg);
+      transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .grid-item-flip.hidden {
+      opacity: 0;
+      transform: perspective(1000px) rotateY(-90deg);
+    }
+
+    /* تأثيرات متقدمة للعناوين */
+    .section-title-animate {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .section-title-animate.hidden {
+      opacity: 0;
+      transform: translateY(-30px) scale(0.9);
+    }
+
+    /* تأثيرات للخطوط الفاصلة */
+    .section-divider {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #F2B705, transparent);
+      transform: scaleX(1);
+      transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .section-divider.hidden {
+      transform: scaleX(0);
+    }
+
+    /* تأثيرات hover محسنة */
+    .hover-lift {
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .hover-glow {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .hover-glow:hover {
+      box-shadow: 0 0 20px rgba(242, 183, 5, 0.3);
+    }
+
+    .hover-rotate {
+      transition: all 0.3s ease;
+    }
+
+    .hover-rotate:hover {
+      transform: rotate(2deg) scale(1.05);
+    }
+
+    /* تأثيرات النص */
+    .text-shimmer {
+      background: linear-gradient(90deg, #333 0%, #F2B705 50%, #333 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    .dark .text-shimmer {
+      background: linear-gradient(90deg, #e2e8f0 0%, #F2B705 50%, #e2e8f0 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    /* تأثيرات الأيقونات */
+    .icon-bounce {
+      animation: iconBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes iconBounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-10px);
+      }
+
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .icon-spin {
+      animation: iconSpin 4s linear infinite;
+    }
+
+    @keyframes iconSpin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* تأثيرات الخلفية */
+    .bg-gradient-animated {
+      background: linear-gradient(-45deg, #000000, #2c2c2c, #000000, #1a1a1a);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+    }
+
+    .dark .bg-gradient-animated {
+      background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #334155);
+      background-size: 400% 400%;
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* تأثيرات الحدود */
+    .border-animated {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .border-animated::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F2B705, transparent);
+      animation: borderSlide 3s linear infinite;
+    }
+
+    @keyframes borderSlide {
+      0% {
+        left: -100%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+
+    /* تحسينات إضافية للعناصر */
+    .glass-effect {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dark .glass-effect {
+      background: rgba(30, 41, 59, 0.3);
+      border: 1px solid rgba(51, 65, 85, 0.3);
+    }
+
+    /* تأثيرات التحميل */
+    .loading-dots {
+      display: inline-block;
+    }
+
+    .loading-dots::after {
+      content: '';
+      animation: dots 2s linear infinite;
+    }
+
+    @keyframes dots {
+
+      0%,
+      20% {
+        content: '.';
+      }
+
+      40% {
+        content: '..';
+      }
+
+      60%,
+      100% {
+        content: '...';
+      }
+    }
+
+    /* Logo Overlay Styles */
+    .logo-overlay {
+      position: absolute;
+      top: -40px;
+      right: 30px;
+      z-index: 20;
+    }
+
+    .logo-image {
+      height: 270px;
+      width: auto;
+      max-width: 15%;
+      object-fit: contain;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .logo-image:hover {
+      transform: scale(1.05);
+    }
+
+    /* Remove hero section padding since no fixed header */
+    .hero-section {
+      padding-top: 0;
+    }
+
+    /* Responsive logo */
+    @media (max-width: 768px) {
+      .logo-overlay {
+        top: 30px;
+        left: 20px;
+      }
+
+      .logo-image {
+        height: 130px;
+        max-width: 30%;
+      }
+    }
+	  /* Blog Section Styles - الأنماط الجديدة للمدونة */
+    .blog-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .dark .blog-card {
+      background: #1e293b;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .blog-card:hover {
+      transform: translateY(-15px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(242, 183, 5, 0.25);
+    }
+    .blog-card-image {
+      height: 220px;
+      overflow: hidden;
+    }
+    .blog-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .blog-card:hover .blog-card-image img {
+      transform: scale(1.1);
+    }
+    .blog-card-content {
+      padding: 25px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .blog-card-tag {
+      display: inline-block;
+      background: #F2B705;
+      color: black;
+      padding: 5px 15px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+    .blog-card-title {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      font-family: 'Cairo', sans-serif;
+      flex-grow: 1;
+    }
+    .blog-card-excerpt {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+    .dark .blog-card-excerpt {
+      color: #94a3b8;
+    }
+    .blog-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+      margin-top: auto;
+    }
+    .dark .blog-card-footer {
+      border-top-color: #334155;
+    }
+    .read-more-btn {
+      color: #F2B705;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .read-more-btn:hover {
+      color: #d9a404;
+    }
+    .blog-date {
+      font-size: 0.8rem;
+      color: #999;
+    }
+    .dark .blog-date {
+        color: #64748b;
+    }
+	/* === Bottom Mobile Navigation Styles (Improved Look) === */
+/* === Modern Bottom Navigation Bar === */
+/* === Bottom Mobile Navigation (Fixed for Style Tag) === */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background-color: #ffffff; /* لون الوضع الفاتح */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1040;
+  padding: 0 15px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f0f0f0;
+}
+
+/* الوضع الداكن باستخدام كلاس .dark */
+.dark .bottom-nav {
+  background-color: #1e293b; /* لون الكارت الداكن من اعداداتك */
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+  border-color: #0f172a;
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #333; /* لون نص الوضع الفاتح */
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  width: 70px;
+  height: 100%;
+  padding-top: 15px;
+}
+
+.bottom-nav-item i {
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
+/* الوضع الداكن للنصوص */
+.dark .bottom-nav-item {
+  color: #e2e8f0; /* لون النص الداكن من اعداداتك */
+}
+
+/* العنصر النشط */
+.bottom-nav-item.active {
+  color: #F2B705; /* لونك الثانوي (الأصفر) من اعداداتك */
+}
+
+/* الخط العلوي للعنصر النشط */
+.bottom-nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background-color: #F2B705; /* لونك الثانوي (الأصفر) */
+  border-radius: 3px;
+}
+
+.bottom-nav-item.active i {
+  transform: scale(1.1);
+}
+
+.bottom-nav-item.active span {
+  font-weight: 600;
+}
+
+/* تأثيرات التحويم */
+.bottom-nav-item:hover {
+  color: #F2B705; /* لونك الثانوي (الأصفر) */
+  transform: translateY(-3px);
+}
+
+/* شارة الإشعارات */
+.bottom-nav-item .badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.6em;
+  padding: 0.2em 0.4em;
+  border-radius: 50px;
+  background-color: #ff4757;
+  color: white;
+  font-weight: bold;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+}
+
+/* الوضع الداكن للشارة */
+.dark .bottom-nav-item .badge {
+  border-color: #1e293b;
+}
+
+/* تعديل الحشو السفلي للجسم (مهم) */
+body {
+  padding-bottom: 80px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-bottom: 0;
+  }
+  .bottom-nav {
+    display: none;
+  }
+}
+  </style>
+
+</head>
+
+<body class="relative">
+  <!-- النافبار المعدل -->
+  <nav class="fixed w-full z-50 bg-transparent backdrop-blur-sm transition-all duration-300">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <!-- زر القائمة للجوال (اليسار) -->
+        <div class="md:hidden">
+          <button id="mobileMenuButton" class="text-white dark:text-white focus:outline-none p-2">
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+        </div>
+
+        <!-- عناصر القائمة للديسكتوب (المنتصف) -->
+        <div class="hidden md:flex items-center justify-center flex-1 gap-8 mx-4">
+          <a href="#home" class="text-white dark:text-white hover:text-secondary transition-colors duration-200 px-3 py-2 text-lg font-medium">الرئيسية</a>
+          <a href="#founder" class="text-white dark:text-white hover:text-secondary transition-colors duration-200 px-3 py-2 text-lg font-medium">من انا</a>
+          <a href="#services" class="text-white dark:text-white hover:text-secondary transition-colors duration-200 px-3 py-2 text-lg font-medium">الخدمات</a>
+          <a href="#products" class="text-white dark:text-white hover:text-secondary transition-colors duration-200 px-3 py-2 text-lg font-medium">المنتجات</a>
+          <a href="#blog" class="text-white dark:text-white hover:text-secondary transition-colors duration-200 px-3 py-2 text-lg font-medium">المدونة</a>
+		  <a href="#testimonials" class="text-white dark:text-white hover:text-secondary transition-colors duration-200 px-3 py-2 text-lg font-medium">آراء العملاء</a>
+          <a href="#contact" class="text-white dark:text-white hover:text-secondary transition-colors duration-200 px-3 py-2 text-lg font-medium">تواصل معنا</a>
+        </div>
+
+        <!-- هذا العنصر فارغ فقط للمحاذاة -->
+        <div class="md:hidden w-10"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- القائمة المنسدلة المعدلة للجوال -->
+  <div id="mobileMenu" class="fixed inset-0 z-50 hidden">
+    <!-- طبقة التعتيم الخلفية -->
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="menuBackdrop"></div>
+
+    <!-- محتوى القائمة -->
+    <div class="relative flex items-center justify-center h-full w-full p-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300">
+        <!-- رأس القائمة -->
+        <div class="sticky top-0 bg-white dark:bg-gray-900 p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center rounded-t-xl">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">القائمة الرئيسية</h3>
+          <button id="closeMobileMenu" class="text-gray-500 dark:text-gray-400 hover:text-secondary p-2">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+
+        <!-- عناصر القائمة بدون تمرير -->
+        <div class="p-4 space-y-3">
+          <a href="#home" class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+            <span class="text-gray-900 dark:text-white font-medium text-lg">الرئيسية</span>
+            <i class="fas fa-chevron-left text-gray-400"></i>
+          </a>
+
+          <a href="#founder" class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+            <span class="text-gray-900 dark:text-white font-medium text-lg">من انا</span>
+            <i class="fas fa-chevron-left text-gray-400"></i>
+          </a>
+          <a href="#services" class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+            <span class="text-gray-900 dark:text-white font-medium text-lg">الخدمات</span>
+            <i class="fas fa-chevron-left text-gray-400"></i>
+          </a>
+
+          <a href="#products" class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+            <span class="text-gray-900 dark:text-white font-medium text-lg">المنتجات</span>
+            <i class="fas fa-chevron-left text-gray-400"></i>
+          </a>
+          <a href="#blog" class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+            <span class="text-gray-900 dark:text-white font-medium text-lg">المدونة</span>
+            <i class="fas fa-chevron-left text-gray-400"></i>
+          </a>
+          <a href="#testimonials" class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+            <span class="text-gray-900 dark:text-white font-medium text-lg">آراء العملاء</span>
+            <i class="fas fa-chevron-left text-gray-400"></i>
+          </a>
+
+          <a href="#contact" class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+            <span class="text-gray-900 dark:text-white font-medium text-lg">تواصل معنا</span>
+            <i class="fas fa-chevron-left text-gray-400"></i>
+          </a>
+        </div>
+
+        <!-- زر الإغلاق المعدل -->
+        <div class="sticky bottom-0 bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700 rounded-b-xl">
+          <button id="closeMobileMenuBottom" class="w-full py-3 bg-secondary hover:bg-yellow-600 text-black font-bold rounded-lg transition">
+            إغلاق القائمة
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<nav class="bottom-nav d-lg-none">
+    <a href="index.html" class="bottom-nav-item active">
+      <i class="fas fa-home"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="store.html" class="bottom-nav-item">
+      <i class="fas fa-store"></i>
+      <span>المتجر</span>
+    </a>
+    <a href="cart.html" class="bottom-nav-item">
+      <i class="fas fa-shopping-cart"></i>
+      <span>السلة</span>
+      <span id="cartCountBottomNav" class="badge rounded-pill bg-danger text-white" style="display: none;">0</span>
+    </a>
+    <a href="track.html" class="bottom-nav-item">
+      <i class="fas fa-truck-fast"></i>
+      <span>تتبع</span>
+    </a>
+    <a href="blog.html" class="bottom-nav-item">
+      <i class="fas fa-newspaper"></i>
+      <span>المدونة</span>
+    </a>
+  </nav>
+  <!-- السكريبت المعدل -->
+  <script>
+    // التحكم في القائمة المنسدلة
+    const menuButton = document.getElementById('mobileMenuButton');
+    const closeButton = document.getElementById('closeMobileMenu');
+    const closeButtonBottom = document.getElementById('closeMobileMenuBottom');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuBackdrop = document.getElementById('menuBackdrop');
+    // فتح القائمة
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+    // إغلاق القائمة
+    function closeMenu() {
+      mobileMenu.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    // إغلاق عند النقر على أي زر إغلاق
+    closeButton.addEventListener('click', closeMenu);
+    closeButtonBottom.addEventListener('click', closeMenu);
+    // إغلاق عند النقر على الخلفية
+    menuBackdrop.addEventListener('click', closeMenu);
+    // إغلاق عند اختيار أي عنصر
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+    // تغيير لون النافبار عند التمرير
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.classList.add('bg-black/30', 'dark:bg-gray-900/80');
+      } else {
+        nav.classList.remove('bg-black/30', 'dark:bg-gray-900/80');
+      }
+    });
+  </script>
+
+  <!-- زر تبديل الوضع الداكن المحسّن -->
+
+  <div id="darkModeToggle" class="dark-toggle">
+
+    <i class="fas fa-moon"></i>
+
+  </div>
+  <!-- Logo positioned on top left -->
+
+  <div class="logo-overlay">
+
+    <img src="images/logo.png" alt="يوسف للبصريات - شعار الشركة" class="logo-image">
+
+  </div>
+  <!-- Hero Section -->
+
+  <section id="home" class="hero-section min-h-screen flex items-center justify-center text-white relative">
+
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+
+    <div class="container mx-auto px-4 z-10 text-center">
+      <h1 class="text-4xl md:text-6xl font-bold space-y-4 animate-float">
+        <div>يوسف للبصريات - حيث</div>
+        <div> تلتقي الرؤية بالأناقة</div>
+      </h1>
+      <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto">
+
+        أفضل العدسات والنظارات بتصاميم عصرية وفحص نظر دقيق
+
+      </p>
+
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+
+        <a href="#contact" class="bg-secondary text-black font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-600 transition">
+
+          احجز موعدك
+
+        </a>
+
+        <a href="#products" class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-white hover:text-black transition">
+
+          تصفح المنتجات
+
+        </a>
+
+      </div>
+
+    </div>
+
+    <a href="#founder" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+
+      <i class="fas fa-chevron-down text-2xl text-white"></i>
+
+    </a>
+
+  </section>
+
+  <!-- About Founder -->
+
+  <section id="founder" class="py-20 founder-section">
+
+    <div class="container mx-auto px-4">
+
+      <div class="section-header">
+
+        <h2 class="section-title text-3xl md:text-4xl font-bold">من أنا</h2>
+
+      </div>
+
+      <div class="flex flex-col lg:flex-row items-center gap-10">
+
+        <div class="lg:w-1/3 flex justify-center slide-element">
+
+          <div class="relative animate-on-scroll hidden" data-delay="100">
+
+            <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-secondary">
+
+              <img src="images/profile.png" alt="يوسف ابوالحسن فكري - مؤسس الشركة" class="w-full h-full object-cover">
+
+            </div>
+
+            <div class="mt-6 text-center">
+
+              <p class="text-xl font-bold">يوسف ابوالحسن فكري</p>
+
+              <p class="text-secondary">مؤسس يوسف للبصريات</p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="lg:w-2/3 animate-on-scroll hidden" data-delay="200">
+
+          <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-xl relative">
+
+            <div class="absolute top-4 right-4 text-4xl text-secondary opacity-30">
+
+              <i class="fas fa-quote-right"></i>
+
+            </div>
+
+            <p class="text-lg leading-relaxed mb-6">
+
+              بدأت رحلتي في عالم البصريات منذ أكثر من 5 أعوام، حيث تدرجت في العمل من فني بصريات إلى خبير في العدسات الطبية المتقدمة. شغفي بالجمع بين الدقة الطبية والأناقة دفعني لإنشاء "يوسف للبصريات" لتقديم تجربة فريدة لعملائنا.
+
+            </p>
+
+            <p class="text-lg leading-relaxed">
+
+              نظارتك مش بس وسيلة للرؤية دي امتداد لشخصيتك تصميم مريح شكل أنيق وعدسة تحمي عينك وتحافظ على تركيزك طول اليوم اختار اللي يليق بيك لأن التفاصيل الصغيرة هي اللي بتفرّق .
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Services Section - قسم الخدمات يظهر من اليمين -->
+
+  <section id="services" class="py-20 bg-white dark:bg-dark section-animate-right" data-delay="100">
+
+    <div class="container mx-auto px-4 slide-element">
+
+      <div class="section-header animate-fade-in-up">
+
+        <h2 class="section-title text-4xl font-bold text-center mb-4 section-title-animate" data-delay="200">خدماتنا المميزة</h2>
+
+        <div class="section-divider mx-auto mb-12" data-delay="300"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          <!-- Service 1 -->
+
+          <div class="service-card bg-white dark:bg-darkCard rounded-xl shadow-lg overflow-hidden grid-item-slide-left hover-lift" data-delay="400">
+
+            <div class="p-6 flex flex-col items-center text-center slide-element">
+
+              <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6">
+
+                <i class="fas fa-eye text-2xl text-black icon-bounce"></i>
+
+              </div>
+
+              <h3 class="text-xl font-bold mb-4">عدسات طبية وملونة</h3>
+
+              <p class="text-gray-600 dark:text-darkText">
+
+                عدسات متطورة بمواصفات طبية دقيقة وعدسات لاصقة ملونة من أفضل العلامات التجارية العالمية.
+
+              </p>
+
+            </div>
+
+          </div>
+
+          <!-- Service 2 -->
+
+          <div class="service-card bg-white dark:bg-darkCard rounded-xl shadow-lg overflow-hidden grid-item-stagger hover-lift" data-delay="600">
+
+            <div class="p-6 flex flex-col items-center text-center slide-element">
+
+              <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6">
+
+                <i class="fas fa-glasses text-2xl text-black icon-bounce"></i>
+
+              </div>
+
+              <h3 class="text-xl font-bold mb-4">نظارات طبية بتصاميم عالمية</h3>
+
+              <p class="text-gray-600 dark:text-darkText">
+
+                تشكيلة واسعة من الإطارات الطبية الفاخرة من أشهر الماركات العالمية التي تجمع بين الأناقة والراحة.
+
+              </p>
+
+            </div>
+
+          </div>
+
+          <!-- Service 3 -->
+
+          <div class="service-card bg-white dark:bg-darkCard rounded-xl shadow-lg overflow-hidden grid-item-slide-right hover-lift" data-delay="800">
+
+            <div class="p-6 flex flex-col items-center text-center slide-element">
+
+              <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6">
+
+                <i class="fas fal fa-tools text-2xl text-black icon-bounce"></i>
+
+              </div>
+
+              <h3 class="text-xl font-bold mb-4">إصلاح النظارات الطبية</h3>
+
+              <p class="text-gray-600 dark:text-darkText">
+
+                خدمة إصلاح النظارات باحترافية وسرعة، من استبدال العدسات وتعديل الإطارات إلى صيانة المفصلات – نعيد لنظارتك دقتها وأناقتها.
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <section id="products" class="py-20 section-animate-up" data-delay="100">
+    <div class="container mx-auto px-4 slide-element">
+      <div class="section-header">
+        <h2 class="section-title text-3xl md:text-4xl font-bold section-title-animate" data-delay="200">تصفح تشكيلتنا المميزة</h2>
+        <div class="section-divider mx-auto mb-12" data-delay="300"></div>
+        <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mt-6 grid-item-stagger" data-delay="400">
+          اكتشف منتجاتنا الراقية التي تجمع بين الجودة العالية والتصميم العصري
+        </p>
+      </div>
+
+      <div class="product-grid container mx-auto px-4 mt-12 slide-element">
+
+        <div class="product-card animate-slide-left hidden" data-delay="100">
+          <div class="product-image animate-image-reveal">
+            <span class="product-badge animate-bounce-in">نظارة طبية</span>
+            <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="نظارة طبية فاخرة">
+          </div>
+          <div class="product-content">
+            <h3 class="product-title animate-text-reveal">نظارة طبية</h3>
+            <p class="product-description animate-text-slide">
+              نظارة طبية فاخرة من التيتانيوم الخفيف الوزن، بتصميم أنيق يناسب جميع المناسبات. مزودة بعدسات مضادة للانعكاس والوهج.
+            </p>
+            <span class="product-price animate-elastic-in"> </span>
+            <a href="https://youssef-optics.netlify.app/store" class="order-button animate-card-slide-up">
+              <i class="fas fa-store"></i> زور متجرنا
+            </a>
+          </div>
+        </div>
+
+        <div class="product-card animate-slide-down hidden" data-delay="200">
+          <div class="product-image animate-image-slide">
+            <span class="product-badge animate-bounce-in">نظارة شمسية</span>
+            <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="نظارة شمسية أنيقة">
+          </div>
+          <div class="product-content">
+            <h3 class="product-title animate-text-reveal">نظارة شمسية</h3>
+            <p class="product-description animate-text-slide">
+              نظارة شمسية فاخرة بتصميم كلاسيكي عصري، توفر حماية 100% من الأشعة فوق البنفسجية. إطارها خفيف الوزن ومريح للاستخدام اليومي.
+            </p>
+            <span class="product-price animate-elastic-in"> </span>
+            <a href="https://youssef-optics.netlify.app/store" class="order-button animate-card-slide-up">
+              <i class="fas fa-store"></i> زور متجرنا
+            </a>
+          </div>
+        </div>
+
+        <div class="product-card animate-slide-right hidden" data-delay="300">
+          <div class="product-image animate-flip-in">
+            <span class="product-badge animate-bounce-in">عدسات لاصقة</span>
+            <img src="https://images.unsplash.com/photo-1582143434535-eba55a806718?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="عدسات لاصقة متميزة">
+          </div>
+          <div class="product-content">
+            <h3 class="product-title animate-text-reveal">عدسات ملونة متميزة</h3>
+            <p class="product-description animate-text-slide">
+              عدسات لاصقة ملونة عالية الجودة بتدرجات متعددة. توفر راحة طوال اليوم مع ترطيب مستمر للعين، مناسبة للاستخدام اليومي.
+            </p>
+            <span class="product-price animate-elastic-in"> </span>
+            <a href="https://youssef-optics.netlify.app/store" class="order-button animate-card-slide-up">
+              <i class="fas fa-store"></i> زور متجرنا
+            </a>
+          </div>
+        </div>
+
+        <div class="product-card animate-slide-left hidden" data-delay="100">
+          <div class="product-image animate-image-reveal">
+            <span class="product-badge animate-bounce-in">محلول تنظيف العدسات</span>
+            <img src="images/cleanlenses.jpg" alt="محلول تنظيف العدسات اللاصقة">
+          </div>
+          <div class="product-content">
+            <h3 class="product-title animate-text-reveal">محلول تنظيف العدسات اللاصقة</h3>
+            <p class="product-description animate-text-slide">
+              محلول متكامل لتنظيف وتعقيم العدسات اللاصقة، مصمم لحماية العين من البكتيريا والتراكمات البروتينية.
+            </p>
+            <span class="product-price animate-elastic-in"> </span>
+            <a href="https://youssef-optics.netlify.app/store" class="order-button animate-card-slide-up">
+              <i class="fas fa-store"></i> زور متجرنا
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+ <!-- Blog Section - القسم الجديد -->
+  <section id="blog" class="py-20 bg-gray-50 dark:bg-dark section-animate-up" data-delay="100">
+    <div class="container mx-auto px-4 slide-element">
+        <div class="section-header">
+            <h2 class="section-title text-3xl md:text-4xl font-bold section-title-animate" data-delay="200">دليلك للبصريات</h2>
+            <div class="section-divider mx-auto mb-12" data-delay="300"></div>
+            <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mt-6 grid-item-stagger" data-delay="400">
+                مقالات ونصائح مفيدة للحفاظ على صحة عينيك واختيار الأفضل لرؤيتك.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 slide-element">
+            <div class="blog-card animate-slide-left hidden" data-delay="100">
+                <div class="blog-card-image animate-image-reveal">
+                    <img src="https://images.unsplash.com/photo-1608539733377-5557e02926b5?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="صورة نظارات متنوعة">
+                </div>
+                <div class="blog-card-content">
+                    <span class="blog-card-tag animate-bounce-in">اختيار النظارات</span>
+                    <h3 class="blog-card-title dark:text-white animate-text-reveal">كيف تختار النظارة المناسبة لشكل وجهك؟</h3>
+                    <p class="blog-card-excerpt animate-text-slide">
+                        اختيار الإطار المثالي ليس مجرد مسألة ذوق، بل يعتمد على شكل وجهك. اكتشف معنا كيف تبرز أفضل ملامحك باختيار النظارة التي تكمل شكل وجهك، سواء كان دائرياً، مربعاً، أو بيضاوياً.
+                    </p>
+                    <div class="blog-card-footer animate-card-slide-up">
+                        <span class="blog-date">17 يوليو 2025</span>
+                        <a href="https://youssef-optics.netlify.app//post.html?id=sHvrszDnTDBkmKwGTyyn" class="read-more-btn">اقرأ المزيد <i class="fas fa-arrow-left mr-2"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-card animate-slide-down hidden" data-delay="200">
+                <div class="blog-card-image animate-image-slide">
+                    <img src="https://images.unsplash.com/photo-1713947503689-d5e1d303bb4a?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="شخص يعمل على لابتوب">
+                </div>
+                <div class="blog-card-content">
+                    <span class="blog-card-tag animate-bounce-in">صحة العيون</span>
+                    <h3 class="blog-card-title dark:text-white animate-text-reveal">أهمية حماية عينيك من الضوء الأزرق</h3>
+                    <p class="blog-card-excerpt animate-text-slide">
+                        نقضي ساعات طويلة أمام الشاشات يومياً. تعرف على مخاطر الضوء الأزرق المنبعث من الأجهزة الإلكترونية وكيفية حماية عينيك من الإجهاد الرقمي باستخدام عدسات متخصصة.
+                    </p>
+                    <div class="blog-card-footer animate-card-slide-up">
+                        <span class="blog-date">15 يوليو 2025</span>
+                        <a href="https://youssef-optics.netlify.app//post.html?id=BwOghnNZgjVQIx8qWkwg" class="read-more-btn">اقرأ المزيد <i class="fas fa-arrow-left mr-2"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-card animate-slide-right hidden" data-delay="300">
+                <div class="blog-card-image animate-flip-in">
+                    <img src="https://plus.unsplash.com/premium_photo-1661587253056-3c5f399524a5?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="عدسات لاصقة">
+                </div>
+                <div class="blog-card-content">
+                    <span class="blog-card-tag animate-bounce-in">العدسات اللاصقة</span>
+                    <h3 class="blog-card-title dark:text-white animate-text-reveal">5 نصائح ذهبية للعناية بالعدسات اللاصقة</h3>
+                    <p class="blog-card-excerpt animate-text-slide">
+                        العدسات اللاصقة بديل رائع للنظارات، لكنها تتطلب عناية خاصة. اتبع هذه النصائح الخمس للحفاظ على صحة عينيك، وضمان أقصى درجات الراحة والأمان عند استخدامها.
+                    </p>
+                    <div class="blog-card-footer animate-card-slide-up">
+                        <span class="blog-date">12 يوليو 2025</span>
+                        <a href="https://youssef-optics.netlify.app//post.html?id=D81HU8obertuHcPpticR" class="read-more-btn">اقرأ المزيد <i class="fas fa-arrow-left mr-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+  <!-- End Blog Section -->
+
+
+
+
+  <!-- Testimonials - قسم آراء العملاء يظهر بتكبير -->
+
+  <section id="testimonials" class="py-20 bg-gray-100 dark:bg-slate-900 section-animate-zoom" data-delay="100">
+
+    <div class="container mx-auto px-4 slide-element">
+
+      <div class="section-header">
+
+        <h2 class="section-title text-3xl md:text-4xl font-bold section-title-animate" data-delay="200">آراء عملائنا</h2>
+
+        <div class="section-divider mx-auto mb-12" data-delay="300"></div>
+
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Testimonial 1 -->
+
+        <div class="testimonial-card bg-white dark:bg-darkCard rounded-xl shadow-lg p-8 grid-item-slide-left" data-delay="400">
+
+          <div class="flex items-center mb-6 slide-element">
+
+            <div class="w-16 h-16 rounded-full overflow-hidden animate-zoom-in">
+
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="سارة" class="w-full h-full object-cover">
+
+            </div>
+
+            <div class="mr-4">
+
+              <h3 class="font-bold animate-text-reveal">سارة أحمد</h3>
+
+              <div class="flex text-secondary animate-text-slide">
+
+                <i class="fas fa-star"></i>
+
+                <i class="fas fa-star"></i>
+
+                <i class="fas fa-star"></i>
+
+                <i class="fas fa-star"></i>
+
+                <i class="fas fa-star"></i>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <p class="text-gray-600 dark:text-darkText animate-fade-in">
+
+            تجربة رائعة! النظارة التي حصلت عليها من يوسف للبصريات مريحة للغاية وتناسب وجهي بشكل ممتاز. فريق العمل محترف جداً ويقدمون النصائح المفيدة.
+
+          </p>
+
+          <div class="mt-4 text-secondary text-2xl animate-bounce-in">
+
+            <i class="fas fa-quote-right"></i>
+
+          </div>
+
+        </div>
+
+        <!-- Testimonial 2 -->
+
+        <div class="testimonial-card bg-white dark:bg-darkCard rounded-xl shadow-lg p-8 grid-item-slide-right" data-delay="600">
+
+          <div class="container mx-auto px-4 slide-element">
+
+            <div class="flex items-center mb-6">
+
+              <div class="w-16 h-16 rounded-full overflow-hidden animate-zoom-in">
+
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="محمد" class="w-full h-full object-cover">
+
+              </div>
+
+              <div class="mr-4 slide-element">
+
+                <h3 class="font-bold animate-text-reveal">محمد خالد</h3>
+
+                <div class="flex text-secondary animate-text-slide slide-element">
+                  <i class="fas fa-star"></i>
+
+                  <i class="fas fa-star"></i>
+
+                  <i class="fas fa-star"></i>
+
+                  <i class="fas fa-star"></i>
+
+                  <i class="fas fa-star"></i>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <p class="text-gray-600 dark:text-darkText animate-fade-in">
+              من أفضل تجاربي في شراء النظارات! فريق العمل في يوسف للبصريات محترف جداً، ساعدوني في اختيار الإطار المثالي لشكل وجهي، النظارة مريحة وأنيقة، والأهم أن الأسعار مناسبة جداً مقارنة بالجودة الممتازة. شكراً لفريق يوسف للبصريات!
+
+            </p>
+
+            <div class="mt-4 text-secondary text-2xl animate-bounce-in">
+
+              <i class="fas fa-quote-right"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Offers Section -->
+
+  <section class="py-20">
+
+    <div class="container mx-auto px-4">
+
+      <div class="offer-banner rounded-2xl overflow-hidden shadow-xl animate-scale-in">
+
+        <div class="flex flex-col md:flex-row">
+
+          <div class="md:w-1/2 p-10 flex flex-col justify-center">
+
+            <h2 class="text-3xl font-bold text-white mb-4">عرض خاص لموسم الصيف!</h2>
+
+            <p class="text-white mb-6">
+
+              استمتع بخصم 10% عند شراء اي نظاره طبيه او نظاره شمسية من تشكيلتنا المتميزة.
+
+            </p>
+
+            <div class="flex gap-4 mb-8">
+
+              <div class="countdown-item">
+
+                <span class="text-2xl" id="days">03</span>
+
+                <span class="countdown-label">أيام</span>
+
+              </div>
+
+              <div class="countdown-item">
+
+                <span class="text-2xl" id="hours">00</span>
+
+                <span class="countdown-label">ساعات</span>
+
+              </div>
+
+              <div class="countdown-item">
+
+                <span class="text-2xl" id="minutes">00</span>
+
+                <span class="countdown-label">دقائق</span>
+
+              </div>
+
+              <div class="countdown-item">
+
+                <span class="text-2xl" id="seconds">00</span>
+
+                <span class="countdown-label">ثواني</span>
+
+              </div>
+
+            </div>
+            <a href="https://wa.me/+201092837489?text=مرحباً، أنا مهتم بالعرض الخاص على النظارات من يوسف للبصريات" target="_blank" rel="noopener noreferrer" class="bg-secondary text-black font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-600 transition w-full md:w-auto flex items-center justify-center gap-2">
+              <i class="fab fa-whatsapp"></i>
+              استفيد من العرض الان
+            </a>
+          </div>
+
+          <div class="md:w-1/2 hidden md:block">
+
+            <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="عرض النظارات" class="w-full h-full object-cover">
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Contact Section -->
+
+  <section id="contact" class="py-20 bg-gray-100 dark:bg-slate-900">
+
+    <div class="container mx-auto px-4">
+
+      <div class="section-header">
+
+        <h2 class="section-title text-3xl md:text-4xl font-bold">تواصل معنا</h2>
+
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div class="contact-form bg-white dark:bg-darkCard rounded-xl shadow-lg p-8 animate-slide-in-left">
+          <h3 class="text-2xl font-bold mb-6">أرسل رسالتك</h3>
+
+          <form id="whatsappContactForm">
+            <div class="mb-4">
+              <label class="block mb-2">الاسم بالكامل</label>
+              <input type="text" name="name" class="w-full p-3 rounded-lg" placeholder="اسمك" required>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2">رقم الهاتف</label>
+              <input type="tel" name="phone" class="w-full p-3 rounded-lg" placeholder="رقم هاتفك" required>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2">الخدمة المطلوبة</label>
+              <select name="service" class="w-full p-3 rounded-lg" required>
+                <option value="إصلاح النظارات">إصلاح النظارات</option>
+                <option value="شراء نظارة طبية">شراء نظارة طبية</option>
+                <option value="شراء نظارة شمسية">شراء نظارة شمسية</option>
+                <option value="عدسات لاصقة">عدسات لاصقة</option>
+                <option value="استفسار عام">استفسار عام</option>
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="block mb-2">الرسالة</label>
+              <textarea name="message" rows="4" class="w-full p-3 rounded-lg" placeholder="رسالتك"></textarea>
+            </div>
+            <button type="submit" class="bg-black text-white w-full py-3 rounded-lg font-bold hover:bg-gray-800 transition">
+              <i class="fab fa-whatsapp text-xl ml-2"></i>
+              ارسال الرسالة عبر واتساب </button>
+          </form>
+
+          <div class="mt-8">
+            <a href="https://wa.me/201092837489" target="_blank" class="flex items-center justify-center bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">
+              <i class="fab fa-whatsapp text-xl ml-2"></i>
+              تواصل عبر الواتساب مباشرةً </a>
+          </div>
+        </div>
+
+        <div class="rounded-xl overflow-hidden shadow-lg animate-slide-in-right">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3582.18321891523!2d32.460459363969726!3d26.125568430032224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144ed34635f35971%3A0xd1fb6dca56b31642!2zaGFuYSBob3VzZSDZhNmE2YXYs9iq2YTYstmF2KfYqiDYp9mE2YXZhtiy2YTZitmH!5e0!3m2!1sar!2seg!4v1749861910746!5m2!1sar!2seg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="bg-white dark:bg-darkCard p-6">
+            <h3 class="text-xl font-bold mb-4">عنوان المتجر</h3>
+            <p class="mb-2">
+              <i class="fas fa-map-marker-alt text-secondary mr-2"></i>
+              دشنا - شارع إسماعيل عارف
+              بجوار hana house
+            </p>
+            <p class="mb-2">
+              <i class="fas fa-phone text-secondary mr-2"></i>
+              +2001092837489
+            </p>
+            <p class="mb-2">
+              <i class="fas fa-envelope text-secondary mr-2"></i>
+              youalhassan@otmail.com
+            </p>
+            <p>
+              <i class="fas fa-clock text-secondary mr-2"></i>
+              السبت - الخميس: 8 صباحاً - 10 مساءً
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('whatsappContactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // جمع بيانات النموذج
+      const formData = new FormData(this);
+      const name = formData.get('name');
+      const phone = formData.get('phone');
+      const service = formData.get('service');
+      const message = formData.get('message') || 'لا توجد رسالة إضافية';
+      // تنسيق رسالة واتساب
+      const whatsappMessage = `
+    *رسالة جديدة من موقع يوسف للبصريات*
+    --------------------------
+    *الاسم:* ${name}
+    *رقم الهاتف:* ${phone}
+    *الخدمة المطلوبة:* ${service}
+    *الرسالة:* ${message}
+    `;
+      // إنشاء رابط واتساب
+      const whatsappUrl = `https://wa.me/+2001092837489?text=${encodeURIComponent(whatsappMessage)}`;
+      // فتح المحادثة في نافذة جديدة
+      window.open(whatsappUrl, '_blank');
+      // إفراغ الحقول بعد الإرسال (اختياري)
+      this.reset();
+    });
+  </script>
+
+  <!-- Footer -->
+
+  <footer class="pt-20 pb-10 text-white">
+
+    <div class="container mx-auto px-4">
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+
+        <div>
+
+          <h3 class="text-xl font-bold mb-6">يوسف للبصريات</h3>
+
+          <p class="mb-4">
+
+            حيث تلتقي الرؤية بالأناقة. نقدم أفضل الحلول البصرية مع أحدث التصاميم العالمية.
+
+          </p>
+
+          <div class="flex gap-4">
+
+            <a href="https://www.facebook.com/share/193kMj5kWg/" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary transition">
+
+              <i class="fab fa-facebook-f"></i>
+
+            </a>
+
+            <a href="https://www.instagram.com/youalhassan?igsh=N2djbHd2azV6aGJx" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary transition">
+
+              <i class="fab fa-instagram"></i>
+
+            </a>
+
+            <a href="https://www.facebook.com/share/16sT8FQnBd/" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary transition">
+
+              <i class="fab fa-facebook"></i>
+
+            </a>
+
+          </div>
+
+        </div>
+
+        <div>
+
+          <h3 class="text-xl font-bold mb-6">روابط سريعة</h3>
+
+          <ul>
+
+            <li class="mb-3"><a href="#" class="hover:text-secondary transition">الرئيسية</a></li>
+
+            <li class="mb-3"><a href="#founder" class="hover:text-secondary transition">من نحن</a></li>
+
+            <li class="mb-3"><a href="#products" class="hover:text-secondary transition">الخدمات</a></li>
+
+            <li class="mb-3"><a href="#products" class="hover:text-secondary transition">المتجر</a></li>
+
+            <li><a href="#contact" class="hover:text-secondary transition">اتصل بنا</a></li>
+
+          </ul>
+
+        </div>
+
+        <div>
+
+          <h3 class="text-xl font-bold mb-6">خدماتنا</h3>
+
+          <ul>
+
+            <li class="mb-3"><a href="#" class="hover:text-secondary transition">فحوصات نظر دقيقة</a></li>
+
+            <li class="mb-3"><a href="#" class="hover:text-secondary transition">نظارات طبية فاخرة</a></li>
+
+            <li class="mb-3"><a href="#" class="hover:text-secondary transition">عدسات لاصقة طبية</a></li>
+
+            <li class="mb-3"><a href="#" class="hover:text-secondary transition">نظارات شمسية طبية</a></li>
+
+            <li><a href="#" class="hover:text-secondary transition">إصلاح النظارات</a></li>
+
+          </ul>
+
+        </div>
+
+        <div>
+
+          <h3 class="text-xl font-bold mb-6">اشترك في النشرة البريدية</h3>
+
+          <p class="mb-4">
+
+            اشترك لتصلك أحدث العروض والتخفيضات
+
+          </p>
+
+          <form>
+
+            <div class="flex">
+
+              <input type="email" placeholder="بريدك الإلكتروني" class="px-4 py-2 w-full rounded-r-lg text-black">
+
+              <button class="bg-secondary text-black px-4 rounded-l-lg">
+
+                <i class="fas fa-paper-plane"></i>
+
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+      <div class="pt-10 border-t border-gray-700 text-center">
+
+        <p>
+          جميع الحقوق محفوظة © يوسف للبصريات 2025.
+        </p>
+        <div class="mt-12 text-center text-gray-600 dark:text-gray-400 text-sm">
+          <p>
+            تصميم وتطوير بواسطة
+            <a href="https://www.facebook.com/share/19LSLJAU8J/" target="_blank" rel="noopener noreferrer" class="text-secondary hover:underline">
+              Ehab Mohamad Fkrey
+            </a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script>
+    // تفعيل الانيميشن عند التمرير
+    function activateSlideAnimation() {
+      const slideElements = document.querySelectorAll('.slide-element');
+      const windowHeight = window.innerHeight;
+      slideElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150; // المسافة من أعلى الشاشة لتفعيل الانيميشن
+        if (elementTop < windowHeight - elementVisible) {
+          element.classList.add('active'); // إذا كان العنصر ظاهرًا، أضف .active
+        }
+      });
+    }
+    // تشغيل الانيميشن عند التحميل وعند التمرير
+    window.addEventListener('load', activateSlideAnimation);
+    window.addEventListener('scroll', activateSlideAnimation);
+    // Dark mode toggle
+    // --- الكود الجديد (الصحيح) ---
+const darkModeToggle = document.getElementById('darkModeToggle');
+const htmlElement = document.documentElement;
+const moonIcon = darkModeToggle.querySelector('.fa-moon');
+const sunIcon = document.createElement('i');
+sunIcon.className = 'fas fa-sun'; // إنشاء أيقونة الشمس
+
+// دالة لتطبيق الثيم بناءً على الحالة
+function applyTheme(theme) {
+    if (theme === 'dark') {
+        htmlElement.classList.add('dark');
+        moonIcon.style.display = 'none';
+        if (!darkModeToggle.contains(sunIcon)) {
+            darkModeToggle.appendChild(sunIcon);
+        }
+        sunIcon.style.display = 'inline-block';
+        darkModeToggle.style.background = '#F2B705';
+        darkModeToggle.style.color = '#000';
+    } else {
+        htmlElement.classList.remove('dark');
+        moonIcon.style.display = 'inline-block';
+        sunIcon.style.display = 'none';
+        darkModeToggle.style.background = '#000';
+        darkModeToggle.style.color = '#F2B705';
+    }
+}
+
+// دالة لتبديل الثيم عند الضغط على الزر
+darkModeToggle.addEventListener('click', () => {
+    const isDark = htmlElement.classList.contains('dark');
+    const newTheme = isDark ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme); // حفظ الاختيار في الذاكرة
+    applyTheme(newTheme);
+});
+
+// تحميل الثيم المحفوظ عند فتح الصفحة لأول مرة
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light'; // القيمة الافتراضية هي الفاتح
+    applyTheme(savedTheme);
+});
+    // Countdown timer (3 days from page load)
+    function updateCountdown() {
+      const daysElement = document.getElementById('days');
+      const hoursElement = document.getElementById('hours');
+      const minutesElement = document.getElementById('minutes');
+      const secondsElement = document.getElementById('seconds');
+      // Set the target date (3 days from page load)
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 3);
+      targetDate.setHours(targetDate.getHours(), 0, 0, 0); // Reset to start of hour
+      const now = new Date();
+      const timeDifference = targetDate - now;
+      // If countdown is finished
+      if (timeDifference <= 0) {
+        daysElement.textContent = "00";
+        hoursElement.textContent = "00";
+        minutesElement.textContent = "00";
+        secondsElement.textContent = "00";
+        return;
+      }
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+      daysElement.textContent = days.toString().padStart(2, '0');
+      hoursElement.textContent = hours.toString().padStart(2, '0');
+      minutesElement.textContent = minutes.toString().padStart(2, '0');
+      secondsElement.textContent = seconds.toString().padStart(2, '0');
+    }
+    // Initialize countdown
+    updateCountdown();
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+    // وظيفة محسنة لتحريك العناصر والأقسام عند التمرير
+    function animateElements() {
+      // تحريك العناصر الفردية
+      const elements = document.querySelectorAll('.animate-on-scroll, .animate-left, .animate-right, .animate-scale, .animate-fade-in, .animate-zoom-in, .animate-slide-up, .animate-rotate-in, .animate-slide-left, .animate-slide-right, .animate-slide-down, .animate-flip-in, .animate-bounce-in, .animate-elastic-in, .animate-image-reveal, .animate-image-slide, .animate-card-flip, .animate-card-slide-up, .animate-text-reveal, .animate-text-slide');
+      // تحريك الأقسام الكاملة
+      const sections = document.querySelectorAll('.section-animate-left, .section-animate-right, .section-animate-up, .section-animate-down, .section-animate-zoom, .section-animate-rotate');
+      // تحريك العناوين
+      const titles = document.querySelectorAll('.section-title-animate');
+      // تحريك الخطوط الفاصلة
+      const dividers = document.querySelectorAll('.section-divider');
+      // تحريك عناصر الشبكة
+      const gridItems = document.querySelectorAll('.grid-item-stagger, .grid-item-slide-left, .grid-item-slide-right, .grid-item-flip');
+      const windowHeight = window.innerHeight;
+      // تحريك العناصر الفردية
+      elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const triggerPoint = windowHeight * 0.8;
+        if (elementTop < triggerPoint && element.classList.contains('hidden')) {
+          const delay = parseInt(element.getAttribute('data-delay')) || 0;
+          setTimeout(() => {
+            element.classList.remove('hidden');
+            element.classList.add('animated');
+            addElementSpecificEffects(element);
+          }, delay);
+        }
+      });
+      // تحريك الأقسام الكاملة
+      sections.forEach(section => {
+        const sectionTop = section.getBoundingClientRect().top;
+        const triggerPoint = windowHeight * 0.7;
+        if (sectionTop < triggerPoint && section.classList.contains('hidden')) {
+          const delay = parseInt(section.getAttribute('data-delay')) || 0;
+          setTimeout(() => {
+            section.classList.remove('hidden');
+            section.classList.add('animated');
+            // تحريك العناصر الفرعية بتأخير متدرج
+            animateChildElements(section);
+          }, delay);
+        }
+      });
+      // تحريك العناوين
+      titles.forEach(title => {
+        const titleTop = title.getBoundingClientRect().top;
+        const triggerPoint = windowHeight * 0.85;
+        if (titleTop < triggerPoint && title.classList.contains('hidden')) {
+          const delay = parseInt(title.getAttribute('data-delay')) || 0;
+          setTimeout(() => {
+            title.classList.remove('hidden');
+            title.classList.add('animated');
+          }, delay);
+        }
+      });
+      // تحريك الخطوط الفاصلة
+      dividers.forEach(divider => {
+        const dividerTop = divider.getBoundingClientRect().top;
+        const triggerPoint = windowHeight * 0.9;
+        if (dividerTop < triggerPoint && divider.classList.contains('hidden')) {
+          setTimeout(() => {
+            divider.classList.remove('hidden');
+          }, 200);
+        }
+      });
+      // تحريك عناصر الشبكة
+      gridItems.forEach((item, index) => {
+        const itemTop = item.getBoundingClientRect().top;
+        const triggerPoint = windowHeight * 0.8;
+        if (itemTop < triggerPoint && item.classList.contains('hidden')) {
+          const staggerDelay = index * 150; // تأخير متدرج
+          setTimeout(() => {
+            item.classList.remove('hidden');
+            item.classList.add('animated');
+          }, staggerDelay);
+        }
+      });
+    }
+    // تحريك العناصر الفرعية داخل القسم
+    function animateChildElements(section) {
+      const childElements = section.querySelectorAll('.grid-item-stagger, .grid-item-slide-left, .grid-item-slide-right, .grid-item-flip, .service-card, .product-card, .testimonial-card');
+      childElements.forEach((child, index) => {
+        if (child.classList.contains('hidden')) {
+          const staggerDelay = index * 200; // تأخير متدرج للعناصر الفرعية
+          setTimeout(() => {
+            child.classList.remove('hidden');
+            child.classList.add('animated');
+          }, staggerDelay);
+        }
+      });
+    }
+    // إضافة تأثيرات خاصة بناءً على نوع العنصر
+    function addElementSpecificEffects(element) {
+      // تأثيرات خاصة للصور
+      if (element.querySelector('img')) {
+        element.addEventListener('mouseenter', function() {
+          const img = this.querySelector('img');
+          if (img) {
+            img.style.transform = 'scale(1.05) rotate(2deg)';
+            img.style.filter = 'brightness(1.1) contrast(1.1)';
+            img.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          }
+        });
+        element.addEventListener('mouseleave', function() {
+          const img = this.querySelector('img');
+          if (img) {
+            img.style.transform = 'scale(1) rotate(0deg)';
+            img.style.filter = 'brightness(1) contrast(1)';
+          }
+        });
+      }
+      // تأثيرات خاصة للبطاقات
+      if (element.classList.contains('product-card') || element.classList.contains('service-card')) {
+        element.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-15px) scale(1.03)';
+          this.style.boxShadow = '0 25px 50px rgba(242, 183, 5, 0.3)';
+          this.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
+        element.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+          this.style.boxShadow = '';
+        });
+      }
+    }
+    // تأثيرات إضافية محسنة للأقسام
+    function addSectionEffects() {
+      // تأثير hover للأقسام
+      const sections = document.querySelectorAll('section');
+      sections.forEach(section => {
+        section.addEventListener('mouseenter', function() {
+          const title = this.querySelector('h2, .section-title');
+          if (title) {
+            title.style.transform = 'scale(1.05)';
+            title.style.transition = 'all 0.3s ease';
+          }
+        });
+        section.addEventListener('mouseleave', function() {
+          const title = this.querySelector('h2, .section-title');
+          if (title) {
+            title.style.transform = 'scale(1)';
+          }
+        });
+      });
+      // تأثير parallax للأقسام
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        sections.forEach((section, index) => {
+          const rate = scrolled * (0.1 + index * 0.05);
+          if (section.classList.contains('section-animate-left') || section.classList.contains('section-animate-right')) {
+            section.style.backgroundPosition = `${rate}px center`;
+          }
+        });
+      });
+    }
+    // تأثيرات إضافية بسيطة ومحسنة
+    function addInteractiveEffects() {
+      // تأثير hover للبطاقات
+      const cards = document.querySelectorAll('.product-card, .service-card, .testimonial-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-10px) scale(1.02)';
+          this.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+      // تأثير الأزرار مع موجة
+      const buttons = document.querySelectorAll('button, .order-button');
+      buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          // تأثير التصغير
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = 'scale(1)';
+          }, 150);
+          // إضافة تأثير الموجة
+          createRippleEffect(e, this);
+        });
+      });
+      // تأثيرات للأيقونات
+      const icons = document.querySelectorAll('.service-card i, .fa-eye, .fa-glasses, .fa-cog');
+      icons.forEach(icon => {
+        icon.addEventListener('mouseenter', function() {
+          this.style.transform = 'scale(1.2) rotate(10deg)';
+          this.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
+        icon.addEventListener('mouseleave', function() {
+          this.style.transform = 'scale(1) rotate(0deg)';
+        });
+      });
+    }
+    // إنشاء تأثير الموجة عند النقر
+    function createRippleEffect(event, element) {
+      const ripple = document.createElement('span');
+      const rect = element.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = event.clientX - rect.left - size / 2;
+      const y = event.clientY - rect.top - size / 2;
+      ripple.style.cssText = `
+
+        position: absolute;
+
+        width: ${size}px;
+
+        height: ${size}px;
+
+        left: ${x}px;
+
+        top: ${y}px;
+
+        background: rgba(242, 183, 5, 0.4);
+
+        border-radius: 50%;
+
+        transform: scale(0);
+
+        animation: ripple 0.6s linear;
+
+        pointer-events: none;
+
+        z-index: 1000;
+
+      `;
+      element.style.position = 'relative';
+      element.style.overflow = 'hidden';
+      element.appendChild(ripple);
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    }
+    // تأثيرات متقدمة للتفاعل
+    function addAdvancedEffects() {
+      // تأثير المنظر المتوازي للقسم الرئيسي
+      const heroSection = document.querySelector('.hero-section');
+      if (heroSection) {
+        window.addEventListener('scroll', () => {
+          const scrolled = window.pageYOffset;
+          const rate = scrolled * -0.3;
+          heroSection.style.transform = `translateY(${rate}px)`;
+        });
+      }
+      // تأثير تكبير المؤشر عند hover على العناصر التفاعلية
+      const interactiveElements = document.querySelectorAll('button, a, .product-card, .service-card');
+      interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+          cursor.style.transform = 'scale(2)';
+          cursor.style.background = 'radial-gradient(circle, rgba(242, 183, 5, 1) 0%, rgba(242, 183, 5, 0.3) 70%)';
+        });
+        element.addEventListener('mouseleave', () => {
+          cursor.style.transform = 'scale(1)';
+          cursor.style.background = 'radial-gradient(circle, rgba(242, 183, 5, 0.8) 0%, rgba(242, 183, 5, 0.2) 70%)';
+        });
+      });
+    }
+    // تهيئة التأثيرات عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      // إضافة فئة hidden للعناصر الفردية
+      const animatedElements = document.querySelectorAll('.animate-on-scroll, .animate-left, .animate-right, .animate-scale, .animate-fade-in, .animate-zoom-in, .animate-slide-up, .animate-rotate-in, .animate-slide-left, .animate-slide-right, .animate-slide-down, .animate-flip-in, .animate-bounce-in, .animate-elastic-in, .animate-image-reveal, .animate-image-slide, .animate-card-flip, .animate-card-slide-up, .animate-text-reveal, .animate-text-slide');
+      animatedElements.forEach(element => {
+        element.classList.add('hidden');
+      });
+      // إضافة فئة hidden للأقسام
+      const sectionElements = document.querySelectorAll('.section-animate-left, .section-animate-right, .section-animate-up, .section-animate-down, .section-animate-zoom, .section-animate-rotate');
+      sectionElements.forEach(element => {
+        element.classList.add('hidden');
+      });
+      // إضافة فئة hidden للعناوين
+      const titleElements = document.querySelectorAll('.section-title-animate');
+      titleElements.forEach(element => {
+        element.classList.add('hidden');
+      });
+      // إضافة فئة hidden للخطوط الفاصلة
+      const dividerElements = document.querySelectorAll('.section-divider');
+      dividerElements.forEach(element => {
+        element.classList.add('hidden');
+      });
+      // إضافة فئة hidden لعناصر الشبكة
+      const gridElements = document.querySelectorAll('.grid-item-stagger, .grid-item-slide-left, .grid-item-slide-right, .grid-item-flip');
+      gridElements.forEach(element => {
+        element.classList.add('hidden');
+      });
+      // ربط أحداث التمرير
+      let ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            animateElements();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+      // فحص أولي
+      animateElements();
+      // إضافة التأثيرات التفاعلية
+      addInteractiveEffects();
+      // إضافة تأثيرات الأقسام
+      addSectionEffects();
+      // إضافة التأثيرات المتقدمة
+      addAdvancedEffects();
+      // تأثيرات للعناوين
+      const titles = document.querySelectorAll('.section-title');
+      titles.forEach(title => {
+        title.classList.add('text-shimmer');
+      });
+      // إضافة تأثير CSS للموجة
+      const style = document.createElement('style');
+      style.textContent = `
+
+        @keyframes ripple {
+
+          to {
+
+            transform: scale(4);
+
+            opacity: 0;
+
+          }
+
+        }
+
+      `;
+      document.head.appendChild(style);
+    });
+    // Animate hero elements
+    setTimeout(() => {
+      document.querySelector('h1').classList.add('fade-in');
+    }, 300);
+    setTimeout(() => {
+      document.querySelector('.hero-section p').classList.add('fade-in');
+    }, 600);
+    setTimeout(() => {
+      document.querySelector('.hero-section .flex').classList.add('fade-in');
+    }, 900);
+    // Smooth scrolling for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute("href");
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop,
+            behavior: "smooth"
+          });
+          // إضافة تأثير تركيز إذا كان العنصر قابل للتركيز (مثل نموذج الاتصال)
+          if (targetId === "#contact") {
+            setTimeout(() => {
+              const formInput = document.querySelector("#contact input");
+              if (formInput) formInput.focus();
+            }, 1000);
+          }
+        }
+      });
+    });
+	
+	
+	
+	document.addEventListener('DOMContentLoaded', function() {
+    /**
+     * This function reads the cart from localStorage and updates the bottom navigation badge.
+     */
+    function updateBottomNavCartCount() {
+      const cartCountElement = document.getElementById('cartCountBottomNav');
+      // Exit if the badge element is not found on the page
+      if (!cartCountElement) {
+        return;
+      }
+
+      // Get cart data from the browser's local storage
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      // Calculate the total quantity of items in the cart
+      const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+
+      // Update the badge text and visibility
+      cartCountElement.textContent = totalCount;
+      if (totalCount > 0) {
+        cartCountElement.style.display = 'flex'; // 'flex' helps center the number
+      } else {
+        cartCountElement.style.display = 'none';
+      }
+    }
+
+    // Run the function when the page loads
+    updateBottomNavCartCount();
+
+    // Add an event listener for 'pageshow' to update the count 
+    // when the user navigates back to this page using the back button.
+    window.addEventListener('pageshow', function(event) {
+      updateBottomNavCartCount();
+    });
+  });
+
+  </script>
+
+</body>
+
+</html>

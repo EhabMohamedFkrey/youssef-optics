@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتبع الطلب - يوسف للبصريات</title>
+    <meta name="description" content="تتبع حالة طلبك بسهولة مع يوسف للبصريات. أدخل رقم التتبع الخاص بك لمعرفة آخر التحديثات.">
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --yello: #F2B705;
+            --yello-dark: #e0a800;
+            --yello-rgb: 242, 183, 5;
+            --success-color: #16a34a;
+            --info-color: #0ea5e9;
+            --warning-color: #f97316;
+            --danger-color: #ef4444;
+            --primary-color: #6366f1;
+            --bs-font-sans-serif: 'Tajawal', sans-serif;
+            --font-cairo: 'Cairo', sans-serif;
+			 --y-secondary: #ffc107;
+        }
+
+        [data-bs-theme="dark"] {
+            --bs-body-bg: #0f172a;
+            --bs-body-color: #e2e8f0;
+            --bs-border-color: #334155;
+            --bs-tertiary-bg: #1e293b;
+            --bs-secondary-color: #9ca3af;
+        }
+
+        body {
+            background-color: var(--bs-body-bg, #f8fafc);
+            font-family: var(--bs-font-sans-serif);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex-grow: 1;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-cairo);
+            font-weight: 700;
+        }
+
+        .btn-yello {
+            background-color: var(--yello);
+            border-color: var(--yello);
+            color: #000;
+            font-weight: bold;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-yello:hover {
+            background-color: var(--yello-dark);
+            border-color: var(--yello-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(var(--yello-rgb), 0.2);
+        }
+
+        .search-bar-group {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            transition: box-shadow 0.3s ease;
+            border: 1px solid var(--bs-border-color-translucent);
+        }
+        .search-bar-group:focus-within {
+            box-shadow: 0 4px 12px rgba(var(--yello-rgb), 0.4);
+            border-color: var(--yello);
+        }
+        .search-bar-group .form-control {
+            border: none;
+            padding-inline: 1.5rem;
+        }
+        .search-bar-group .form-control:focus {
+            box-shadow: none;
+        }
+        
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Progress Steps & Animations */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 1rem; /* Space for the truck */
+        }
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 25%;
+            position: relative;
+        }
+        .progress-step .step-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--bs-tertiary-bg);
+            border: 3px solid var(--bs-border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bs-secondary-color);
+            margin-bottom: 0.5rem;
+            transition: all 0.4s ease;
+            z-index: 2;
+        }
+        .progress-step.active .step-icon {
+            border-color: var(--yello);
+            color: var(--yello);
+            transform: scale(1.1);
+            animation: pulse 1.5s infinite;
+        }
+        .progress-step.completed .step-icon {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+        .progress-step .step-label {
+            font-size: 0.8rem;
+            color: var(--bs-secondary-color);
+            font-weight: 500;
+        }
+        .progress-step.active .step-label,
+        .progress-step.completed .step-label {
+            color: var(--bs-body-color);
+            font-weight: 700;
+        }
+        .progress-line {
+            position: absolute;
+            top: 22.5px;
+            right: 12.5%;
+            left: 12.5%;
+            height: 4px;
+            background-color: var(--bs-border-color);
+            z-index: 1;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success-color);
+            width: 0%;
+            transition: width 1s ease-in-out;
+            border-radius: 2px;
+        }
+
+        /* Truck Animation */
+        #truckAnimation {
+            position: absolute;
+            top: 10px;
+            right: 0%;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            z-index: 3;
+            opacity: 0;
+            transform: translateX(50%);
+            transition: right 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s ease;
+        }
+        #truckAnimation.visible {
+            opacity: 1;
+        }
+        #truckAnimation.driving {
+            animation: driving 0.5s infinite linear;
+        }
+
+        /* Card Entry Animation */
+        #orderDetails.visible .animated-card {
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        #orderDetails.visible .animated-card:nth-child(2) { animation-delay: 0.1s; }
+        #orderDetails.visible .animated-card:nth-child(3) { animation-delay: 0.2s; }
+        #orderDetails.visible .animated-card:nth-child(4) { animation-delay: 0.3s; }
+        #orderDetails.visible .row { animation: fadeInUp 0.5s 0.2s ease-out forwards; opacity: 0; }
+        #orderDetails.visible #actionsSection { animation: fadeInUp 0.5s 0.4s ease-out forwards; opacity: 0; }
+
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(var(--yello-rgb), 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(var(--yello-rgb), 0); }
+            100% { box-shadow: 0 0 0 0 rgba(var(--yello-rgb), 0); }
+        }
+        
+        @keyframes driving {
+            0% { transform: translateX(50%) translateY(0); }
+            50% { transform: translateX(50%) translateY(-2px); }
+            100% { transform: translateX(50%) translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Footer Styles --- */
+        .site-footer {
+            background: linear-gradient(to right, #000, #1a1a1a);
+            color: #fff;
+            padding-top: 4rem;
+            padding-bottom: 2rem;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .site-footer h5 {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+        .site-footer p {
+            color: #adb5bd;
+        }
+        .site-footer .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        .site-footer .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        .site-footer .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .site-footer .footer-links a:hover {
+            color: var(--yello);
+        }
+        .site-footer .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #343a40;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: background-color 0.2s;
+        }
+        .site-footer .social-icon:hover {
+            background-color: var(--yello);
+            color: #000;
+        }
+        .site-footer .footer-bottom {
+            border-top: 1px solid #495057;
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            color: #6c757d;
+        }
+        .site-footer .footer-bottom a {
+            color: var(--yello);
+            text-decoration: none;
+        }
+        .site-footer .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+        .site-footer .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        .site-footer .form-control::placeholder {
+            color: #adb5bd;
+        }
+        .site-footer .btn-yello {
+            background-image: linear-gradient(to top, #f2b705, #f5c431);
+            border: none;
+            transition: all 0.3s ease;
+            color: #000;
+            font-weight: bold;
+        }
+        .site-footer .btn-yello:hover {
+            background-color: var(--yello-dark);
+            color: #000;
+        }
+
+        /* Dark Mode Footer Overrides */
+        [data-bs-theme="dark"] .site-footer {
+            background: linear-gradient(to right, #0f172a, #1e293b);
+        }
+        [data-bs-theme="dark"] .site-footer .footer-bottom {
+            border-top-color: #334155;
+            color: #9ca3af;
+        }
+        [data-bs-theme="dark"] .site-footer .social-icon {
+            background-color: #334155;
+        }
+        [data-bs-theme="dark"] .site-footer .form-control {
+            background-color: rgba(51, 65, 85, 0.5);
+            border-color: rgba(51, 65, 85, 1);
+        }
+		
+		/* === Bottom Mobile Navigation Styles (Improved Look) === */
+/* === Modern Bottom Navigation Bar === */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background-color:#ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1040;
+    padding: 0 15px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+[data-bs-theme="dark"] .bottom-nav {
+    background-color: #1a2235;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--y-light-text);
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    width: 70px;
+    height: 100%;
+    padding-top: 15px;
+}
+
+.bottom-nav-item i {
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+[data-bs-theme="dark"] .bottom-nav-item {
+    color: var(--y-dark-header);
+}
+
+/* العنصر النشط - تصميم مشابه للصورة */
+.bottom-nav-item.active {
+    color: var(--y-secondary);
+}
+
+.bottom-nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background-color: var(--y-secondary);
+    border-radius: 3px;
+}
+
+.bottom-nav-item.active i {
+    transform: scale(1.1);
+}
+
+.bottom-nav-item.active span {
+    font-weight: 600;
+}
+
+/* تأثيرات التحويم */
+.bottom-nav-item:hover {
+    color: var(--y-secondary);
+    transform: translateY(-3px);
+}
+
+/* شارة الإشعارات - تصميم عصري */
+.bottom-nav-item .badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.6em;
+    padding: 0.2em 0.4em;
+    border-radius: 50px;
+    background-color: #ff4757;
+    color: white;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--y-light-card);
+}
+
+[data-bs-theme="dark"] .bottom-nav-item .badge {
+    border-color: #1a2235;
+}
+
+/* تعديل الحشو السفلي للجسم */
+body {
+    padding-bottom: 80px;
+}
+
+@media (min-width: 992px) {
+    body {
+        padding-bottom: 0;
+    }
+    .bottom-nav {
+        display: none;
+    }
+}
+		
+		
+		
+    </style>
+</head>
+<body data-bs-theme="light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="Logo" style="max-height: 40px; width: auto;" onerror="this.onerror=null;this.src='https://placehold.co/150x50/000/F2B705?text=Youssef+Optics';">
+            </a>
+            <div class="d-flex align-items-center">
+                <button id="darkModeToggle" class="btn btn-link text-body-secondary text-decoration-none me-2 fs-5">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="store.html" class="btn btn-link text-body-secondary text-decoration-none fs-5">
+                    <i class="fas fa-store"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+<nav class="bottom-nav d-lg-none">
+    <a href="index.html" class="bottom-nav-item">
+      <i class="fas fa-home"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="store.html" class="bottom-nav-item">
+      <i class="fas fa-store"></i>
+      <span>المتجر</span>
+    </a>
+    <a href="cart.html" class="bottom-nav-item">
+      <i class="fas fa-shopping-cart"></i>
+      <span>السلة</span>
+      <span id="cartCountBottomNav" class="badge rounded-pill bg-danger text-white" style="display: none;">0</span>
+    </a>
+    <a href="track.html" class="bottom-nav-item active">
+      <i class="fas fa-truck-fast"></i>
+      <span>تتبع</span>
+    </a>
+    <a href="blog.html" class="bottom-nav-item">
+      <i class="fas fa-newspaper"></i>
+      <span>المدونة</span>
+    </a>
+  </nav>
+    <main class="container py-5">
+        <div id="trackingContainer" class="mx-auto" style="max-width: 800px;">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder mb-3">تتبع طلبك</h1>
+                <p class="mb-4 text-muted mx-auto" style="max-width: 500px;">
+                    أدخل رقم التتبع الذي تم إرساله إليك في رساله الواتساب لعرض تفاصيل وحالة طلبك.
+                </p>
+                <div class="input-group input-group-lg search-bar-group mx-auto" style="max-width: 500px;">
+                    <input type="text" id="trackingInput" class="form-control bg-body" placeholder="أدخل رقم التتبع هنا...">
+                    <button id="trackButton" class="btn btn-yello px-4">
+                        <i class="fas fa-search"></i>
+                        <span class="d-none d-sm-inline ms-2">بحث</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="loadingIndicator" class="text-center py-5 d-none">
+                <div class="spinner-border text-warning" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 fw-bold">جاري البحث عن الطلب...</p>
+            </div>
+
+            <div id="errorMessage" class="alert alert-danger text-center py-4 d-none">
+                <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                <h4 id="errorTitle" class="alert-heading fw-bold">لم يتم العثور على الطلب</h4>
+                <p id="errorDetails" class="mb-0">الرجاء التأكد من رقم التتبع والمحاولة مرة أخرى.</p>
+            </div>
+
+            <div id="orderDetails" class="d-none">
+                <!-- Order Header -->
+                <div class="card shadow-sm mb-4 animated-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+                            <div>
+                                <h2 class="h5 mb-1">طلب رقم: <span id="orderNumber" class="text-body-emphasis font-monospace"></span></h2>
+                                <p class="text-muted small mb-0"><i class="fas fa-calendar-alt me-1"></i> <span id="orderDate"></span></p>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <span id="orderStatus" class="status-badge"></span>
+                                <span id="paymentStatus" class="status-badge"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="card shadow-sm mb-4 animated-card">
+                    <div class="card-body p-4">
+                        <div class="progress-steps">
+                            <div class="progress-line"><div id="progressBar" class="progress-fill"></div></div>
+                            <div id="truckAnimation"><i class="fas fa-truck-moving"></i></div>
+                            <div id="step1" class="progress-step"><div class="step-icon"><i class="fas fa-box-open"></i></div><span class="step-label">تم الطلب</span></div>
+                            <div id="step2" class="progress-step"><div class="step-icon"><i class="fas fa-cogs"></i></div><span class="step-label">قيد التجهيز</span></div>
+                            <div id="step3" class="progress-step"><div class="step-icon"><i class="fas fa-truck"></i></div><span class="step-label">تم الشحن</span></div>
+                            <div id="step4" class="progress-step"><div class="step-icon"><i class="fas fa-check-circle"></i></div><span class="step-label">تم التسليم</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Left Column: Details -->
+                    <div class="col-lg-5">
+                        <div class="d-flex flex-column gap-4">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="h6 mb-3 d-flex align-items-center"><i class="fas fa-user-circle me-2 text-primary"></i> معلومات العميل</h3>
+                                    <p class="mb-1"><strong class="fw-normal">الاسم:</strong> <span id="customerName"></span></p>
+                                    <p class="mb-0"><strong class="fw-normal">الهاتف:</strong> <span id="customerPhone" class="font-monospace" dir="ltr"></span></p>
+                                </div>
+                            </div>
+                             <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="h6 mb-3 d-flex align-items-center"><i class="fas fa-map-marker-alt me-2 text-danger"></i> عنوان الشحن</h3>
+                                    <p class="mb-0" id="shippingAddress"></p>
+                                </div>
+                            </div>
+                             <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="h6 mb-3 d-flex align-items-center"><i class="fas fa-wallet me-2 text-success"></i> معلومات الدفع</h3>
+                                    <p class="mb-0" id="paymentMethod"></p>
+                                </div>
+                            </div>
+                            <div id="notesCard" class="card shadow-sm d-none">
+                                <div class="card-body">
+                                    <h3 class="h6 mb-3 d-flex align-items-center"><i class="fas fa-sticky-note me-2 text-warning"></i> ملاحظات العميل</h3>
+                                    <p class="mb-0" id="customerNotes"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Products & Summary -->
+                    <div class="col-lg-7">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h6 mb-3"><i class="fas fa-boxes me-2 text-primary"></i> ملخص الطلب</h3>
+                                <div id="productsList" class="list-group list-group-flush mb-4"></div>
+                                <div class="border-top pt-3">
+                                    <div class="d-flex justify-content-between mb-1"><span class="text-muted">المجموع الفرعي:</span> <span id="subtotal" class="fw-bold"></span></div>
+                                    <!-- **MODIFIED** Added id="discountLabel" to the span -->
+                                    <div id="discountRow" class="d-flex justify-content-between mb-1 d-none"><span id="discountLabel" class="text-muted">الخصم:</span> <span id="discount" class="fw-bold text-success"></span></div>
+                                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">الشحن:</span> <span id="shipping" class="fw-bold"></span></div>
+                                    <div class="d-flex justify-content-between fw-bold fs-5 pt-2 border-top"><span class="text-body-emphasis">الإجمالي:</span> <span id="total" class="text-yello"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions Section at the bottom -->
+                <div id="actionsSection" class="mt-4 pt-4 border-top d-none">
+                     <div class="d-grid col-md-6 mx-auto">
+                         <button id="cancelOrderBtn" class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#cancelConfirmModal">
+                             <i class="fas fa-ban me-2"></i>إلغاء الطلب
+                         </button>
+                     </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+    
+    <!-- Cancellation Confirmation Modal -->
+    <div class="modal fade" id="cancelConfirmModal" tabindex="-1" aria-labelledby="cancelConfirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h1 class="modal-title fs-5" id="cancelConfirmModalLabel"><i class="fas fa-exclamation-triangle text-danger me-2"></i> تأكيد الإلغاء</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">تراجع</button>
+            <button type="button" id="confirmCancelBtn" class="btn btn-danger">نعم، قم بالإلغاء</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5>يوسف للبصريات</h5>
+                    <p>حيث تلتقي الرؤية بالأناقة. نقدم أفضل الحلول البصرية مع أحدث التصاميم العالمية.</p>
+                    <div class="d-flex gap-2">
+                        <a href="https://www.facebook.com/share/193kMj5kWg/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/youalhassan?igsh=N2djbHd2azV6aGJx" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/201092837489" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5>روابط سريعة</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="store.html">المتجر</a></li>
+                        <li><a href="index.html#founder">من نحن</a></li>
+                        <li><a href="index.html#services">خدماتنا</a></li>
+                        <li><a href="index.html#contact">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5>سياساتنا</h5>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">سياسة الخصوصية</a></li>
+                        <li><a href="returns.html">سياسة الاستبدال والاسترجاع</a></li>
+                        <li><a href="terms.html">الشروط والأحكام</a></li>
+                        <li><a href="track.html">تتبع طلبك</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>اشترك في النشرة البريدية</h5>
+                    <p>اشترك لتصلك أحدث العروض والتخفيضات.</p>
+                    <form>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="بريدك الإلكتروني">
+                            <button class="btn btn-yello" type="button"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <p class="mb-0">&copy; 2025 جميع الحقوق محفوظة | يوسف للبصريات</p>
+                <p class="mb-0 mt-1 small">
+                    تصميم وتطوير بواسطة <a href="https://www.facebook.com/share/19LSLJAU8J/" target="_blank">Ehab Mohamad Fkrey</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import necessary functions from the Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAlrzDNrFGxE-tihV6cAj_6r77RcFW8FgA",
+            authDomain: "youssef-optics.firebaseapp.com",
+            projectId: "youssef-optics",
+            storageBucket: "youssef-optics.appspot.com",
+            messagingSenderId: "956537200762",
+            appId: "1:956537200762:web:bfbb1ca17debc2b30a1bc3",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Global variable to hold the current order's document ID
+        let currentOrderDocId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Element References ---
+            const trackButton = document.getElementById('trackButton');
+            const trackingInput = document.getElementById('trackingInput');
+            const orderDetails = document.getElementById('orderDetails');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorMessage = document.getElementById('errorMessage');
+            const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+            const actionsSection = document.getElementById('actionsSection');
+
+            // --- Initial Setup ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const trackingIdFromUrl = urlParams.get('id');
+            if (trackingIdFromUrl) {
+                trackingInput.value = trackingIdFromUrl;
+                trackOrder(trackingIdFromUrl);
+            }
+
+            // --- Event Listeners ---
+            trackButton.addEventListener('click', () => {
+                const trackingId = trackingInput.value.trim();
+                if (!trackingId) return;
+                trackOrder(trackingId);
+            });
+
+            trackingInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') trackButton.click();
+            });
+
+            confirmCancelBtn.addEventListener('click', async () => {
+                if (!currentOrderDocId) return;
+                confirmCancelBtn.disabled = true;
+                confirmCancelBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري الإلغاء...';
+                try {
+                    const orderRef = doc(db, "orders", currentOrderDocId);
+                    await updateDoc(orderRef, { orderStatus: "ملغى" });
+                    const modalInstance = bootstrap.Modal.getInstance(document.getElementById('cancelConfirmModal'));
+                    modalInstance.hide();
+                    trackOrder(trackingInput.value.trim());
+                } catch (error) {
+                    console.error("Error cancelling order:", error);
+                    alert("حدث خطأ أثناء محاولة إلغاء الطلب. يرجى المحاولة مرة أخرى.");
+                } finally {
+                    confirmCancelBtn.disabled = false;
+                    confirmCancelBtn.innerHTML = 'نعم، قم بالإلغاء';
+                }
+            });
+
+            // --- Core Functions ---
+            async function trackOrder(trackingId) {
+                loadingIndicator.classList.remove('d-none');
+                orderDetails.classList.add('d-none');
+                orderDetails.classList.remove('visible'); // Hide for animation
+                errorMessage.classList.add('d-none');
+                currentOrderDocId = null;
+                
+                try {
+                    const ordersRef = collection(db, "orders");
+                    const q = query(ordersRef, where("trackingId", "==", trackingId));
+                    const querySnapshot = await getDocs(q);
+                    loadingIndicator.classList.add('d-none');
+                    if (querySnapshot.empty) {
+                        errorMessage.classList.remove('d-none');
+                        document.getElementById('errorTitle').textContent = 'لم يتم العثور على الطلب';
+                        document.getElementById('errorDetails').textContent = 'الرجاء التأكد من رقم التتبع والمحاولة مرة أخرى.';
+                    } else {
+                        const orderDoc = querySnapshot.docs[0];
+                        currentOrderDocId = orderDoc.id;
+                        const orderData = orderDoc.data();
+                        displayOrderDetails(orderData);
+                    }
+                } catch (error) {
+                    console.error('Error tracking order:', error);
+                    loadingIndicator.classList.add('d-none');
+                    errorMessage.classList.remove('d-none');
+                    document.getElementById('errorTitle').textContent = 'حدث خطأ';
+                    document.getElementById('errorDetails').textContent = 'فشل الاتصال بالخادم. يرجى المحاولة مرة أخرى لاحقاً.';
+                }
+            }
+
+            function displayOrderDetails(order) {
+                // Order Header
+                document.getElementById('orderNumber').textContent = order.trackingId;
+                document.getElementById('orderDate').textContent = order.date.toDate().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+                
+                // Statuses
+                const [orderStatusClass, orderStatusIcon] = getStatusInfo(order.orderStatus, 'order');
+                const [paymentStatusClass, paymentStatusIcon] = getStatusInfo(order.paymentStatus, 'payment');
+                document.getElementById('orderStatus').innerHTML = `<i class="${orderStatusIcon}"></i> ${order.orderStatus || 'غير محدد'}`;
+                document.getElementById('orderStatus').className = 'status-badge ' + orderStatusClass;
+                document.getElementById('paymentStatus').innerHTML = `<i class="${paymentStatusIcon}"></i> ${order.paymentStatus || 'غير محدد'}`;
+                document.getElementById('paymentStatus').className = 'status-badge ' + paymentStatusClass;
+
+                // Customer and Shipping
+                document.getElementById('customerName').textContent = order.customerName;
+                document.getElementById('customerPhone').textContent = order.customerPhone;
+                document.getElementById('shippingAddress').textContent = order.fullAddress;
+                document.getElementById('paymentMethod').textContent = order.paymentMethod;
+
+                // Notes
+                const notesCard = document.getElementById('notesCard');
+                if (order.notes && order.notes.trim() !== "" && order.notes.trim() !== "لا يوجد") {
+                    document.getElementById('customerNotes').textContent = order.notes;
+                    notesCard.classList.remove('d-none');
+                } else {
+                    notesCard.classList.add('d-none');
+                }
+
+                // Products List
+                const productsList = document.getElementById('productsList');
+                productsList.innerHTML = '';
+                if (order.products && Array.isArray(order.products)) {
+                    order.products.forEach(product => {
+                        const productItem = document.createElement('div');
+                        productItem.className = 'list-group-item d-flex align-items-center gap-3 bg-body-tertiary';
+                        const price = parseFloat(product.pricePerUnit || 0);
+                        const framePrice = parseFloat(product.framePrice || 0);
+                        const lensPrice = parseFloat(product.lensPrice || 0);
+                        const totalLinePrice = price * product.quantity;
+                        let breakdownHTML = '';
+                        if (lensPrice > 0) {
+                            breakdownHTML = `<div class="product-breakdown"><span>الإطار: ${framePrice.toFixed(2)} ج.م</span> + <span>العدسات (${product.options.lensType || ''}): ${lensPrice.toFixed(2)} ج.م</span></div>`;
+                        }
+                        productItem.innerHTML = `<img src="${product.image}" alt="${product.name}" class="rounded" style="width: 60px; height: 60px; object-fit: cover;"><div class="flex-grow-1"><div class="fw-bold">${product.name}</div><div class="text-muted small">الكمية: ${product.quantity}</div>${breakdownHTML}</div><div class="fw-bold fs-6 text-end">${totalLinePrice.toFixed(2)} ج.م</div>`;
+                        productsList.appendChild(productItem);
+                    });
+                }
+
+                // Financial Summary
+                document.getElementById('subtotal').textContent = (order.subtotal || 0).toFixed(2) + ' ج.م';
+                document.getElementById('shipping').textContent = (order.shipping || 0).toFixed(2) + ' ج.م';
+                document.getElementById('total').textContent = (order.total || 0).toFixed(2) + ' ج.م';
+                
+                // **MODIFIED** Logic to display promo code
+                const discountRow = document.getElementById('discountRow');
+                const discountLabel = document.getElementById('discountLabel');
+                if (order.discount > 0) {
+                    if (order.promoCode) {
+                        discountLabel.innerHTML = `الخصم (<span class="fw-bold text-body-emphasis">${order.promoCode}</span>):`;
+                    } else {
+                        discountLabel.textContent = 'الخصم:';
+                    }
+                    document.getElementById('discount').textContent = `-${(order.discount || 0).toFixed(2)} ج.م`;
+                    discountRow.classList.remove('d-none');
+                } else {
+                    discountRow.classList.add('d-none');
+                }
+                
+                // Handle Cancel Button Section Visibility
+                const cancellableStatuses = ['تم الطلب', 'قيد التجهيز'];
+                if (cancellableStatuses.includes(order.orderStatus)) {
+                    actionsSection.classList.remove('d-none');
+                } else {
+                    actionsSection.classList.add('d-none'); 
+                }
+
+                updateProgressBarAndAnimations(order.orderStatus);
+                orderDetails.classList.remove('d-none');
+                // Use a timeout to ensure the d-none is removed before adding the animation class
+                setTimeout(() => orderDetails.classList.add('visible'), 50);
+            }
+            
+            function updateProgressBarAndAnimations(status) {
+                const progressBar = document.getElementById('progressBar');
+                const truck = document.getElementById('truckAnimation');
+                const steps = { 'تم الطلب': 1, 'قيد التجهيز': 2, 'تم الشحن': 3, 'تم التسليم': 4 };
+                const currentStepIndex = steps[status] || 0;
+                
+                const percentage = currentStepIndex > 1 ? ((currentStepIndex - 1) / 3) * 100 : 0;
+                progressBar.style.width = `${percentage}%`;
+
+                // Update step icons
+                document.querySelectorAll('.progress-step').forEach(el => el.classList.remove('active', 'completed'));
+                for (let i = 1; i <= 4; i++) {
+                    const stepEl = document.getElementById(`step${i}`);
+                    if (i < currentStepIndex) {
+                        stepEl.classList.add('completed');
+                    } else if (i === currentStepIndex) {
+                        stepEl.classList.add('completed', 'active');
+                    }
+                }
+
+                // Update truck animation
+                const truckPositions = { 1: '12.5%', 2: '37.5%', 3: '62.5%', 4: '87.5%' };
+                truck.style.right = truckPositions[currentStepIndex] || '12.5%';
+                
+                if (currentStepIndex >= 3) { // Shipped or Delivered
+                    truck.classList.add('visible');
+                    truck.classList.add('driving');
+                } else {
+                    truck.classList.remove('visible');
+                    truck.classList.remove('driving');
+                }
+                if(currentStepIndex === 4){
+                    truck.classList.remove('driving');
+                }
+
+                // Handle cancelled state
+                if (status === 'ملغى') {
+                    progressBar.style.width = `100%`;
+                    progressBar.style.backgroundColor = 'var(--danger-color)';
+                    truck.classList.remove('visible');
+                    document.querySelectorAll('.progress-step').forEach(el => el.classList.remove('active', 'completed'));
+                } else {
+                    progressBar.style.backgroundColor = 'var(--success-color)';
+                }
+            }
+
+            function getStatusInfo(status, type) {
+                const orderStatusMap = { 'تم الطلب': ['bg-info-subtle text-info-emphasis', 'fas fa-box-open'], 'قيد التجهيز': ['bg-warning-subtle text-warning-emphasis', 'fas fa-cogs'], 'تم الشحن': ['bg-primary-subtle text-primary-emphasis', 'fas fa-truck'], 'تم التسليم': ['bg-success-subtle text-success-emphasis', 'fas fa-check-circle'], 'ملغى': ['bg-danger-subtle text-danger-emphasis', 'fas fa-times-circle'], };
+                const paymentStatusMap = { 'تم الدفع': ['bg-success-subtle text-success-emphasis', 'fas fa-check-circle'], 'لم يتم الدفع': ['bg-warning-subtle text-warning-emphasis', 'fas fa-hourglass-half'], 'جاري المراجعة': ['bg-info-subtle text-info-emphasis', 'fas fa-search-dollar'], };
+                const defaultStyle = ['bg-secondary-subtle text-secondary-emphasis', 'fas fa-question-circle'];
+                if (type === 'order') return orderStatusMap[status] || defaultStyle;
+                if (type === 'payment') return paymentStatusMap[status] || defaultStyle;
+                return defaultStyle;
+            }
+            
+            // --- Dark Mode Toggle ---
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const sunIcon = '<i class="fas fa-sun"></i>';
+            const moonIcon = '<i class="fas fa-moon"></i>';
+            function applyTheme(theme) {
+                document.body.setAttribute('data-bs-theme', theme);
+                darkModeToggle.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
+            }
+            darkModeToggle.addEventListener('click', () => {
+                const newTheme = document.body.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+            const savedTheme = localStorage.getItem('theme');
+            applyTheme(savedTheme || 'light');
+        });
+		
+		document.addEventListener('DOMContentLoaded', function() {
+    /**
+     * This function reads the cart from localStorage and updates the bottom navigation badge.
+     */
+    function updateBottomNavCartCount() {
+      const cartCountElement = document.getElementById('cartCountBottomNav');
+      // Exit if the badge element is not found on the page
+      if (!cartCountElement) {
+        return;
+      }
+
+      // Get cart data from the browser's local storage
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      // Calculate the total quantity of items in the cart
+      const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+
+      // Update the badge text and visibility
+      cartCountElement.textContent = totalCount;
+      if (totalCount > 0) {
+        cartCountElement.style.display = 'flex'; // 'flex' helps center the number
+      } else {
+        cartCountElement.style.display = 'none';
+      }
+    }
+
+    // Run the function when the page loads
+    updateBottomNavCartCount();
+
+    // Add an event listener for 'pageshow' to update the count 
+    // when the user navigates back to this page using the back button.
+    window.addEventListener('pageshow', function(event) {
+      updateBottomNavCartCount();
+    });
+  });
+
+		
+		
+    </script>
+</body>
+</html>

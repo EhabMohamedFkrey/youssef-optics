@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدونة يوسف للبصريات</title> <!-- Title will be updated by JS -->
+    
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --y-primary: #0d0d0d;
+            --y-secondary: #F2B705;
+            --y-secondary-darker: #e0aa04;
+            --y-light-bg: #f8fafc;
+            --y-light-card: #ffffff;
+            --y-light-text: #4b5563;
+            --y-light-border: #e5e7eb;
+            --y-dark-bg: #111827;
+            --y-dark-card: #1f2937;
+            --y-dark-text: #d1d5db;
+            --y-dark-border: #374151;
+            --bs-font-sans-serif: 'Tajawal', sans-serif;
+            --font-cairo: 'Cairo', sans-serif;
+            --bs-border-radius: 0.5rem;
+            --bs-border-radius-lg: 0.75rem;
+            --yello: #F2B705;
+            --yello-dark: #e0a800;
+        }
+        [data-bs-theme="dark"] {
+            --bs-body-bg: var(--y-dark-bg);
+            --bs-body-color: var(--y-dark-text);
+            --bs-border-color: var(--y-dark-border);
+        }
+        body {
+            background-color: var(--y-light-bg);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main { flex-grow: 1; }
+        [data-bs-theme="dark"] body { background-color: var(--y-dark-bg); }
+        h1, h2, h3, h4, h5, .btn { font-family: var(--font-cairo); font-weight: 700; }
+        .lead { color: var(--y-light-text); }
+        [data-bs-theme="dark"] .lead { color: var(--y-dark-text); }
+        a { text-decoration: none; }
+        
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--y-light-border);
+        }
+        [data-bs-theme="dark"] .navbar {
+            background-color: rgba(17, 24, 39, 0.8);
+            border-bottom: 1px solid var(--y-dark-border);
+        }
+
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(var(--bs-body-bg-rgb), 0.8); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .loading-spinner { width: 50px; height: 50px; border: 4px solid rgba(120,120,120,0.2); border-radius: 50%; border-top-color: var(--y-secondary); animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Post Specific Styles */
+        .post-header-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: var(--bs-border-radius-lg);
+        }
+        .post-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        .post-content h1, .post-content h2, .post-content h3 {
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .post-content p { margin-bottom: 1rem; }
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--bs-border-radius);
+            margin: 1.5rem 0;
+        }
+        .post-meta { color: var(--y-light-text); }
+        [data-bs-theme="dark"] .post-meta { color: var(--y-dark-text); }
+
+        /* New Styles for Post Navigation and Suggestions */
+        .post-navigation-card {
+            background-color: var(--y-light-card);
+            border: 1px solid var(--y-light-border);
+            transition: all 0.3s ease;
+        }
+        [data-bs-theme="dark"] .post-navigation-card {
+            background-color: var(--y-dark-card);
+            border-color: var(--y-dark-border);
+        }
+        .post-nav-link {
+            display: block;
+            padding: 1.5rem;
+            transition: background-color 0.3s;
+            color: var(--bs-body-color);
+        }
+        .post-nav-link:hover {
+            background-color: rgba(var(--y-secondary-rgb, 242, 183, 5), 0.1);
+        }
+        .post-nav-link .label {
+            font-size: 0.9rem;
+            color: var(--y-light-text);
+        }
+        [data-bs-theme="dark"] .post-nav-link .label {
+            color: var(--y-dark-text);
+        }
+        .post-nav-link .title {
+            font-family: var(--font-cairo);
+            font-weight: 600;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .post-nav-link.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .suggested-post-card {
+            background-color: var(--y-light-card);
+            border: 1px solid var(--y-light-border);
+            border-radius: var(--bs-border-radius-lg);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: 100%;
+        }
+        [data-bs-theme="dark"] .suggested-post-card {
+            background-color: var(--y-dark-card);
+            border-color: var(--y-dark-border);
+        }
+        .suggested-post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+        }
+        .suggested-post-card img {
+            height: 180px;
+            object-fit: cover;
+        }
+        .suggested-post-card .card-body {
+            padding: 1.25rem;
+        }
+        .suggested-post-card .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .suggested-post-card .card-text {
+            font-size: 0.9rem;
+            color: var(--y-light-text);
+        }
+        [data-bs-theme="dark"] .suggested-post-card .card-text {
+            color: var(--y-dark-text);
+        }
+
+        /* --- Footer Styles --- */
+        .site-footer { background: linear-gradient(to right, #000, #1a1a1a); color: #fff; padding-top: 4rem; padding-bottom: 2rem; font-family: 'Tajawal', sans-serif; }
+        .site-footer h5 { font-family: 'Cairo', sans-serif; font-weight: 700; color: #fff; margin-bottom: 1.5rem; }
+        .site-footer p { color: #adb5bd; }
+        .site-footer .footer-links { list-style: none; padding: 0; }
+        .site-footer .footer-links li { margin-bottom: 0.75rem; }
+        .site-footer .footer-links a { color: #adb5bd; text-decoration: none; transition: color 0.2s; }
+        .site-footer .footer-links a:hover { color: var(--yello); }
+        .site-footer .social-icon { width: 40px; height: 40px; border-radius: 50%; background-color: #343a40; display: inline-flex; align-items: center; justify-content: center; color: #fff; transition: background-color 0.2s; }
+        .site-footer .social-icon:hover { background-color: var(--yello); color: #000; }
+        .site-footer .footer-bottom { border-top: 1px solid #495057; padding-top: 1.5rem; margin-top: 2rem; color: #6c757d; }
+        .site-footer .footer-bottom a { color: var(--yello); text-decoration: none; }
+        .site-footer .footer-bottom a:hover { text-decoration: underline; }
+        .site-footer .form-control { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: #fff; }
+        .site-footer .form-control::placeholder { color: #adb5bd; }
+        .site-footer .btn-yello { background-image: linear-gradient(to top, #f2b705, #f5c431); border: none; transition: all 0.3s ease; color: #000; font-weight: bold; }
+        .site-footer .btn-yello:hover { background-color: var(--yello-dark); color: #000; }
+   
+        /* === Bottom Mobile Navigation Styles === */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; background-color: var(--y-light-card); display: flex; justify-content: space-around; align-items: center; z-index: 1040; padding: 0 15px; border-top-left-radius: 20px; border-top-right-radius: 20px; box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1); border: none; }
+        [data-bs-theme="dark"] .bottom-nav { background-color: #1a2235; box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3); }
+        .bottom-nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: var(--y-light-text); font-size: 0.75rem; font-weight: 500; transition: all 0.3s ease; position: relative; width: 70px; height: 100%; padding-top: 15px; }
+        .bottom-nav-item i { font-size: 1.6rem; margin-bottom: 5px; transition: all 0.3s ease; }
+        [data-bs-theme="dark"] .bottom-nav-item { color: var(--y-dark-text); }
+        .bottom-nav-item.active { color: var(--y-secondary); }
+        .bottom-nav-item.active::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 30px; height: 3px; background-color: var(--y-secondary); border-radius: 3px; }
+        .bottom-nav-item.active i { transform: scale(1.1); }
+        .bottom-nav-item.active span { font-weight: 600; }
+        .bottom-nav-item:hover { color: var(--y-secondary); transform: translateY(-3px); }
+        .bottom-nav-item .badge { position: absolute; top: 10px; right: 10px; font-size: 0.6em; padding: 0.2em 0.4em; border-radius: 50px; background-color: #ff4757; color: white; font-weight: bold; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--y-light-card); }
+        [data-bs-theme="dark"] .bottom-nav-item .badge { border-color: #1a2235; }
+        body { padding-bottom: 80px; }
+        @media (min-width: 992px) {
+            body { padding-bottom: 0; }
+            .bottom-nav { display: none; }
+        }
+   </style>
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Top Navbar (Untouched) -->
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="store.html">
+                <img src="images/logo.png" alt="Logo" style="max-height: 50px;" onerror="this.onerror=null;this.src='https://placehold.co/150x50/0d0d0d/F2B705?text=Youssef+Optics';">
+            </a>
+            <div class="d-flex align-items-center">
+                <button id="darkModeToggle" class="btn btn-outline-secondary me-3 border-0 fs-5">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun d-none"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Bottom Nav (Untouched) -->
+    <nav class="bottom-nav d-lg-none">
+        <a href="index.html" class="bottom-nav-item"> <i class="fas fa-home"></i> <span>الرئيسية</span> </a>
+        <a href="store.html" class="bottom-nav-item"> <i class="fas fa-store"></i> <span>المتجر</span> </a>
+        <a href="cart.html" class="bottom-nav-item"> <i class="fas fa-shopping-cart"></i> <span>السلة</span> <span id="cartCountBottomNav" class="badge rounded-pill bg-danger text-white" style="display: none;">0</span> </a>
+        <a href="track.html" class="bottom-nav-item"> <i class="fas fa-truck-fast"></i> <span>تتبع</span> </a>
+        <a href="blog.html" class="bottom-nav-item active"> <i class="fas fa-newspaper"></i> <span>المدونة</span> </a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="container" style="padding-top: 100px; padding-bottom: 5rem;">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <!-- Container for the main post content -->
+                <div id="postContainer">
+                    <!-- Post content will be loaded here by JavaScript -->
+                </div>
+
+                <!-- New sections for navigation and suggestions -->
+                <div id="postExtrasContainer" class="mt-5" style="display: none;">
+                    <!-- Post Navigation (Prev/Next) -->
+                    <div class="d-flex flex-column flex-md-row gap-3 post-navigation-card rounded-3">
+                        <div id="prevPostContainer" class="flex-fill text-start"></div>
+                        <div id="nextPostContainer" class="flex-fill text-end"></div>
+                    </div>
+
+                    <!-- Suggested Posts Section -->
+                    <h3 class="mt-5 mb-4 fw-bold">مقالات أخرى قد تعجبك</h3>
+                    <div id="suggestedPostsContainer" class="row g-4">
+                        <!-- Suggested post cards will be injected here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (Untouched) -->
+    <footer class="site-footer mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5>يوسف للبصريات</h5>
+                    <p>حيث تلتقي الرؤية بالأناقة. نقدم أفضل الحلول البصرية مع أحدث التصاميم العالمية.</p>
+                    <div class="d-flex gap-2">
+                        <a href="https://www.facebook.com/share/193kMj5kWg/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/youalhassan?igsh=N2djbHd2azV6aGJx" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/201092837489" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5>روابط سريعة</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="store.html">المتجر</a></li>
+                        <li><a href="blog.html">المدونة</a></li>
+                        <li><a href="index.html#contact">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5>سياساتنا</h5>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">سياسة الخصوصية</a></li>
+                        <li><a href="returns.html">سياسة الاستبدال والاسترجاع</a></li>
+                        <li><a href="terms.html">الشروط والأحكام</a></li>
+                        <li><a href="track.html">تتبع طلبك</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>اشترك في النشرة البريدية</h5>
+                    <p>اشترك لتصلك أحدث العروض والتخفيضات.</p>
+                    <form>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="بريدك الإلكتروني">
+                            <button class="btn btn-yello" type="button"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <p class="mb-0">&copy; 2025 جميع الحقوق محفوظة | يوسف للبصريات</p>
+                <p class="mb-0 mt-1 small">تصميم وتطوير بواسطة <a href="https://www.facebook.com/share/19LSLJAU8J/" target="_blank">Ehab Mohamad Fkrey</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script type="module">
+        // Import necessary functions from Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAlrzDNrFGxE-tihV6cAj_6r77RcFW8FgA",
+            authDomain: "youssef-optics.firebaseapp.com",
+            projectId: "youssef-optics",
+            storageBucket: "youssef-optics.appspot.com",
+            messagingSenderId: "956537200762",
+            appId: "1:956537200762:web:bfbb1ca17debc2b30a1bc3"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const init = async () => {
+                await loadPostAndExtras();
+                setupEventListeners();
+                loadTheme();
+                updateBottomNavCartCount();
+            };
+            
+            // Main function to load post, navigation, and suggestions
+            const loadPostAndExtras = async () => {
+                const container = document.getElementById('postContainer');
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                loadingOverlay.style.display = 'flex';
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const postId = urlParams.get('id');
+
+                if (!postId) {
+                    container.innerHTML = `<div class="text-center py-5"><h3 class="text-danger">المقال غير موجود.</h3><p class="text-muted">لم يتم تحديد معرّف المقال المطلوب.</p><a href="blog.html" class="btn btn-warning mt-3">العودة للمدونة</a></div>`;
+                    loadingOverlay.style.display = 'none';
+                    return;
+                }
+
+                try {
+                    const docRef = doc(db, "blogPosts", postId);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists() && docSnap.data().isPublished) {
+                        const post = docSnap.data();
+                        displayPost(post);
+                        
+                        // Show the extras container and load related content
+                        document.getElementById('postExtrasContainer').style.display = 'block';
+                        await loadAllPostsAndBuildExtras(post, postId);
+
+                    } else {
+                        throw new Error("المقال غير موجود أو غير منشور.");
+                    }
+
+                } catch (error) {
+                    console.error("Error loading post:", error);
+                    container.innerHTML = `<div class="text-center py-5"><h3 class="text-danger">فشل تحميل المقال.</h3><p class="text-muted">${error.message}</p><a href="blog.html" class="btn btn-warning mt-3">العودة للمدونة</a></div>`;
+                } finally {
+                    loadingOverlay.style.display = 'none';
+                }
+            };
+
+            // Function to display the main post content
+            const displayPost = (post) => {
+                document.title = post.title + " | مدونة يوسف للبصريات";
+                const container = document.getElementById('postContainer');
+                const postDate = post.createdAt ? post.createdAt.toDate().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+                
+                container.innerHTML = `
+                    <article>
+                        <header class="mb-4 text-center">
+                            <a href="blog.html" class="btn btn-outline-secondary btn-sm mb-4"><i class="fas fa-arrow-right me-2"></i> العودة إلى المدونة</a>
+                            <h1 class="fw-bolder mb-2 display-5">${post.title}</h1>
+                            <div class="text-muted fst-italic mb-3 post-meta">
+                                <i class="fas fa-user-edit me-1"></i> ${post.author || 'يوسف للبصريات'} 
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-calendar-alt me-1"></i> ${postDate}
+                            </div>
+                        </header>
+                        <figure class="mb-4 shadow-lg">
+                            <img class="post-header-img" src="${post.imageUrl || 'https://placehold.co/900x400/eee/ccc?text=Youssef+Optics'}" alt="${post.title}" onerror="this.onerror=null;this.src='https://placehold.co/900x400/eee/ccc?text=Image+Not+Found';">
+                        </figure>
+                        <section class="mb-5 post-content">
+                            ${post.content}
+                        </section>
+                    </article>
+                `;
+            };
+
+            // New function to fetch all posts and handle navigation/suggestions on the client-side
+            const loadAllPostsAndBuildExtras = async (currentPost, currentId) => {
+                const postsRef = collection(db, "blogPosts");
+                const prevContainer = document.getElementById('prevPostContainer');
+                const nextContainer = document.getElementById('nextPostContainer');
+                const suggestedContainer = document.getElementById('suggestedPostsContainer');
+                suggestedContainer.innerHTML = ''; // Clear old suggestions
+
+                try {
+                    // 1. Fetch all published posts with a simple query
+                    const q = query(postsRef, where("isPublished", "==", true));
+                    const querySnapshot = await getDocs(q);
+
+                    // 2. Create and sort the posts array in memory
+                    let allPosts = [];
+                    querySnapshot.forEach(doc => {
+                        allPosts.push({ id: doc.id, ...doc.data() });
+                    });
+                    // Sort by date, newest first
+                    allPosts.sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
+
+                    // 3. Find the current post's index
+                    const currentIndex = allPosts.findIndex(post => post.id === currentId);
+                    
+                    // 4. Determine and display Previous/Next post navigation
+                    const prevPost = allPosts[currentIndex + 1]; // Older post
+                    const nextPost = allPosts[currentIndex - 1]; // Newer post
+
+                    if (prevPost) {
+                        prevContainer.innerHTML = `
+                            <a href="post.html?id=${prevPost.id}" class="post-nav-link">
+                                <div class="label"><i class="fas fa-arrow-right ms-2"></i> المقال السابق</div>
+                                <div class="title">${prevPost.title}</div>
+                            </a>`;
+                    } else {
+                        prevContainer.innerHTML = `<div class="post-nav-link disabled"><div class="label">لا يوجد مقال سابق</div></div>`;
+                    }
+
+                    if (nextPost) {
+                        nextContainer.innerHTML = `
+                            <a href="post.html?id=${nextPost.id}" class="post-nav-link">
+                                <div class="label">المقال التالي <i class="fas fa-arrow-left me-2"></i></div>
+                                <div class="title">${nextPost.title}</div>
+                            </a>`;
+                    } else {
+                        nextContainer.innerHTML = `<div class="post-nav-link disabled"><div class="label">لا يوجد مقال تالي</div></div>`;
+                    }
+
+                    // 5. Determine and display Suggested Posts
+                    const suggestedPosts = allPosts.filter(post => post.id !== currentId).slice(0, 3);
+                    
+                    suggestedPosts.forEach(post => {
+                        const postDate = post.createdAt.toDate().toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
+                        const card = `
+                            <div class="col-md-6 col-lg-4">
+                                <a href="post.html?id=${post.id}" class="text-decoration-none">
+                                    <div class="card suggested-post-card shadow-sm">
+                                        <img src="${post.imageUrl || 'https://placehold.co/600x400'}" class="card-img-top" alt="${post.title}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/eee/ccc?text=Image';">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${post.title}</h5>
+                                            <p class="card-text text-muted small"><i class="fas fa-calendar-alt me-1"></i> ${postDate}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                        suggestedContainer.innerHTML += card;
+                    });
+
+                } catch (error) {
+                    console.error("Error loading related posts:", error);
+                    // Optionally hide the extras section on error
+                    document.getElementById('postExtrasContainer').style.display = 'none';
+                }
+            };
+
+
+            // --- Standard Event Listeners and Helpers ---
+
+            const setupEventListeners = () => {
+                document.getElementById('darkModeToggle').addEventListener('click', toggleTheme);
+            };
+
+            const loadTheme = () => {
+                const theme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-bs-theme', theme);
+                const toggle = document.getElementById('darkModeToggle');
+                const sunIcon = toggle.querySelector('.fa-sun');
+                const moonIcon = toggle.querySelector('.fa-moon');
+                if (theme === 'dark') {
+                    moonIcon.classList.add('d-none');
+                    sunIcon.classList.remove('d-none');
+                } else {
+                    moonIcon.classList.remove('d-none');
+                    sunIcon.classList.add('d-none');
+                }
+            };
+
+            const toggleTheme = () => {
+                const newTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                loadTheme();
+            };
+            
+            const updateBottomNavCartCount = () => {
+                const cartCountElement = document.getElementById('cartCountBottomNav');
+                if (!cartCountElement) return;
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                cartCountElement.textContent = totalCount;
+                cartCountElement.style.display = totalCount > 0 ? 'flex' : 'none';
+            };
+
+            window.addEventListener('pageshow', () => updateBottomNavCartCount());
+
+            // Initialize the page
+            init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2947 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم يوسف للبصريات</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts (Cairo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Chart.js for statistics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" xintegrity="sha512-EGMjrNdEfYNPRSY3bBogZt0v3AZYVDCYm2h1qQ/I+JvCMKofD0V+XS4w6RhB+RsIweNn8/2sM9iL2ssCfAZDRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- jsPDF and html2canvas for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" xintegrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYM6NS7o7MhFdsi12w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" xintegrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Quill Rich Text Editor -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+    <style>
+        /* General Styles & Color Palette */
+        :root {
+            --bg-primary: #f9fafb;      /* gray-50 */
+            --bg-secondary: #ffffff;    /* white */
+            --bg-sidebar: #1f2937;      /* gray-800 */
+            --text-primary: #111827;    /* gray-900 */
+            --text-secondary: #6b7280;  /* gray-500 */
+            --text-on-sidebar: #f3f4f6; /* gray-100 */
+            --border-color: #e5e7eb;    /* gray-200 */
+            --accent-color: #fbbf24;    /* amber-400 */
+            --accent-text: #1f2937;     /* gray-800 */
+        }
+
+    /* [FIX] NEW High-Contrast Dark Mode Palette */
+        html.dark {
+            --bg-primary: #0f172a;      /* Slate-900: خلفية رئيسية عميقة */
+            --bg-secondary: #1e293b;    /* Slate-800: لون الكروت والنوافذ (داكن) */
+            --bg-sidebar: #1e293b;      /* Slate-800: لون الشريط الجانبي (داكن) */
+            --text-primary: #f1f5f9;    /* Slate-100: نصوص أساسية أكثر سطوعاً */
+            --text-secondary: #cbd5e1;  /* Slate-300: نصوص فرعية أكثر وضوحاً */
+            --text-on-sidebar: #f1f5f9; /* Slate-100: نصوص الشريط الجانبي لتطابق النصوص الأساسية */
+            --border-color: #475569;    /* Slate-600: لون حدود أوضح وأكثر تبايناً */
+        }
+        
+        /* Fix for secondary text and links in dark mode */
+        .text-secondary {
+            color: var(--text-secondary);
+        }
+        #main-content a {
+            color: var(--accent-color);
+            transition: color 0.2s ease-in-out;
+        }
+        #main-content a:hover {
+            filter: brightness(1.1);
+        }
+        .status-select {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+        }
+
+        .readonly-input {
+            background-color: var(--bg-primary);
+            border-color: var(--border-color);
+            cursor: default;
+        }
+
+        .review-comment-box {
+            background-color: var(--bg-primary);
+            border-right: 4px solid var(--border-color); 
+        } 
+
+        .readonly-input {
+            background-color: var(--bg-primary);
+            border-color: var(--border-color);
+            cursor: default;
+        }
+
+        body { 
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+
+        /* Sidebar */
+        #sidebar { background-color: var(--bg-sidebar); color: var(--text-on-sidebar); }
+        .sidebar-link.active { background-color: var(--accent-color); color: var(--accent-text); font-weight: 700; }
+        .sidebar-link:not(.active):hover { background-color: #374151; }
+
+        /* Page Transitions & Highlighting */
+        .page { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .highlight-item {
+            animation: highlight 2s ease-out;
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 0 15px color-mix(in srgb, var(--accent-color) 30%, transparent);
+        }
+        @keyframes highlight {
+            0% { background-color: color-mix(in srgb, var(--accent-color) 20%, transparent); }
+            100% { background-color: transparent; }
+        }
+
+        /* Forms & Inputs */
+        .input-style { 
+            border-radius: 0.5rem; 
+            border: 1px solid var(--border-color); 
+            padding: 0.75rem 1rem; 
+            width: 100%; 
+            transition: all 0.2s ease-in-out; 
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .input-style:focus { 
+            outline: 2px solid transparent; 
+            outline-offset: 2px; 
+            border-color: var(--accent-color); 
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 30%, transparent);
+        }
+        .input-style::placeholder { color: var(--text-secondary); }
+        .input-style:disabled { background-color: #4b5563; cursor: not-allowed; }
+        
+        /* Quill Editor Styles */
+        .ql-toolbar {
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            border-color: var(--border-color) !important;
+        }
+        .ql-container {
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+            border-color: var(--border-color) !important;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            min-height: 250px;
+            font-family: 'Cairo', sans-serif;
+        }
+        .ql-editor {
+             direction: rtl;
+             text-align: right;
+        }
+
+        /* Other Components */
+        .card { background-color: var(--bg-secondary); border: 1px solid var(--border-color); }
+        .table-header { background-color: color-mix(in srgb, var(--bg-primary) 50%, var(--bg-secondary)); }
+        .table-row:hover { background-color: color-mix(in srgb, var(--bg-primary) 70%, var(--bg-secondary)); }
+        .modal-content { background-color: var(--bg-secondary); }
+        .border-b { border-bottom-color: var(--border-color); }
+        .border-t { border-top-color: var(--border-color); }
+        .border { border-color: var(--border-color); }
+
+        /* Mobile Sidebar */
+        @media (max-width: 768px) {
+            #sidebar { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
+            #sidebar.open { transform: translateX(0); }
+        }
+
+        /* Pagination */
+        .pagination-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .pagination-btn:hover:not(:disabled) {
+            background-color: var(--accent-color);
+            color: var(--accent-text);
+            border-color: var(--accent-color);
+        }
+        .pagination-btn.active {
+            background-color: var(--accent-color);
+            color: var(--accent-text);
+            border-color: var(--accent-color);
+            font-weight: bold;
+        }
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+	/* [FIX] Dark Mode Overrides for specific components */
+        /* This ensures inputs, textareas, selects, and other elements are dark */
+        html.dark .input-style,
+        html.dark .status-select,
+        html.dark .ql-container,
+        html.dark .ql-toolbar {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border-color) !important;
+        }
+        
+        html.dark .input-style:focus {
+             box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 30%, transparent) !important;
+        }
+
+        /* Fix for internal cards and boxes that were appearing white */
+		html.dark #modal-footer,
+        html.dark .review-comment-box,
+        html.dark .p-3.bg-gray-50,
+        html.dark .p-4.bg-gray-50 {
+             background-color: var(--bg-primary);
+        }
+        html.dark .p-4.bg-gray-100 { /* Totals box in order details */
+            background-color: #0f172a; /* Even darker for emphasis */
+        }
+        
+        /* [FIX] Notifications dropdown dark mode fix */
+        html.dark #notifications-dropdown {
+            background-color: #ffffff;
+            border-color: #e5e7eb;
+        }
+        html.dark #notifications-dropdown div,
+        html.dark #notifications-dropdown p,
+        html.dark #notifications-dropdown .text-secondary {
+            color: #374151;
+        }
+        html.dark #notifications-dropdown .text-secondary {
+            color: #6b7280;
+        }
+        html.dark #notifications-dropdown .border-b {
+            border-color: #e5e7eb;
+        }
+        html.dark #notifications-dropdown .notification-item:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body >
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-amber-400"></div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 text-white py-2 px-4 rounded-lg shadow-md transform translate-x-full transition-transform duration-300 z-50">
+        <p id="toast-message"></p>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="flex items-center justify-center h-screen bg-gray-200">
+        <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
+            <div class="text-center">
+                <img src="images/profile.png" alt="Logo" class="w-24 h-24 mx-auto mb-4 rounded-full shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/96x96/000/F2B705?text=Y';">
+                <h1 class="text-3xl font-bold text-gray-800">لوحة التحكم</h1>
+                <p class="text-gray-500">يرجى تسجيل الدخول للمتابعة</p>
+            </div>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="email" class="text-sm font-bold text-gray-600 block mb-2">البريد الإلكتروني</label>
+                    <input type="email" id="email" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <div>
+                    <label for="password" class="text-sm font-bold text-gray-600 block mb-2">كلمة المرور</label>
+                    <input type="password" id="password" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400" required>
+                </div>
+                <p id="login-error" class="text-red-500 text-sm text-center hidden"></p>
+                <div>
+                    <button type="submit" class="w-full py-3 font-bold text-gray-800 bg-amber-400 rounded-lg hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors">
+                        تسجيل الدخول
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Layout -->
+    <div id="dashboard-layout" class="relative flex h-screen hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="absolute md:relative w-64 flex flex-col flex-shrink-0 z-20 h-full">
+            <div class="h-20 flex items-center justify-center gap-4 px-4 border-b border-gray-700 dark:border-gray-800">
+                <img src="images/profile.png" alt="Logo" class="h-12 w-12 rounded-full object-contain bg-white p-1" onerror="this.onerror=null;this.src='https://placehold.co/48x48/fff/000?text=Y';">
+                <h1 class="text-xl font-bold text-amber-400">يوسف للبصريات</h1>
+            </div>
+            <nav class="flex-1 px-4 py-6 space-y-2">
+                <a href="#" data-page="dashboard" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors active"><i class="fas fa-tachometer-alt w-6 text-center"></i><span class="mr-4">اللوحة الرئيسية</span></a>
+                <a href="#" data-page="orders" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors"><i class="fas fa-box w-6 text-center"></i><span class="mr-4">الطلبات</span></a>
+                <a href="#" data-page="customers" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors"><i class="fas fa-users w-6 text-center"></i><span class="mr-4">العملاء</span></a>
+                <a href="#" data-page="products" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors"><i class="fas fa-glasses w-6 text-center"></i><span class="mr-4">المنتجات</span></a>
+                <a href="#" data-page="blog" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors"><i class="fas fa-blog w-6 text-center"></i><span class="mr-4">المدونة</span></a>
+                <a href="#" data-page="reviews" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors"><i class="fas fa-star w-6 text-center"></i><span class="mr-4">المراجعات</span></a>
+                <a href="#" data-page="reports" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors"><i class="fas fa-chart-line w-6 text-center"></i><span class="mr-4">التقارير</span></a>
+                <a href="#" data-page="settings" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors"><i class="fas fa-cog w-6 text-center"></i><span class="mr-4">الإعدادات</span></a>
+            </nav>
+            <div class="px-4 py-4 border-t border-gray-700 dark:border-gray-800">
+                 <button id="logout-btn" class="w-full flex items-center px-4 py-3 rounded-lg text-red-400 hover:bg-red-500 hover:text-white transition-colors"><i class="fas fa-sign-out-alt w-6 text-center"></i><span class="mr-4">تسجيل الخروج</span></button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="h-20 card flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10 !rounded-none">
+                <div class="flex items-center gap-4">
+                    <button id="menu-toggle-btn" class="md:hidden text-secondary hover:text-amber-500"><i class="fas fa-bars fa-lg"></i></button>
+                    <h2 id="page-title" class="text-lg md:text-2xl font-bold">اللوحة الرئيسية</h2>
+                </div>
+                <div class="flex items-center gap-3 md:gap-5">
+                    <!-- Global Search -->
+                    <div class="relative w-40 md:w-64">
+                        <input type="text" id="global-search-input" placeholder="ابحث في كل شيء..." class="input-style w-full !py-2 !pr-10" />
+                        <i class="fas fa-search absolute top-1/2 right-3 -translate-y-1/2 text-gray-400"></i>
+                        <div id="global-search-results" class="absolute top-full mt-2 w-full bg-secondary rounded-lg shadow-xl border border-color z-50 hidden max-h-80 overflow-y-auto"></div>
+                    </div>
+                    <!-- Dark Mode Toggle -->
+                    <button id="dark-mode-toggle" class="text-secondary hover:text-amber-500 text-xl w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button id="notifications-btn" class="text-secondary hover:text-amber-500 text-xl w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-bell"></i>
+                            <span id="notification-dot" class="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-gray-800 hidden"></span>
+                        </button>
+                        <div id="notifications-dropdown" class="absolute top-full mt-2 left-0 w-80 bg-white rounded-lg shadow-xl border border-color z-50 hidden max-h-96 overflow-y-auto">
+                            <div class="p-3 font-bold border-b border-color">الإشعارات</div>
+                            <div id="notifications-list">
+                                <p class="text-center text-secondary p-4">لا توجد إشعارات جديدة.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="user-info" class="text-secondary text-sm md:text-base hidden md:block"></div>
+                </div>
+            </header>
+            <main id="main-content" class="flex-1 overflow-y-auto p-4 md:p-8"></main>
+        </div>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="modal-container" class="fixed inset-0 bg-black bg-opacity-60 z-40 flex items-center justify-center hidden p-4">
+        <div id="modal-content" class="modal-content rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center p-5 border-b border-color">
+                <h3 id="modal-title" class="text-xl font-bold"></h3>
+                <button id="modal-close-btn" class="text-secondary hover:text-primary"><i class="fas fa-times fa-lg"></i></button>
+            </div>
+            <div id="modal-body" class="p-6 overflow-y-auto"><!-- Modal body content goes here --></div>
+            <div id="modal-footer" class="p-5 border-t border-color bg-gray-50 dark:bg-gray-800 rounded-b-lg flex flex-wrap justify-end gap-3"><!-- Modal footer buttons go here --></div>
+        </div>
+    </div>
+    
+    <!-- Page Templates (hidden) -->
+    <div id="page-templates" class="hidden">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page space-y-8">
+            <!-- Date Filter -->
+            <div class="card p-4 rounded-xl shadow-md">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex-grow flex flex-wrap items-center gap-4">
+                        <label for="date-range-preset" class="font-semibold">عرض إحصائيات:</label>
+                        <select id="date-range-preset" class="input-style !w-auto">
+                            <option value="all_time">كل الأوقات</option>
+                            <option value="last_30_days" selected>آخر 30 يوم</option>
+                            <option value="this_month">هذا الشهر</option>
+                            <option value="last_month">الشهر الماضي</option>
+                            <option value="this_year">هذا العام</option>
+                            <option value="custom">نطاق مخصص</option>
+                        </select>
+                        <div id="custom-date-range-inputs" class="flex items-center gap-2 hidden">
+                            <input type="date" id="start-date" class="input-style !w-auto">
+                            <span>إلى</span>
+                            <input type="date" id="end-date" class="input-style !w-auto">
+                        </div>
+                    </div>
+                    <button id="apply-date-filter-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-amber-500 transition-colors">
+                        <i class="fas fa-filter mr-2"></i>تطبيق
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-xl shadow-md flex items-center justify-between transition hover:shadow-lg">
+                    <div><p class="text-secondary text-sm">إجمالي المبيعات</p><p id="stats-total-revenue" class="text-3xl font-bold">0 ج.م</p></div>
+                    <div class="bg-green-100 p-3 rounded-full"><i class="fas fa-dollar-sign fa-2x text-green-500"></i></div>
+                </div>
+                <div class="card p-6 rounded-xl shadow-md flex items-center justify-between transition hover:shadow-lg">
+                    <div><p class="text-secondary text-sm">عدد الطلبات</p><p id="stats-total-orders" class="text-3xl font-bold">0</p></div>
+                    <div class="bg-blue-100 p-3 rounded-full"><i class="fas fa-box-open fa-2x text-blue-500"></i></div>
+                </div>
+                <div class="card p-6 rounded-xl shadow-md flex items-center justify-between transition hover:shadow-lg">
+                    <div><p class="text-secondary text-sm">متوسط قيمة الطلب</p><p id="stats-avg-order-value" class="text-3xl font-bold">0 ج.م</p></div>
+                    <div class="bg-purple-100 p-3 rounded-full"><i class="fas fa-receipt fa-2x text-purple-500"></i></div>
+                </div>
+                <div class="card p-6 rounded-xl shadow-md flex items-center justify-between transition hover:shadow-lg">
+                    <div><p class="text-secondary text-sm">الطلبات الجديدة</p><p id="stats-new-orders" class="text-3xl font-bold">0</p></div>
+                    <div class="bg-yellow-100 p-3 rounded-full"><i class="fas fa-bell fa-2x text-yellow-500"></i></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 card p-6 rounded-xl shadow-md"><h3 class="text-xl font-bold mb-4">أداء المبيعات</h3><div class="h-72"><canvas id="salesChart"></canvas></div></div>
+                <div class="card p-6 rounded-xl shadow-md"><h3 class="text-xl font-bold mb-4">المبيعات حسب الفئة</h3><div id="category-sales-container" class="h-72 flex items-center justify-center"><canvas id="categorySalesChart"></canvas></div></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <div class="lg:col-span-3 card p-6 rounded-xl shadow-md"><h3 class="text-xl font-bold mb-4">أحدث الطلبات</h3><div id="recent-orders-list" class="space-y-3 overflow-y-auto max-h-96"></div></div>
+                <div class="lg:col-span-2 card p-6 rounded-xl shadow-md"><h3 class="text-xl font-bold mb-4">المنتجات الأكثر مبيعاً</h3><div id="top-products-list" class="space-y-4"></div></div>
+            </div>
+        </div>
+        <!-- Orders Page -->
+        <div id="orders-page" class="page"><div class="card p-4 md:p-6 rounded-xl shadow-md"><div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4"><h3 class="text-xl font-bold">قائمة الطلبات</h3><button id="add-order-btn" class="w-full sm:w-auto bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center"><i class="fas fa-plus mr-2"></i>إضافة طلب جديد</button></div><div id="orders-container" class="w-full"><div class="overflow-x-auto hidden md:block"><table class="w-full text-sm text-right"><thead class="text-xs uppercase table-header"><tr><th scope="col" class="px-6 py-3">رقم التتبع</th><th scope="col" class="px-6 py-3">العميل</th><th scope="col" class="px-6 py-3">الإجمالي</th><th scope="col" class="px-6 py-3">حالة الطلب</th><th scope="col" class="px-6 py-3">حالة الدفع</th><th scope="col" class="px-6 py-3">التاريخ</th><th scope="col" class="px-6 py-3">إجراءات</th></tr></thead><tbody id="orders-table-body"></tbody></table></div><div id="orders-cards-container" class="md:hidden space-y-4"></div></div><div id="orders-pagination-container" class="mt-6 flex justify-center"></div></div></div>
+        
+        <!-- Customers Page -->
+        <div id="customers-page" class="page">
+            <div class="card p-4 md:p-6 rounded-xl shadow-md">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                    <h3 class="text-xl font-bold">قائمة العملاء</h3>
+                    <div class="relative w-full sm:w-72">
+                        <input type="text" id="customer-search-input" placeholder="ابحث بالاسم أو رقم الهاتف..." class="input-style w-full !pr-10" />
+                        <i class="fas fa-search absolute top-1/2 right-3 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                <div id="customers-container" class="w-full">
+                    <!-- UPDATE: Responsive Table/Card View -->
+                    <div class="overflow-x-auto hidden md:block">
+                        <table class="w-full text-sm text-right">
+                            <thead class="text-xs uppercase table-header">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">العميل</th>
+                                    <th scope="col" class="px-6 py-3">الهاتف</th>
+                                    <th scope="col" class="px-6 py-3">عدد الطلبات</th>
+                                    <th scope="col" class="px-6 py-3">إجمالي الإنفاق</th>
+                                    <th scope="col" class="px-6 py-3">آخر طلب</th>
+                                    <th scope="col" class="px-6 py-3">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customers-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="customers-cards-container" class="md:hidden space-y-4"></div>
+                </div>
+                <div id="customers-pagination-container" class="mt-6 flex justify-center"></div>
+            </div>
+        </div>
+        
+        <!-- Products Page -->
+        <div id="products-page" class="page"><div class="card p-4 md:p-6 rounded-xl shadow-md"><div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4"><h3 class="text-xl font-bold">قائمة المنتجات</h3><button id="add-product-btn" class="w-full sm:w-auto bg-amber-400 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-amber-500 transition-colors flex items-center justify-center"><i class="fas fa-plus mr-2"></i>إضافة منتج</button></div><div id="product-filters-container" class="mb-4 flex flex-wrap gap-2"></div><div id="products-container" class="w-full"><div class="overflow-x-auto hidden md:block"><table class="w-full text-sm text-right"><thead class="text-xs uppercase table-header"><tr><th scope="col" class="px-2 py-3"></th><th scope="col" class="px-6 py-3">صورة</th><th scope="col" class="px-6 py-3">اسم المنتج</th><th scope="col" class="px-6 py-3">الفئة</th><th scope="col" class="px-6 py-3">السعر</th><th scope="col" class="px-6 py-3">المخزون</th><th scope="col" class="px-6 py-3">إجراءات</th></tr></thead><tbody id="products-table-body"></tbody></table></div><div id="products-cards-container" class="md:hidden space-y-4"></div></div><div id="products-pagination-container" class="mt-6 flex justify-center"></div></div></div>
+        
+        <!-- Blog Page -->
+        <div id="blog-page" class="page">
+            <div class="card p-4 md:p-6 rounded-xl shadow-md">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                    <h3 class="text-xl font-bold">إدارة المدونة</h3>
+                    <button id="add-blog-post-btn" class="w-full sm:w-auto bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center">
+                        <i class="fas fa-plus mr-2"></i>إضافة مقال جديد
+                    </button>
+                </div>
+                <div id="blog-posts-container" class="w-full">
+                    <!-- UPDATE: Responsive Table/Card View -->
+                    <div class="overflow-x-auto hidden md:block">
+                        <table class="w-full text-sm text-right">
+                            <thead class="text-xs uppercase table-header">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">الصورة</th>
+                                    <th scope="col" class="px-6 py-3">العنوان</th>
+                                    <th scope="col" class="px-6 py-3">الكاتب</th>
+                                    <th scope="col" class="px-6 py-3">الحالة</th>
+                                    <th scope="col" class="px-6 py-3">تاريخ الإنشاء</th>
+                                    <th scope="col" class="px-6 py-3">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blog-posts-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="blog-cards-container" class="md:hidden space-y-4"></div>
+                </div>
+                <div id="blog-pagination-container" class="mt-6 flex justify-center"></div>
+            </div>
+        </div>
+
+        <!-- Reviews Page -->
+        <div id="reviews-page" class="page">
+            <div class="card p-4 md:p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold mb-4">إدارة المراجعات</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-color">
+                    <div>
+                        <label for="review-status-filter" class="block text-sm font-medium mb-1">فلترة حسب الحالة</label>
+                        <select id="review-status-filter" class="w-full input-style">
+                            <option value="all">كل الحالات</option>
+                            <option value="pending">قيد المراجعة</option>
+                            <option value="approved">مقبولة</option>
+                            <option value="rejected">مرفوضة</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="review-category-filter" class="block text-sm font-medium mb-1">فلترة حسب الفئة</label>
+                        <select id="review-category-filter" class="w-full input-style">
+                            <option value="all">كل الفئات</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="review-sort-order" class="block text-sm font-medium mb-1">ترتيب حسب</label>
+                        <select id="review-sort-order" class="w-full input-style">
+                            <option value="newest">الأحدث أولاً</option>
+                            <option value="oldest">الأقدم أولاً</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="reviews-container" class="space-y-4">
+                    <div id="reviews-placeholder" class="text-center py-10 text-secondary">
+                        <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                        <p>جاري تحميل المراجعات...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Page -->
+        <div id="reports-page" class="page space-y-8">
+            <!-- Data Export Section -->
+            <div class="card p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold mb-4">تصدير البيانات</h3>
+                <p class="text-secondary mb-4">قم بتصدير بيانات متجرك إلى ملف CSV.</p>
+                <div class="flex flex-wrap gap-4">
+                    <button id="export-orders-btn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center"><i class="fas fa-file-csv mr-2"></i>تصدير الطلبات</button>
+                    <button id="export-customers-btn" class="bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors flex items-center"><i class="fas fa-file-csv mr-2"></i>تصدير العملاء</button>
+                    <button id="export-products-btn" class="bg-purple-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-purple-600 transition-colors flex items-center"><i class="fas fa-file-csv mr-2"></i>تصدير المنتجات</button>
+                </div>
+            </div>
+
+            <!-- Low Stock Report -->
+            <div class="card p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold mb-4">تقرير المخزون المنخفض</h3>
+                <p class="text-secondary mb-4">المنتجات التي لديها 5 قطع أو أقل في المخزون.</p>
+                <!-- UPDATE: Responsive Table/Card View -->
+                <div class="overflow-x-auto hidden md:block">
+                    <table class="w-full text-sm text-right">
+                        <thead class="text-xs uppercase table-header">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">صورة</th>
+                                <th scope="col" class="px-6 py-3">اسم المنتج</th>
+                                <th scope="col" class="px-6 py-3">الفئة</th>
+                                <th scope="col" class="px-6 py-3">الكمية المتبقية</th>
+                                <th scope="col" class="px-6 py-3">إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="low-stock-report-body"></tbody>
+                    </table>
+                </div>
+                <div id="low-stock-cards-container" class="md:hidden space-y-4"></div>
+            </div>
+
+            <!-- Promo Code Performance Report -->
+            <div class="card p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold mb-4">تقرير أداء أكواد الخصم</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-right">
+                        <thead class="text-xs uppercase table-header">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">الكود</th>
+                                <th scope="col" class="px-6 py-3 text-center">عدد مرات الاستخدام</th>
+                                <th scope="col" class="px-6 py-3 text-center">إجمالي الخصومات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promo-code-report-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings-page" class="page"><div class="mb-4 border-b border-color"><ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="settings-tabs" role="tablist"><li class="mr-2" role="presentation"><button class="inline-block p-4 border-b-2 rounded-t-lg" data-tab="marquee" role="tab">الشريط المتحرك</button></li><li class="mr-2" role="presentation"><button class="inline-block p-4 border-b-2 rounded-t-lg" data-tab="lenses" role="tab">العدسات</button></li><li class="mr-2" role="presentation"><button class="inline-block p-4 border-b-2 rounded-t-lg" data-tab="promocodes" role="tab">أكواد الخصم</button></li><li class="mr-2" role="presentation"><button class="inline-block p-4 border-b-2 rounded-t-lg" data-tab="shipping" role="tab">أسعار الشحن</button></li></ul></div><div id="settings-tab-content"></div></div>
+    </div>
+
+    <!-- Invoice Template for PDF Printing (hidden) -->
+    <div id="invoice-template" class="hidden"></div>
+
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc, query, orderBy, where, serverTimestamp, setDoc, Timestamp, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAlrzDNrFGxE-tihV6cAj_6r77RcFW8FgA",
+            authDomain: "youssef-optics.firebaseapp.com",
+            projectId: "youssef-optics",
+            storageBucket: "youssef-optics.appspot.com",
+            messagingSenderId: "956537200762",
+            appId: "1:956537200762:web:bfbb1ca17debc2b30a1bc3",
+        };
+
+        // --- App Initialization ---
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // --- Global State & Caches ---
+        let currentNavPage = 'dashboard';
+        let currentFocusId = null; // Used to highlight item after navigation
+        let salesChartInstance = null;
+        let categorySalesChartInstance = null;
+        let allProductsCache = []; 
+        let allOrdersCache = [];
+        let allCustomersCache = [];
+        let allPromoCodesCache = {};
+        let allBlogPostsCache = [];
+        let reviewsWithProductData = []; 
+        let notifications = [];
+        let unsubscribeOrdersListener = null;
+        let quillEditorInstance = null;
+
+        // Pagination State
+        let paginationState = {
+            orders: { currentPage: 1, itemsPerPage: 10, totalItems: 0 },
+            customers: { currentPage: 1, itemsPerPage: 10, totalItems: 0 },
+            products: { currentPage: 1, itemsPerPage: 10, totalItems: 0, categoryFilter: 'all' },
+            blog: { currentPage: 1, itemsPerPage: 10, totalItems: 0 },
+        };
+
+        // --- Constants ---
+        const ORDER_STATUSES = ["تم الطلب", "قيد التجهيز", "تم الشحن", "تم التسليم", "ملغى"];
+        const PAYMENT_STATUSES = ["لم يتم الدفع", "تم الدفع", "جاري المراجعة", "مرتجع"];
+        const REVIEW_STATUSES = { pending: "قيد المراجعة", approved: "مقبول", rejected: "مرفوض" };
+        const STATUS_COLORS = { pending: "bg-yellow-100 text-yellow-800", approved: "bg-green-100 text-green-800", rejected: "bg-red-100 text-red-800" };
+
+
+        // --- DOM Elements ---
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loginScreen = document.getElementById('login-screen');
+        const dashboardLayout = document.getElementById('dashboard-layout');
+        const mainContent = document.getElementById('main-content');
+        const pageTitle = document.getElementById('page-title');
+        const userInfo = document.getElementById('user-info');
+        const pageTemplates = document.getElementById('page-templates');
+        const sidebar = document.getElementById('sidebar');
+        const menuToggleBtn = document.getElementById('menu-toggle-btn');
+        const modalContainer = document.getElementById('modal-container');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalFooter = document.getElementById('modal-footer');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const notificationsBtn = document.getElementById('notifications-btn');
+        const notificationsDropdown = document.getElementById('notifications-dropdown');
+        const notificationDot = document.getElementById('notification-dot');
+        const notificationsList = document.getElementById('notifications-list');
+        const globalSearchInput = document.getElementById('global-search-input');
+        const globalSearchResults = document.getElementById('global-search-results');
+        
+        // --- Utility & Security Functions ---
+        const showLoading = () => loadingOverlay.classList.remove('hidden');
+        const hideLoading = () => loadingOverlay.classList.add('hidden');
+        
+        const escapeHTML = (str) => {
+            if (str === null || str === undefined) return '';
+            return str.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        };
+        
+        const showToast = (message, type = 'success') => {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-blue-500');
+            const colorClass = type === 'success' ? 'bg-green-500' : (type === 'error' ? 'bg-red-500' : 'bg-blue-500');
+            toast.classList.add(colorClass);
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => toast.classList.add('translate-x-full'), 3000);
+        };
+
+        const formatDate = (timestamp, options = { year: 'numeric', month: 'short', day: 'numeric' }) => {
+            if (!timestamp || !timestamp.toDate) return 'N/A';
+            return timestamp.toDate().toLocaleString('ar-EG', options);
+        };
+        
+        const formatTimestampToDateInput = (timestamp) => {
+            if (!timestamp || !timestamp.toDate) return '';
+            const date = timestamp.toDate();
+            date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+            return date.toISOString().split('T')[0];
+        };
+
+        const imageToDataUrl = (url) => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.height = img.naturalHeight;
+                    canvas.width = img.naturalWidth;
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL('image/png'));
+                };
+                img.onerror = () => resolve('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
+                img.src = url;
+            });
+        };
+        
+        const generateStarsHTML = (rating, size = 'text-base') => {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<i class="fa-solid fa-star ${i <= rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-500'} ${size}"></i>`;
+            }
+            return `<div class="flex">${stars}</div>`;
+        };
+
+        // --- Notification System ---
+        const addNotification = (details) => {
+            const { message, icon = 'fa-bell', type = 'info', page, focusId } = details;
+            const newNotification = {
+                id: Date.now(),
+                message,
+                icon,
+                type,
+                page,
+                focusId,
+                date: new Date(),
+                read: false,
+            };
+            notifications.unshift(newNotification);
+            renderNotifications();
+        };
+
+        const renderNotifications = () => {
+            if (notifications.length === 0) {
+                notificationsList.innerHTML = `<p class="text-center text-secondary p-4">لا توجد إشعارات جديدة.</p>`;
+                notificationDot.classList.add('hidden');
+                return;
+            }
+            const unreadCount = notifications.filter(n => !n.read).length;
+            notificationDot.classList.toggle('hidden', unreadCount === 0);
+            
+            notificationsList.innerHTML = notifications.map(n => `
+                <div class="notification-item p-3 border-b border-color hover:bg-gray-100 dark:hover:bg-gray-700 flex items-start gap-3 cursor-pointer ${n.read ? 'opacity-60' : ''}" data-page="${n.page}" data-focus-id="${n.focusId}">
+                    <i class="fas ${n.icon} text-secondary mt-1"></i>
+                    <div>
+                        <p class="text-sm">${escapeHTML(n.message)}</p>
+                        <p class="text-xs text-secondary">${formatDate(Timestamp.fromDate(n.date), { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        notificationsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationsDropdown.classList.toggle('hidden');
+            if (!notificationsDropdown.classList.contains('hidden')) {
+                notifications.forEach(n => n.read = true);
+                renderNotifications();
+            }
+        });
+        
+        notificationsList.addEventListener('click', (e) => {
+            const item = e.target.closest('.notification-item');
+            if (item && item.dataset.page && item.dataset.focusId) {
+                const { page, focusId } = item.dataset;
+                handleNavigation(page, focusId);
+                notificationsDropdown.classList.add('hidden');
+            }
+        });
+
+        // --- Dark Mode ---
+        const applyTheme = (theme) => {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.documentElement.classList.remove('dark');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+            if (currentNavPage === 'dashboard') {
+                loadDashboardData();
+            }
+        };
+
+        darkModeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            applyTheme(isDark ? 'dark' : 'light');
+        });
+
+        // --- Core App Logic (Navigation, Auth, Modals) ---
+        menuToggleBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
+        
+        const openModal = (title, bodyHtml, footerHtml, size = 'max-w-4xl') => {
+            modalContent.className = `modal-content rounded-lg shadow-2xl w-full ${size} max-h-[90vh] flex flex-col`;
+            modalTitle.textContent = title;
+            modalBody.innerHTML = bodyHtml;
+            modalFooter.innerHTML = footerHtml;
+            modalContainer.classList.remove('hidden');
+        };
+
+        const closeModal = () => {
+            modalContainer.classList.add('hidden');
+            modalBody.innerHTML = '';
+            modalFooter.innerHTML = '';
+            quillEditorInstance = null;
+        };
+        
+        document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+        modalContainer.addEventListener('click', (e) => e.target === modalContainer && closeModal());
+
+        const showConfirmationModal = (title, message, onConfirm) => {
+            openModal(title, `<p>${escapeHTML(message)}</p>`,
+                `<button id="confirm-cancel-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg hover:bg-gray-300">إلغاء</button>
+                 <button id="confirm-ok-btn" class="bg-red-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-600">تأكيد</button>`,
+                'max-w-md');
+            document.getElementById('confirm-cancel-btn').addEventListener('click', closeModal);
+            document.getElementById('confirm-ok-btn').addEventListener('click', () => {
+                onConfirm();
+                closeModal();
+            });
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                loginScreen.classList.add('hidden');
+                dashboardLayout.classList.remove('hidden');
+                dashboardLayout.classList.add('flex');
+                userInfo.textContent = `مرحباً، ${escapeHTML(user.email)}`;
+                await cacheInitialData();
+                setupRealtimeListeners();
+                navigateTo('dashboard');
+            } else {
+                loginScreen.classList.remove('hidden');
+                dashboardLayout.classList.add('hidden');
+                dashboardLayout.classList.remove('flex');
+                if (salesChartInstance) salesChartInstance.destroy();
+                if (categorySalesChartInstance) categorySalesChartInstance.destroy();
+                if (unsubscribeOrdersListener) unsubscribeOrdersListener();
+            }
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('login-error');
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                loginError.classList.add('hidden');
+            } catch (error) {
+                loginError.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+                loginError.classList.remove('hidden');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+        const navigateTo = (pageId, focusId = null) => {
+            currentNavPage = pageId;
+            currentFocusId = focusId; 
+            mainContent.innerHTML = '';
+            const template = pageTemplates.querySelector(`#${pageId}-page`);
+            if (template) {
+                mainContent.appendChild(template.cloneNode(true));
+                const sidebarLink = document.querySelector(`.sidebar-link[data-page="${pageId}"]`);
+                if (sidebarLink) {
+                    pageTitle.textContent = sidebarLink.querySelector('span').textContent;
+                }
+                document.querySelectorAll('.sidebar-link').forEach(link => link.classList.toggle('active', link.dataset.page === pageId));
+                if (window.innerWidth < 768) sidebar.classList.remove('open');
+                loadPageData(pageId);
+            }
+        };
+
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateTo(link.dataset.page);
+            });
+        });
+
+        const loadPageData = (pageId) => {
+            const actions = {
+                dashboard: loadDashboardData,
+                orders: loadOrders,
+                customers: loadCustomersPage,
+                products: loadProducts,
+                blog: loadBlogPage,
+                reviews: loadReviews,
+                reports: loadReportsPage,
+                settings: loadSettings,
+            };
+            actions[pageId]?.();
+        };
+        
+        const cacheInitialData = async () => {
+             showLoading();
+             try {
+                const productsSnapshot = await getDocs(query(collection(db, "products"), orderBy("dateAdded", "desc")));
+                allProductsCache = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                const ordersQuery = query(collection(db, "orders"), orderBy("date", "desc"));
+                const ordersSnapshot = await getDocs(ordersQuery);
+                allOrdersCache = ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                const promoCodesSnap = await getDoc(doc(db, "settings", "promocodes"));
+                if (promoCodesSnap.exists()) {
+                    allPromoCodesCache = promoCodesSnap.data();
+                }
+                
+                const blogPostsSnapshot = await getDocs(query(collection(db, "blogPosts"), orderBy("createdAt", "desc")));
+                allBlogPostsCache = blogPostsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                aggregateCustomerData();
+
+             } catch (error) { 
+                console.error("Error during initial data load: ", error);
+                showToast("فشل تحميل البيانات الأولية. تأكد من إنشاء الفهارس في Firestore.", "error"); 
+             }
+             finally { hideLoading(); }
+        };
+
+        const setupRealtimeListeners = () => {
+            if (unsubscribeOrdersListener) unsubscribeOrdersListener(); 
+
+            const q = query(collection(db, "orders"), orderBy("date", "desc"));
+            unsubscribeOrdersListener = onSnapshot(q, (snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === "added") {
+                        const newOrder = { id: change.doc.id, ...change.doc.data() };
+                        if (allOrdersCache.length > 0 && !allOrdersCache.find(o => o.id === newOrder.id)) {
+                             addNotification({
+                                message: `طلب جديد #${newOrder.trackingId} من ${newOrder.customerName}`,
+                                icon: 'fa-box',
+                                page: 'orders',
+                                focusId: newOrder.id
+                            });
+                            allOrdersCache.unshift(newOrder);
+                            aggregateCustomerData();
+                            if (currentNavPage === 'dashboard') loadDashboardData();
+                            if (currentNavPage === 'orders') loadOrders();
+                            if (currentNavPage === 'customers') loadCustomersPage();
+                            if (currentNavPage === 'reports') loadReportsPage();
+                        }
+                    }
+                    if (change.type === "modified") {
+                         const updatedOrder = { id: change.doc.id, ...change.doc.data() };
+                         const index = allOrdersCache.findIndex(o => o.id === updatedOrder.id);
+                         if (index > -1) {
+                            allOrdersCache[index] = updatedOrder;
+                            if (currentNavPage === 'orders') loadOrders();
+                         }
+                    }
+                     if (change.type === "removed") {
+                         allOrdersCache = allOrdersCache.filter(o => o.id !== change.doc.id);
+                         if (currentNavPage === 'orders') loadOrders();
+                    }
+                });
+
+            }, (error) => {
+                console.error("Realtime listener error:", error);
+                showToast("خطأ في الاتصال بالبيانات الحية", "error");
+            });
+        };
+
+        // --- Dashboard Page Functions ---
+        const loadDashboardData = () => {
+            const dashboardPage = document.getElementById('dashboard-page');
+            if (!dashboardPage) return;
+            setupDashboardDateFilters();
+            applyDashboardFilter();
+        };
+
+        const setupDashboardDateFilters = () => {
+            const preset = document.getElementById('date-range-preset');
+            const customInputs = document.getElementById('custom-date-range-inputs');
+            const applyBtn = document.getElementById('apply-date-filter-btn');
+            if (!preset || !customInputs || !applyBtn) return;
+
+            preset.addEventListener('change', () => {
+                customInputs.classList.toggle('hidden', preset.value !== 'custom');
+            });
+
+            applyBtn.addEventListener('click', applyDashboardFilter);
+        };
+
+        const applyDashboardFilter = () => {
+            const preset = document.getElementById('date-range-preset').value;
+            const customStart = document.getElementById('start-date').value;
+            const customEnd = document.getElementById('end-date').value;
+            let startDate, endDate = new Date(); 
+
+            switch(preset) {
+                case 'last_30_days':
+                    startDate = new Date();
+                    startDate.setDate(endDate.getDate() - 30);
+                    break;
+                case 'this_month':
+                    startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
+                    break;
+                case 'last_month':
+                    startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 1, 1);
+                    endDate = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+                    break;
+                case 'this_year':
+                    startDate = new Date(endDate.getFullYear(), 0, 1);
+                    break;
+                case 'custom':
+                    startDate = customStart ? new Date(customStart) : null;
+                    endDate = customEnd ? new Date(customEnd) : null;
+                    if (endDate) endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'all_time':
+                default:
+                    startDate = null;
+                    endDate = null;
+            }
+
+            const filteredOrders = allOrdersCache.filter(order => {
+                if (!order.date || !order.date.toDate) return false;
+                const orderDate = order.date.toDate();
+                const startMatch = startDate ? orderDate >= startDate : true;
+                const endMatch = endDate ? orderDate <= endDate : true;
+                return startMatch && endMatch;
+            });
+            
+            updateDashboardStats(filteredOrders);
+        };
+        
+        const updateDashboardStats = (orders) => {
+            if (!document.getElementById('stats-total-revenue')) return;
+            showLoading();
+            try {
+                let totalRevenue = 0, newOrdersCount = 0;
+                const salesData = {}, categorySales = {}, productSales = {};
+
+                orders.forEach(order => {
+                    if (order.orderStatus !== 'ملغى') totalRevenue += order.total || 0;
+                    if (order.orderStatus === 'تم الطلب') newOrdersCount++;
+                    
+                    const orderDate = order.date?.toDate();
+                    if (orderDate) {
+                        const dateString = orderDate.toISOString().split('T')[0];
+                        salesData[dateString] = (salesData[dateString] || 0) + (order.total || 0);
+                    }
+
+                    order.products?.forEach(p => {
+                        const productInfo = allProductsCache.find(prod => prod.name === p.name);
+                        if (productInfo) {
+                            const category = productInfo.category || 'غير مصنف';
+                            const price = (p.pricePerUnit || 0) * (p.quantity || 1);
+                            if (!isNaN(price)) {
+                                categorySales[category] = (categorySales[category] || 0) + price;
+                                productSales[p.name] = (productSales[p.name] || 0) + price;
+                            }
+                        }
+                    });
+                });
+                const totalOrders = orders.length;
+                const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+                document.getElementById('stats-total-revenue').textContent = `${Math.round(totalRevenue).toLocaleString()} ج.م`;
+                document.getElementById('stats-total-orders').textContent = totalOrders;
+                document.getElementById('stats-avg-order-value').textContent = `${Math.round(avgOrderValue).toLocaleString()} ج.م`;
+                document.getElementById('stats-new-orders').textContent = newOrdersCount;
+                renderSalesChart(salesData);
+                renderCategorySalesChart(categorySales);
+                renderRecentOrders(orders.slice(0, 5));
+                renderTopProducts(productSales);
+            } catch (error) { console.error(error); showToast("فشل تحديث إحصائيات اللوحة الرئيسية", "error"); } 
+            finally { hideLoading(); }
+        };
+        
+        const renderSalesChart = (salesData) => {
+            const ctx = document.getElementById('salesChart')?.getContext('2d');
+            if (!ctx) return;
+            
+            const sortedDates = Object.keys(salesData).sort();
+            const labels = sortedDates.map(dateString => new Date(dateString).toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' }));
+            const data = sortedDates.map(dateString => salesData[dateString]);
+
+            if (salesChartInstance) salesChartInstance.destroy();
+            const isDark = document.documentElement.classList.contains('dark');
+            salesChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets: [{ label: 'المبيعات (ج.م)', data, borderColor: '#f59e0b', backgroundColor: 'rgba(251, 191, 36, 0.1)', fill: true, tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { color: isDark ? '#9ca3af' : '#6b7280' } }, x: { grid: { display: false }, ticks: { color: isDark ? '#9ca3af' : '#6b7280' } } }, plugins: { legend: { display: false } } }
+            });
+        };
+
+        const renderCategorySalesChart = (categorySales) => {
+            const container = document.getElementById('category-sales-container');
+            if (!container) return;
+            const labels = Object.keys(categorySales);
+            const data = Object.values(categorySales);
+            if (categorySalesChartInstance) categorySalesChartInstance.destroy();
+            if (labels.length === 0) {
+                container.innerHTML = `<p class="text-secondary text-center">لا توجد بيانات.</p>`;
+                return;
+            }
+            container.innerHTML = `<canvas id="categorySalesChart"></canvas>`;
+            const ctx = document.getElementById('categorySalesChart').getContext('2d');
+            const isDark = document.documentElement.classList.contains('dark');
+            categorySalesChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: { labels, datasets: [{ label: 'المبيعات حسب الفئة', data, backgroundColor: ['#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#f97316', '#ec4899'], hoverOffset: 4, borderColor: isDark ? '#1f2937' : '#fff' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { family: "'Cairo', sans-serif" }, color: isDark ? '#d1d5db' : '#374151' } } } }
+            });
+        };
+
+      const renderRecentOrders = (orders) => {
+            const container = document.getElementById('recent-orders-list');
+            if (!container) return;
+            container.innerHTML = orders.length ? '' : `<p class="text-secondary text-center py-4">لا توجد طلبات حديثة.</p>`;
+            orders.forEach(order => {
+                container.innerHTML += `<div class="recent-order-item flex items-center justify-between p-3 rounded-lg"><div><p class="font-bold">${escapeHTML(order.customerName)}</p><p class="text-xs text-secondary">#${escapeHTML(order.trackingId)}</p></div><div class="text-left"><p class="font-semibold text-green-600">${(order.total || 0).toLocaleString()} ج.م</p><p class="text-xs text-secondary">${formatDate(order.date)}</p></div></div>`;
+            });
+        };
+
+        const renderTopProducts = (productSales) => {
+            const container = document.getElementById('top-products-list');
+            if (!container) return;
+            const topProducts = Object.entries(productSales).sort(([,a],[,b]) => b - a).slice(0, 5);
+            container.innerHTML = topProducts.length ? '' : `<p class="text-secondary text-center py-4">لا توجد بيانات.</p>`;
+            topProducts.forEach(([name, revenue]) => {
+                const productInfo = allProductsCache.find(p => p.name === name);
+                container.innerHTML += `<div class="flex items-center gap-4"><img src="${escapeHTML(productInfo?.images?.[0] || 'https://placehold.co/48x48/eee/ccc?text=?')}" class="w-12 h-12 rounded-lg object-cover"><div class="flex-grow"><p class="font-bold text-sm">${escapeHTML(name)}</p><p class="text-xs text-secondary">${escapeHTML(productInfo?.category || '')}</p></div><p class="font-bold text-green-600">${Math.round(revenue).toLocaleString()} ج.م</p></div>`;
+            });
+        };
+        
+        // --- Orders Page Functions ---
+        const loadOrders = () => {
+            const { itemsPerPage } = paginationState.orders;
+            const totalItems = allOrdersCache.length;
+            paginationState.orders.totalItems = totalItems;
+            
+            if (currentFocusId) {
+                const itemIndex = allOrdersCache.findIndex(o => o.id === currentFocusId);
+                if (itemIndex > -1) {
+                    paginationState.orders.currentPage = Math.floor(itemIndex / itemsPerPage) + 1;
+                }
+            }
+            const { currentPage } = paginationState.orders;
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedOrders = allOrdersCache.slice(startIndex, endIndex);
+
+            renderOrders(paginatedOrders);
+            renderPaginationControls('orders', document.getElementById('orders-pagination-container'));
+        };
+
+        const renderOrders = (orders) => {
+            const tableBody = document.getElementById('orders-table-body');
+            const cardsContainer = document.getElementById('orders-cards-container');
+            if (!tableBody || !cardsContainer) return;
+            
+            const noDataHtml = '<tr><td colspan="7" class="text-center p-4">لا توجد طلبات.</td></tr>';
+            tableBody.innerHTML = '';
+            cardsContainer.innerHTML = '';
+            
+            if (orders.length === 0) {
+                tableBody.innerHTML = noDataHtml;
+                cardsContainer.innerHTML = `<div class="text-center p-4 card rounded-lg">${noDataHtml}</div>`;
+            } else {
+                orders.forEach(order => {
+                    const actionsHtml = `<button class="view-order-btn text-blue-600 hover:underline p-1" data-id="${order.id}" title="عرض"><i class="fas fa-eye"></i></button><button class="edit-order-btn text-green-600 hover:underline p-1" data-id="${order.id}" title="تعديل"><i class="fas fa-edit"></i></button><button class="print-invoice-btn text-purple-600 hover:underline p-1" data-id="${order.id}" title="طباعة"><i class="fas fa-print"></i></button><button class="delete-order-btn text-red-600 hover:underline p-1" data-id="${order.id}" title="حذف"><i class="fas fa-trash"></i></button>`;
+                    const cardActionsHtml = `<button class="view-order-btn text-blue-600 hover:text-blue-800 p-2" data-id="${order.id}" title="عرض"><i class="fas fa-eye fa-lg"></i></button><button class="edit-order-btn text-green-600 hover:text-green-800 p-2" data-id="${order.id}" title="تعديل"><i class="fas fa-edit fa-lg"></i></button><button class="print-invoice-btn text-purple-600 hover:text-purple-800 p-2" data-id="${order.id}" title="طباعة"><i class="fas fa-print fa-lg"></i></button><button class="delete-order-btn text-red-600 hover:text-red-800 p-2" data-id="${order.id}" title="حذف"><i class="fas fa-trash fa-lg"></i></button>`;
+                    const statusSelect = `<select class="status-select p-2 rounded-lg border border-color  text-xs" data-id="${order.id}" data-field="orderStatus">${ORDER_STATUSES.map(s => `<option value="${s}" ${s === order.orderStatus ? 'selected' : ''}>${s}</option>`).join('')}</select>`;
+                    const paymentSelect = `<select class="status-select p-2 rounded-lg border border-color text-xs" data-id="${order.id}" data-field="paymentStatus">${PAYMENT_STATUSES.map(s => `<option value="${s}" ${s === order.paymentStatus ? 'selected' : ''}>${s}</option>`).join('')}</select>`;
+                    
+                    tableBody.innerHTML += `<tr id="order-row-${order.id}" class="border-b border-color table-row"><td class="px-6 py-4 font-mono">${escapeHTML(order.trackingId)}</td><td class="px-6 py-4">${escapeHTML(order.customerName)}</td><td class="px-6 py-4 font-bold">${(order.total || 0).toLocaleString()} ج.م</td><td class="px-6 py-4">${statusSelect}</td><td class="px-6 py-4">${paymentSelect}</td><td class="px-6 py-4 text-xs">${formatDate(order.date)}</td><td class="px-6 py-4 space-x-2 space-x-reverse">${actionsHtml}</td></tr>`;
+                    cardsContainer.innerHTML += `<div id="order-card-${order.id}" class="card rounded-lg shadow-sm border p-4 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div><p class="font-bold">${escapeHTML(order.customerName)}</p><p class="text-xs text-secondary font-mono">#${escapeHTML(order.trackingId)}</p></div>
+                            <p class="font-bold text-lg text-amber-500">${(order.total || 0).toLocaleString()} ج.م</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><label class="block text-xs font-medium text-secondary">حالة الطلب</label>${statusSelect.replace('text-xs', 'w-full text-sm')}</div>
+                            <div><label class="block text-xs font-medium text-secondary">حالة الدفع</label>${paymentSelect.replace('text-xs', 'w-full text-sm')}</div>
+                        </div>
+                        <div class="flex justify-between items-center pt-3 border-t border-color">
+                            <p class="text-xs text-secondary">تاريخ: ${formatDate(order.date)}</p>
+                            <div class="flex justify-end items-center gap-2 flex-wrap">${cardActionsHtml}</div>
+                        </div>
+                    </div>`;
+                });
+            }
+            document.getElementById('add-order-btn').addEventListener('click', openOrderCreateModal);
+            document.querySelectorAll('.status-select').forEach(s => s.addEventListener('change', handleStatusChange));
+            document.querySelectorAll('.view-order-btn').forEach(b => b.addEventListener('click', () => viewOrderDetails(b.dataset.id)));
+            document.querySelectorAll('.edit-order-btn').forEach(b => b.addEventListener('click', () => openOrderEditModal(b.dataset.id)));
+            document.querySelectorAll('.print-invoice-btn').forEach(b => b.addEventListener('click', () => printInvoice(b.dataset.id)));
+            document.querySelectorAll('.delete-order-btn').forEach(b => b.addEventListener('click', () => deleteOrder(b.dataset.id)));
+            
+            highlightFocusedItem();
+        };
+
+        const handleStatusChange = async (e) => {
+            const { id, field } = e.target.dataset;
+            const { value } = e.target;
+            const order = allOrdersCache.find(o => o.id === id);
+            if (!order) return;
+            showLoading();
+            try {
+                await updateDoc(doc(db, "orders", id), { [field]: value });
+                showToast(`تم تحديث حالة الطلب #${order.trackingId}`);
+                addNotification({
+                    message: `حالة الطلب #${order.trackingId} الآن هي "${value}"`,
+                    icon: 'fa-check-circle',
+                    page: 'orders',
+                    focusId: id
+                });
+                const orderIndex = allOrdersCache.findIndex(o => o.id === id);
+                if (orderIndex > -1) allOrdersCache[orderIndex][field] = value;
+            } catch (error) { showToast("فشل تحديث الحالة", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const deleteOrder = (orderId) => {
+            showConfirmationModal('تأكيد حذف الطلب', 'هل أنت متأكد؟ سيتم إرجاع الكميات للمخزون.', async () => {
+                showLoading();
+                const order = allOrdersCache.find(o => o.id === orderId);
+                try {
+                    const orderSnap = await getDoc(doc(db, "orders", orderId));
+                    if (orderSnap.exists()) {
+                        const stockUpdates = orderSnap.data().products?.map(p => {
+                            const productInfo = allProductsCache.find(prod => prod.name === p.name);
+                            if (productInfo) return updateDoc(doc(db, "products", productInfo.id), { stock: increment(p.quantity) });
+                        }).filter(Boolean);
+                        if (stockUpdates.length > 0) await Promise.all(stockUpdates);
+                    }
+                    await deleteDoc(doc(db, "orders", orderId));
+                    showToast(`تم حذف الطلب #${order?.trackingId || orderId}`);
+                    await cacheInitialData();
+                    if (currentNavPage === 'orders') loadOrders();
+                    if (currentNavPage === 'products') loadProducts();
+                } catch (error) { console.error(error); showToast("فشل حذف الطلب", "error"); }
+                finally { hideLoading(); }
+            });
+        };
+        
+        const openOrderCreateModal = async () => {
+            showLoading();
+            try {
+                const lensesDoc = await getDoc(doc(db, "settings", "lenses"));
+                const lensesOptions = lensesDoc.exists() ? lensesDoc.data() : {};
+                const productsOptions = allProductsCache.map(p => `<option value="${escapeHTML(p.name)}" data-price="${p.price}" data-has-options="${p.hasOptions === 'true'}">${escapeHTML(p.name)}</option>`).join('');
+                const lensesSelectOptions = Object.entries(lensesOptions).map(([name, price]) => `<option value="${escapeHTML(name)}" data-price="${price}">${escapeHTML(name)} (+${price} ج.م)</option>`).join('');
+
+                const bodyHtml = `
+                    <form id="create-order-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label class="block text-sm font-medium">اسم العميل</label><input type="text" id="create-customerName" class="mt-1 block w-full input-style" required></div>
+                            <div><label class="block text-sm font-medium">هاتف العميل</label><input type="text" id="create-customerPhone" class="mt-1 block w-full input-style" required></div>
+                            <div class="md:col-span-2"><label class="block text-sm font-medium">العنوان بالكامل</label><input type="text" id="create-fullAddress" class="mt-1 block w-full input-style" required></div>
+                        </div>
+                        <div class="border-t border-color pt-4">
+                            <div class="flex justify-between items-center mb-2"><h4 class="font-bold text-lg">المنتجات</h4><button type="button" id="add-product-to-order-btn" class="bg-green-500 text-white py-1 px-3 rounded-lg text-sm"><i class="fas fa-plus"></i> إضافة</button></div>
+                            <div id="order-products-container" class="space-y-3"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 border-t border-color pt-4">
+                            <div><label class="block text-sm font-medium">الشحن (ج.م)</label><input type="number" id="create-shipping" value="0" class="mt-1 block w-full input-style"></div>
+                            <div><label class="block text-sm font-medium">كود الخصم</label><input type="text" id="create-promoCode" placeholder="ادخل الكود" class="mt-1 block w-full input-style"></div>
+                            <div><label class="block text-sm font-medium">الخصم (ج.م)</label><input type="number" id="create-discount" value="0" class="mt-1 block w-full input-style"></div>
+                            <div class="pt-6"><p><strong>المجموع الفرعي:</strong> <span id="create-subtotal">0</span> ج.م</p></div>
+                            <div class="pt-6"><p class="font-bold text-xl"><strong>الإجمالي:</strong> <span id="create-total">0</span> ج.م</p></div>
+                        </div>
+                    </form>`;
+                const footerHtml = `<button id="cancel-create-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg">إلغاء</button><button id="save-new-order-btn" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg">إنشاء الطلب</button>`;
+                openModal(`إنشاء طلب يدوي جديد`, bodyHtml, footerHtml, 'max-w-6xl');
+                document.getElementById('cancel-create-btn').addEventListener('click', closeModal);
+                document.getElementById('save-new-order-btn').addEventListener('click', saveNewOrder);
+                document.getElementById('add-product-to-order-btn').addEventListener('click', () => addProductRowToOrder(productsOptions, lensesSelectOptions));
+                const container = document.getElementById('order-products-container');
+                container.addEventListener('click', (e) => { if (e.target.closest('.remove-product-btn')) { e.target.closest('.product-item').remove(); updateOrderTotals('create'); } });
+                container.addEventListener('change', (e) => { if (e.target.matches('.product-select, .quantity-input, .lens-select')) { const item = e.target.closest('.product-item'); const sel = item.querySelector('.product-select'); const lensSel = item.querySelector('.lens-select'); const opt = sel.options[sel.selectedIndex]; lensSel.disabled = opt.dataset.hasOptions !== 'true'; if (lensSel.disabled) lensSel.value = ''; updateOrderTotals('create'); } });
+                document.getElementById('create-shipping').addEventListener('input', () => updateOrderTotals('create'));
+                document.getElementById('create-discount').addEventListener('input', () => updateOrderTotals('create'));
+            } catch (error) { console.error(error); showToast("حدث خطأ", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const saveNewOrder = async () => {
+            const form = document.getElementById('create-order-form');
+            if (!form.checkValidity()) { showToast("يرجى ملء بيانات العميل.", "error"); form.reportValidity(); return; }
+            showLoading();
+            try {
+                const products = [];
+                let subtotal = 0;
+                document.querySelectorAll('#order-products-container .product-item').forEach(item => {
+                    const productSelect = item.querySelector('.product-select');
+                    const quantity = parseInt(item.querySelector('.quantity-input').value);
+                    const lensSelect = item.querySelector('.lens-select');
+                    const productName = productSelect.value;
+                    if (!productName) return;
+                    const productInfo = allProductsCache.find(p => p.name === productName);
+                    if (!productInfo) return;
+                    const lensName = lensSelect.value;
+                    const framePrice = parseFloat(productInfo.price) || 0;
+                    const lensPrice = lensName ? parseFloat(lensSelect.options[lensSelect.selectedIndex].dataset.price) : 0;
+                    const pricePerUnit = framePrice + lensPrice;
+                    subtotal += pricePerUnit * quantity;
+                    products.push({ name: productName, image: productInfo.images?.[0] || '', quantity, pricePerUnit, framePrice, lensPrice, options: { lensType: lensName || null } });
+                });
+                if (products.length === 0) { showToast("يجب إضافة منتج واحد على الأقل.", "error"); hideLoading(); return; }
+                const shipping = parseFloat(document.getElementById('create-shipping').value) || 0;
+                const discount = parseFloat(document.getElementById('create-discount').value) || 0;
+                const promoCode = document.getElementById('create-promoCode').value.toUpperCase().trim();
+                const total = subtotal + shipping - discount;
+                const trackingId = `YO-${Date.now().toString().slice(-6)}`;
+                const customerName = document.getElementById('create-customerName').value;
+                const newOrderData = {
+                    customerName: customerName,
+                    customerPhone: document.getElementById('create-customerPhone').value,
+                    fullAddress: document.getElementById('create-fullAddress').value,
+                    products, subtotal, shipping, discount, total, trackingId, promoCode,
+                    date: serverTimestamp(), orderStatus: 'تم الطلب', paymentStatus: 'لم يتم الدفع', paymentMethod: 'يدوي'
+                };
+                const newDocRef = await addDoc(collection(db, "orders"), newOrderData);
+                const stockUpdates = products.map(p => {
+                    const productInfo = allProductsCache.find(prod => prod.name === p.name);
+                    if (productInfo) return updateDoc(doc(db, "products", productInfo.id), { stock: increment(-p.quantity) });
+                }).filter(Boolean);
+                if (stockUpdates.length > 0) await Promise.all(stockUpdates);
+                showToast(`تم إنشاء الطلب #${trackingId}`);
+                addNotification({
+                    message: `تم إنشاء طلب جديد لـ ${customerName}`,
+                    icon: 'fa-plus-circle',
+                    page: 'orders',
+                    focusId: newDocRef.id
+                });
+                closeModal();
+                await cacheInitialData();
+                loadOrders();
+                if (currentNavPage === 'products') loadProducts();
+            } catch (error) { console.error(error); showToast("فشل إنشاء الطلب", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const viewOrderDetails = async (orderId) => {
+            showLoading();
+            try {
+                const orderSnap = await getDoc(doc(db, "orders", orderId));
+                if (!orderSnap.exists()) { showToast("الطلب غير موجود", "error"); return; }
+                const order = orderSnap.data();
+                const productsHtml = (order.products || []).map(p => {
+                    const price = parseFloat(p.pricePerUnit || 0);
+                    const framePrice = parseFloat(p.framePrice || 0);
+                    const lensPrice = parseFloat(p.lensPrice || 0);
+                    const totalLinePrice = price * p.quantity;
+                    let breakdownHtml = '';
+                    if (lensPrice > 0) {
+                        breakdownHtml = `<div class="text-xs text-secondary mt-1"><span>الإطار: ${framePrice.toFixed(2)}</span> + <span>العدسات (${escapeHTML(p.options?.lensType || '')}): ${lensPrice.toFixed(2)}</span></div>`;
+                    }
+                    return `<div class="flex items-start gap-4 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg"><img src="${escapeHTML(p.image)}" class="w-16 h-16 rounded-md object-cover" onerror="this.onerror=null;this.src='https://placehold.co/64x64/eee/ccc?text=Img';"><div class="flex-grow"><p class="font-bold">${escapeHTML(p.name)}</p><p class="text-sm text-secondary">الكمية: ${p.quantity}</p>${breakdownHtml}</div><p class="font-semibold whitespace-nowrap">${totalLinePrice.toFixed(2)} ج.م</p></div>`;
+                }).join('');
+                const bodyHtml = `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-sm">
+                        <div class="lg:col-span-2 space-y-4">
+                            <div class="p-4 card border rounded-lg"><h4 class="font-bold text-base mb-3"><i class="fas fa-receipt text-secondary mr-2"></i>ملخص الطلب</h4><div class="space-y-3">${productsHtml || '<p>لا توجد منتجات.</p>'}</div></div>
+                            <div class="p-4 card border rounded-lg"><h4 class="font-bold text-base mb-3"><i class="fas fa-file-medical text-secondary mr-2"></i>مقاس النظر</h4>${generatePrescriptionTable(order.prescription)}</div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 card border rounded-lg"><h4 class="font-bold text-base mb-3"><i class="fas fa-user text-secondary mr-2"></i>العميل</h4><p><strong>الاسم:</strong> ${escapeHTML(order.customerName)}</p><p><strong>الهاتف:</strong> <span dir="ltr">${escapeHTML(order.customerPhone)}</span></p></div>
+                            <div class="p-4 card border rounded-lg"><h4 class="font-bold text-base mb-3"><i class="fas fa-map-marker-alt text-secondary mr-2"></i>الشحن</h4><p>${escapeHTML(order.fullAddress)}</p></div>
+                             <div class="p-4 card border rounded-lg"><h4 class="font-bold text-base mb-3"><i class="fas fa-wallet text-secondary mr-2"></i>الدفع</h4><p>${escapeHTML(order.paymentMethod)}</p>${order.notes && order.notes.trim() !== "" && order.notes.trim() !== "لا يوجد" ? `<p class="mt-2 pt-2 border-t border-color text-xs"><strong>ملاحظات:</strong> ${escapeHTML(order.notes)}</p>` : ''}</div>
+                            <div class="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg space-y-2"><div class="flex justify-between"><span>المجموع الفرعي:</span> <span>${(order.subtotal || 0).toFixed(2)} ج.م</span></div><div class="flex justify-between"><span>الشحن:</span> <span>${(order.shipping || 0).toFixed(2)} ج.م</span></div>${order.discount > 0 ? `<div class="flex justify-between text-red-600"><span>الخصم:</span> <span>-${(order.discount || 0).toFixed(2)} ج.م</span></div>` : ''}${order.promoCode ? `<div class="flex justify-between text-red-600"><span>كود الخصم:</span> <span>${escapeHTML(order.promoCode)}</span></div>` : ''}<div class="flex justify-between font-bold text-lg border-t border-color pt-2 mt-2"><span>الإجمالي:</span> <span class="text-amber-500">${(order.total || 0).toFixed(2)} ج.م</span></div></div>
+                        </div>
+                    </div>`;
+                openModal(`تفاصيل الطلب #${escapeHTML(order.trackingId)}`, bodyHtml, `<button id="modal-ok-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg hover:bg-gray-300">إغلاق</button>`, 'max-w-6xl');
+                document.getElementById('modal-ok-btn').addEventListener('click', closeModal);
+            } catch (error) { console.error(error); showToast("فشل عرض تفاصيل الطلب", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const openOrderEditModal = async (orderId) => {
+            showLoading();
+            try {
+                const orderSnap = await getDoc(doc(db, "orders", orderId));
+                if (!orderSnap.exists()) { showToast("الطلب غير موجود", "error"); hideLoading(); return; }
+                const order = { id: orderSnap.id, ...orderSnap.data() };
+                const lensesDoc = await getDoc(doc(db, "settings", "lenses"));
+                const lensesOptionsData = lensesDoc.exists() ? lensesDoc.data() : {};
+                const productsOptions = allProductsCache.map(p => `<option value="${escapeHTML(p.name)}" data-price="${p.price}" data-has-options="${p.hasOptions === 'true'}">${escapeHTML(p.name)}</option>`).join('');
+                const lensesOptions = Object.entries(lensesOptionsData).map(([name, price]) => `<option value="${escapeHTML(name)}" data-price="${price}">${escapeHTML(name)} (+${price} ج.м)</option>`).join('');
+                const bodyHtml = `
+                    <form id="edit-order-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label class="block text-sm">اسم العميل</label><input type="text" id="edit-customerName" value="${escapeHTML(order.customerName || '')}" class="mt-1 w-full input-style"></div>
+                            <div><label class="block text-sm">هاتف العميل</label><input type="text" id="edit-customerPhone" value="${escapeHTML(order.customerPhone || '')}" class="mt-1 w-full input-style"></div>
+                            <div class="md:col-span-2"><label class="block text-sm">العنوان</label><input type="text" id="edit-fullAddress" value="${escapeHTML(order.fullAddress || '')}" class="mt-1 w-full input-style"></div>
+                        </div>
+                        <div class="border-t border-color pt-4">
+                            <div class="flex justify-between items-center mb-2"><h4 class="font-bold text-lg">المنتجات</h4><button type="button" id="add-product-to-order-btn" class="bg-green-500 text-white py-1 px-3 rounded-lg text-sm"><i class="fas fa-plus"></i> إضافة</button></div>
+                            <div id="order-products-container" class="space-y-3">
+                                ${order.products.map((p, index) => {
+                                    const productInfo = allProductsCache.find(prod => prod.name === p.name);
+                                    return `<div class="p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-color grid grid-cols-12 gap-3 items-center product-item">
+                                        <div class="col-span-12 md:col-span-5"><select class="w-full input-style product-select" data-index="${index}"><option value="">اختر منتج</option>${allProductsCache.map(prod => `<option value="${escapeHTML(prod.name)}" data-price="${prod.price}" data-has-options="${prod.hasOptions === 'true'}" ${prod.name === p.name ? 'selected' : ''}>${escapeHTML(prod.name)}</option>`).join('')}</select></div>
+                                        <div class="col-span-6 md:col-span-2"><input type="number" value="${p.quantity}" min="1" class="w-full input-style quantity-input" data-index="${index}"></div>
+                                        <div class="col-span-6 md:col-span-4"><select class="w-full input-style lens-select" data-index="${index}" ${productInfo && productInfo.hasOptions === 'true' ? '' : 'disabled'}><option value="">بدون عدسات</option>${Object.entries(lensesOptionsData).map(([name, price]) => `<option value="${escapeHTML(name)}" data-price="${price}" ${name === p.options?.lensType ? 'selected' : ''}>${escapeHTML(name)} (+${price} ج.м)</option>`).join('')}</select></div>
+                                        <div class="col-span-12 md:col-span-1 text-right"><button type="button" class="text-red-500 remove-product-btn" data-index="${index}"><i class="fas fa-trash-alt"></i></button></div>
+                                    </div>`}).join('')}
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 border-t border-color pt-4">
+                            <div><label class="block text-sm">الشحن (ج.م)</label><input type="number" id="edit-shipping" value="${order.shipping || 0}" class="mt-1 w-full input-style"></div>
+                            <div><label class="block text-sm">كود الخصم</label><input type="text" id="edit-promoCode" value="${escapeHTML(order.promoCode || '')}" placeholder="ادخل الكود" class="mt-1 w-full input-style"></div>
+                            <div><label class="block text-sm">الخصم (ج.م)</label><input type="number" id="edit-discount" value="${order.discount || 0}" class="mt-1 w-full input-style"></div>
+                            <div class="pt-6"><p><strong>المجموع الفرعي:</strong> <span id="edit-subtotal">${order.subtotal || 0}</span> ج.م</p></div>
+                            <div class="pt-6"><p class="font-bold text-xl"><strong>الإجمالي:</strong> <span id="edit-total">${order.total || 0}</span> ج.م</p></div>
+                        </div>
+                    </form>`;
+                const footerHtml = `<button id="cancel-edit-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg">إلغاء</button><button id="save-order-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-6 rounded-lg">حفظ التعديلات</button>`;
+                openModal(`تعديل الطلب #${escapeHTML(order.trackingId)}`, bodyHtml, footerHtml, 'max-w-6xl');
+                document.getElementById('cancel-edit-btn').addEventListener('click', closeModal);
+                document.getElementById('save-order-btn').addEventListener('click', () => saveOrder(order.id, order.products));
+                document.getElementById('add-product-to-order-btn').addEventListener('click', () => addProductRowToOrder(productsOptions, lensesOptions));
+                const container = document.getElementById('order-products-container');
+                container.addEventListener('click', (e) => { if (e.target.closest('.remove-product-btn')) { e.target.closest('.product-item').remove(); updateOrderTotals('edit'); } });
+                container.addEventListener('change', (e) => { if (e.target.matches('.product-select, .quantity-input, .lens-select')) { const item = e.target.closest('.product-item'); const sel = item.querySelector('.product-select'); const lensSel = item.querySelector('.lens-select'); const opt = sel.options[sel.selectedIndex]; lensSel.disabled = opt.dataset.hasOptions !== 'true'; if (lensSel.disabled) lensSel.value = ''; updateOrderTotals('edit'); } });
+                document.getElementById('edit-shipping').addEventListener('input', () => updateOrderTotals('edit'));
+                document.getElementById('edit-discount').addEventListener('input', () => updateOrderTotals('edit'));
+            } catch (error) { console.error(error); showToast("حدث خطأ", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const saveOrder = async (orderId, originalProducts = []) => {
+            showLoading();
+            const order = allOrdersCache.find(o => o.id === orderId);
+            try {
+                const newProducts = [];
+                let subtotal = 0;
+                document.querySelectorAll('#order-products-container .product-item').forEach(item => {
+                    const productSelect = item.querySelector('.product-select');
+                    const quantity = parseInt(item.querySelector('.quantity-input').value);
+                    const lensSelect = item.querySelector('.lens-select');
+                    const productName = productSelect.value;
+                    if (!productName) return;
+                    const productInfo = allProductsCache.find(p => p.name === productName);
+                    if (!productInfo) return;
+                    const lensName = lensSelect.value;
+                    const framePrice = parseFloat(productInfo.price) || 0;
+                    const lensPrice = lensName ? parseFloat(lensSelect.options[lensSelect.selectedIndex].dataset.price) : 0;
+                    const pricePerUnit = framePrice + lensPrice;
+                    subtotal += pricePerUnit * quantity;
+                    newProducts.push({ name: productName, image: productInfo.images?.[0] || '', quantity, pricePerUnit, framePrice, lensPrice, options: { lensType: lensName || null } });
+                });
+                const shipping = parseFloat(document.getElementById('edit-shipping').value) || 0;
+                const discount = parseFloat(document.getElementById('edit-discount').value) || 0;
+                const promoCode = document.getElementById('edit-promoCode').value.toUpperCase().trim();
+                const total = subtotal + shipping - discount;
+                const updatedOrderData = {
+                    customerName: document.getElementById('edit-customerName').value,
+                    customerPhone: document.getElementById('edit-customerPhone').value,
+                    fullAddress: document.getElementById('edit-fullAddress').value,
+                    products: newProducts, subtotal, shipping, discount, total, promoCode,
+                };
+                await updateDoc(doc(db, "orders", orderId), updatedOrderData);
+                showToast(`تم حفظ تعديلات الطلب #${order.trackingId}`);
+                closeModal();
+                await cacheInitialData();
+                loadOrders();
+            } catch (error) { console.error(error); showToast("فشل حفظ التعديلات", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const printInvoice = async (orderId) => {
+            showLoading();
+            try {
+                const orderSnap = await getDoc(doc(db, "orders", orderId));
+                if (!orderSnap.exists()) { showToast("الطلب غير موجود", "error"); return; }
+                const order = orderSnap.data();
+                const logoDataUrl = await imageToDataUrl('images/logo.png');
+                const invoiceContent = `
+                    <div dir="rtl" style="font-family: 'Cairo', sans-serif; width: 210mm; min-height: 297mm; padding: 15mm; background: white; color: #000;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #eee; padding-bottom: 20px;">
+                            <div><h1 style="font-size: 2.5rem; margin: 0;">فاتورة</h1><p><b>رقم الطلب:</b> ${escapeHTML(order.trackingId)}</p><p><b>تاريخ الطلب:</b> ${formatDate(order.date)}</p></div>
+                            <div style="text-align: left;"><img src="${logoDataUrl}" alt="Logo" style="width: 80px;"><h2 style="font-size: 1.5rem; margin: 5px 0 0 0;">يوسف للبصريات</h2></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                            <div><h3>فاتورة إلى:</h3><p><b>الاسم:</b> ${escapeHTML(order.customerName)}</p><p><b>الهاتف:</b> <span dir="ltr">${escapeHTML(order.customerPhone)}</span></p><p><b>العنوان:</b> ${escapeHTML(order.fullAddress)}</p></div>
+                            <div style="text-align: left;"><h3>طريقة الدفع:</h3><p>${escapeHTML(order.paymentMethod)}</p></div>
+                        </div>
+                        <table style="width: 100%; margin-top: 30px; border-collapse: collapse; font-size: 0.9rem;">
+                            <thead style="background-color: #f3f4f6;"><tr><th style="padding: 10px; text-align: right;">المنتج</th><th style="padding: 10px; text-align: center;">الكمية</th><th style="padding: 10px; text-align: center;">السعر</th><th style="padding: 10px; text-align: left;">الإجمالي</th></tr></thead>
+                            <tbody>${(order.products || []).map(p => { const price = parseFloat(p.pricePerUnit || 0); const framePrice = parseFloat(p.framePrice || 0); const lensPrice = parseFloat(p.lensPrice || 0); let breakdown = lensPrice > 0 ? `<br><small style="color: #555;">(الإطار: ${framePrice.toFixed(2)} + العدسات: ${lensPrice.toFixed(2)})</small>` : ''; return `<tr><td style="padding: 10px; border-bottom: 1px solid #eee;">${escapeHTML(p.name)} ${breakdown}</td><td style="padding: 10px; text-align: center; border-bottom: 1px solid #eee;">${p.quantity}</td><td style="padding: 10px; text-align: center; border-bottom: 1px solid #eee;">${price.toLocaleString()} ج.م</td><td style="padding: 10px; text-align: left; border-bottom: 1px solid #eee;">${(price * p.quantity).toLocaleString()} ج.م</td></tr>`}).join('')}</tbody>
+                        </table>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 30px;"><div style="width: 45%;"><div style="display: flex; justify-content: space-between; padding: 5px 0;"><span>المجموع الفرعي:</span> <span>${(order.subtotal || 0).toLocaleString()} ج.م</span></div><div style="display: flex; justify-content: space-between; padding: 5px 0;"><span>الشحن:</span> <span>${(order.shipping || 0).toLocaleString()} ج.م</span></div>${order.discount > 0 ? `<div style="display: flex; justify-content: space-between; color: #ef4444;"><span>الخصم:</span> <span>-${(order.discount || 0).toLocaleString()} ج.م</span></div>` : ''}<div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 2px solid #000; font-weight: bold; font-size: 1.2rem;"><span>الإجمالي:</span> <span>${(order.total || 0).toLocaleString()} ج.م</span></div></div></div>
+                        <div style="margin-top: 50px; text-align: center; font-size: 0.9rem; color: #6b7280;"><p>شكراً لتعاملكم معنا!</p></div>
+                    </div>`;
+                const invoiceTemplate = document.getElementById('invoice-template');
+                invoiceTemplate.innerHTML = invoiceContent;
+                invoiceTemplate.classList.remove('hidden');
+                const { jsPDF } = window.jspdf;
+                const canvas = await html2canvas(invoiceTemplate.firstElementChild, { scale: 2, useCORS: true });
+                invoiceTemplate.classList.add('hidden');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`invoice-${order.trackingId}.pdf`);
+            } catch (error) { console.error(error); showToast("فشل طباعة الفاتورة", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const generatePrescriptionTable = (prescription) => {
+            if (!prescription) return '<p>لا يوجد مقاس نظر.</p>';
+            const p = { distance: prescription.distance || { right: {}, left: {}, ipd: '' }, reading: prescription.reading || { right: {}, left: {}, ipd: '' } };
+            const hasDistance = Object.values(p.distance).some(val => typeof val === 'object' ? Object.values(val).some(v => v) : val);
+            const hasReading = Object.values(p.reading).some(val => typeof val === 'object' ? Object.values(val).some(v => v) : val);
+            if (!hasDistance && !hasReading) return '<p>لم يتم إدخال مقاس نظر.</p>';
+
+            return `<div class="overflow-x-auto dark:bg-slate-900 rounded-lg p-2">
+                <table dir="rtl" class="w-full text-center text-xs border-collapse">
+                    <thead class="">
+                        <tr>
+                            <th class="border border-color p-1 font-bold">IPD</th>
+                            <th class="border border-color p-1 font-bold" colspan="3">Left eye</th>
+                            <th class="border border-color p-1 font-bold" colspan="3">Right eye</th>
+                            <th class="border border-color p-1"></th>
+                        </tr>
+                        <tr>
+                            <th class="border border-color p-1"></th>
+                            <th class="border border-color p-1 font-bold">Axis</th>
+                            <th class="border border-color p-1 font-bold">Cylinder</th>
+                            <th class="border border-color p-1 font-bold">Sphere</th>
+                            <th class="border border-color p-1 font-bold">Axis</th>
+                            <th class="border border-color p-1 font-bold">Cylinder</th>
+                            <th class="border border-color p-1 font-bold">Sphere</th>
+                            <th class="border border-color p-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${hasDistance ? `<tr>
+                            <td class="border border-color p-1">${p.distance.ipd || '--'}</td>
+                            <td class="border border-color p-1">${p.distance.left?.axis || '--'}</td>
+                            <td class="border border-color p-1">${p.distance.left?.cyl || '--'}</td>
+                            <td class="border border-color p-1">${p.distance.left?.sph || '--'}</td>
+                            <td class="border border-color p-1">${p.distance.right?.axis || '--'}</td>
+                            <td class="border border-color p-1">${p.distance.right?.cyl || '--'}</td>
+                            <td class="border border-color p-1">${p.distance.right?.sph || '--'}</td>
+                            <td class="border border-color p-1 font-bold">Distance</td>
+                        </tr>` : ''}
+                        ${hasReading ? `<tr>
+                            <td class="border border-color p-1">${p.reading.ipd || '--'}</td>
+                            <td class="border border-color p-1">${p.reading.left?.axis || '--'}</td>
+                            <td class="border border-color p-1">${p.reading.left?.cyl || '--'}</td>
+                            <td class="border border-color p-1">${p.reading.left?.sph || '--'}</td>
+                            <td class="border border-color p-1">${p.reading.right?.axis || '--'}</td>
+                            <td class="border border-color p-1">${p.reading.right?.cyl || '--'}</td>
+                            <td class="border border-color p-1">${p.reading.right?.sph || '--'}</td>
+                            <td class="border border-color p-1 font-bold">Reading</td>
+                        </tr>` : ''}
+                    </tbody>
+                </table>
+            </div>`;
+        };
+        
+        const addProductRowToOrder = (productsOptions, lensesOptions) => {
+            const container = document.getElementById('order-products-container');
+            const index = container.children.length;
+            const newRow = document.createElement('div');
+            newRow.className = 'p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-color grid grid-cols-12 gap-3 items-center product-item';
+            newRow.innerHTML = `
+                <div class="col-span-12 md:col-span-5">
+                    <select class="w-full input-style product-select" data-index="${index}">
+                        <option value="">اختر منتج</option>
+                        ${productsOptions}
+                    </select>
+                </div>
+                <div class="col-span-6 md:col-span-2">
+                    <input type="number" value="1" min="1" class="w-full input-style quantity-input" data-index="${index}">
+                </div>
+                <div class="col-span-6 md:col-span-4">
+                    <select class="w-full input-style lens-select" data-index="${index}" disabled>
+                        <option value="">بدون عدسات</option>
+                        ${lensesOptions}
+                    </select>
+                </div>
+                <div class="col-span-12 md:col-span-1 text-right">
+                    <button type="button" class="text-red-500 remove-product-btn" data-index="${index}"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            `;
+            container.appendChild(newRow);
+        };
+
+        const updateOrderTotals = (prefix) => {
+            let subtotal = 0;
+            document.querySelectorAll('#order-products-container .product-item').forEach(item => {
+                const productSelect = item.querySelector('.product-select');
+                const quantityInput = item.querySelector('.quantity-input');
+                const lensSelect = item.querySelector('.lens-select');
+                const selectedProductOption = productSelect.options[productSelect.selectedIndex];
+                const selectedLensOption = lensSelect.options[lensSelect.selectedIndex];
+                if (selectedProductOption && selectedProductOption.value) {
+                    const productPrice = parseFloat(selectedProductOption.dataset.price) || 0;
+                    const quantity = parseInt(quantityInput.value) || 0;
+                    const lensPrice = (selectedLensOption && selectedLensOption.value) ? parseFloat(selectedLensOption.dataset.price) : 0;
+                    subtotal += (productPrice + lensPrice) * quantity;
+                }
+            });
+            const shipping = parseFloat(document.getElementById(`${prefix}-shipping`).value) || 0;
+            const discount = parseFloat(document.getElementById(`${prefix}-discount`).value) || 0;
+            const total = subtotal + shipping - discount;
+            document.getElementById(`${prefix}-subtotal`).textContent = subtotal.toFixed(2);
+            document.getElementById(`${prefix}-total`).textContent = total.toFixed(2);
+        };
+        
+        // --- Customer Management Functions ---
+        const aggregateCustomerData = () => {
+            const customersMap = new Map();
+            allOrdersCache.forEach(order => {
+                const phone = order.customerPhone;
+                if (!phone) return; 
+
+                if (!customersMap.has(phone)) {
+                    customersMap.set(phone, {
+                        id: phone, 
+                        name: order.customerName,
+                        phone: phone,
+                        addresses: new Set([order.fullAddress]),
+                        orders: [],
+                        totalSpent: 0,
+                        orderCount: 0,
+                        lastOrderDate: null,
+                    });
+                }
+
+                const customer = customersMap.get(phone);
+                customer.name = order.customerName;
+                customer.addresses.add(order.fullAddress);
+                customer.orders.push(order.id);
+                customer.totalSpent += order.total || 0;
+                customer.orderCount++;
+                if (!customer.lastOrderDate || order.date > customer.lastOrderDate) {
+                    customer.lastOrderDate = order.date;
+                }
+            });
+
+            allCustomersCache = Array.from(customersMap.values());
+            allCustomersCache.forEach(c => c.addresses = Array.from(c.addresses));
+            allCustomersCache.sort((a, b) => (b.lastOrderDate?.toMillis() || 0) - (a.lastOrderDate?.toMillis() || 0));
+        };
+
+        const loadCustomersPage = (searchTerm = '') => {
+            const container = document.getElementById('customers-container');
+            if (!container) return;
+
+            const filteredCustomers = allCustomersCache.filter(c =>
+                c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                c.phone.includes(searchTerm)
+            );
+
+            const { itemsPerPage } = paginationState.customers;
+            paginationState.customers.totalItems = filteredCustomers.length;
+            const { currentPage } = paginationState.customers;
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedCustomers = filteredCustomers.slice(startIndex, endIndex);
+
+            renderCustomersList(paginatedCustomers);
+            renderPaginationControls('customers', document.getElementById('customers-pagination-container'));
+
+            const searchInput = document.getElementById('customer-search-input');
+            if (searchInput) {
+                searchInput.value = searchTerm;
+                let debounceTimer;
+                searchInput.oninput = (e) => {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => {
+                        paginationState.customers.currentPage = 1; 
+                        loadCustomersPage(e.target.value);
+                    }, 300);
+                };
+            }
+        };
+
+        const renderCustomersList = (customers) => {
+            const tableBody = document.getElementById('customers-table-body');
+            const cardsContainer = document.getElementById('customers-cards-container');
+            if (!tableBody || !cardsContainer) return;
+
+            const noDataHtml = '<tr><td colspan="6" class="text-center p-4">لا يوجد عملاء.</td></tr>';
+            tableBody.innerHTML = '';
+            cardsContainer.innerHTML = '';
+
+            if (customers.length === 0) {
+                tableBody.innerHTML = noDataHtml;
+                cardsContainer.innerHTML = `<div class="text-center p-4 card rounded-lg">${noDataHtml}</div>`;
+                return;
+            }
+
+            const allSpends = allCustomersCache.map(c => c.totalSpent).sort((a, b) => b - a);
+            const spendThreshold = allSpends.length > 0 ? allSpends[Math.floor(allSpends.length * 0.2)] : 0; 
+
+            customers.forEach(customer => {
+                const isVip = customer.totalSpent >= spendThreshold && customer.totalSpent > 0;
+                const vipBadge = isVip ? '<span class="text-xs font-bold text-amber-500 bg-amber-100 dark:bg-amber-900/50 px-2 py-1 rounded-full">عميل مميز</span>' : '';
+                
+                // Table Row HTML
+                tableBody.innerHTML += `
+                    <tr class="border-b border-color table-row">
+                        <td class="px-6 py-4">
+                            <div class="font-medium">${escapeHTML(customer.name)}</div>
+                            ${vipBadge}
+                        </td>
+                        <td class="px-6 py-4 font-mono">${escapeHTML(customer.phone)}</td>
+                        <td class="px-6 py-4 text-center">${customer.orderCount}</td>
+                        <td class="px-6 py-4 font-bold">${(customer.totalSpent || 0).toLocaleString()} ج.م</td>
+                        <td class="px-6 py-4 text-xs">${formatDate(customer.lastOrderDate)}</td>
+                        <td class="px-6 py-4">
+                            <button class="view-customer-btn text-blue-600 hover:underline p-1" data-id="${customer.id}" title="عرض الملف الشخصي">
+                                <i class="fas fa-user mr-1"></i> عرض الملف
+                            </button>
+                        </td>
+                    </tr>`;
+
+                // Card HTML
+                cardsContainer.innerHTML += `
+                    <div class="card rounded-lg shadow-sm border p-4 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-bold">${escapeHTML(customer.name)}</p>
+                                <p class="text-sm text-secondary font-mono">${escapeHTML(customer.phone)}</p>
+                            </div>
+                            ${vipBadge}
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm pt-2 border-t border-color">
+                            <div>
+                                <p class="text-xs text-secondary">إجمالي الإنفاق</p>
+                                <p class="font-bold text-green-600">${(customer.totalSpent || 0).toLocaleString()} ج.م</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-secondary">عدد الطلبات</p>
+                                <p class="font-bold">${customer.orderCount}</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center pt-3 border-t border-color">
+                            <p class="text-xs text-secondary">آخر طلب: ${formatDate(customer.lastOrderDate)}</p>
+                            <button class="view-customer-btn text-blue-600 hover:text-blue-800 p-2" data-id="${customer.id}" title="عرض الملف الشخصي">
+                                <i class="fas fa-user fa-lg"></i>
+                            </button>
+                        </div>
+                    </div>`;
+            });
+
+            document.querySelectorAll('.view-customer-btn').forEach(btn => {
+                btn.addEventListener('click', () => viewCustomerProfile(btn.dataset.id));
+            });
+        };
+
+        const viewCustomerProfile = async (customerPhone) => {
+            showLoading();
+            try {
+                const customer = allCustomersCache.find(c => c.id === customerPhone);
+                if (!customer) {
+                    showToast("العميل غير موجود", "error");
+                    return;
+                }
+
+                const notesDoc = await getDoc(doc(db, "customer_metadata", customerPhone));
+                const adminNotes = notesDoc.exists() ? notesDoc.data().adminNotes || '' : '';
+
+                const customerOrders = allOrdersCache.filter(order => order.customerPhone === customerPhone)
+                    .sort((a, b) => (b.date?.toMillis() || 0) - (a.date?.toMillis() || 0));
+
+                pageTitle.textContent = `ملف العميل: ${escapeHTML(customer.name)}`;
+                mainContent.innerHTML = `
+                    <div class="page space-y-6">
+                        <div class="flex items-center">
+                            <button id="back-to-customers-btn" class="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors flex items-center justify-center">
+                                <i class="fas fa-arrow-right ml-2"></i> العودة لقائمة العملاء
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="lg:col-span-2 space-y-6">
+                                <div class="card p-6 rounded-xl shadow-md">
+                                    <h3 class="text-xl font-bold mb-4">سجل الطلبات (${customer.orderCount})</h3>
+                                    <div class="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                                        ${customerOrders.length > 0 ? customerOrders.map(order => `
+                                            <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                                                <div>
+                                                    <p class="font-bold font-mono">#${escapeHTML(order.trackingId)}</p>
+                                                    <p class="text-xs text-secondary">${formatDate(order.date)}</p>
+                                                </div>
+                                                <div class="text-left">
+                                                    <p class="font-semibold text-green-600">${(order.total || 0).toLocaleString()} ج.م</p>
+                                                    <p class="text-xs text-secondary">${escapeHTML(order.orderStatus)}</p>
+                                                </div>
+                                                <button class="view-order-btn text-blue-600 hover:underline p-1" data-id="${order.id}" title="عرض تفاصيل الطلب"><i class="fas fa-eye"></i></button>
+                                            </div>
+                                        `).join('') : '<p class="text-secondary text-center">لا توجد طلبات لهذا العميل.</p>'}
+                                    </div>
+                                </div>
+                                <div class="card p-6 rounded-xl shadow-md">
+                                    <h3 class="text-xl font-bold mb-4">ملاحظات إدارية (خاصة)</h3>
+                                    <textarea id="admin-notes-textarea" class="w-full input-style" rows="4" placeholder="أضف ملاحظات حول هذا العميل...">${escapeHTML(adminNotes)}</textarea>
+                                    <div class="text-left mt-3">
+                                        <button id="save-notes-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-amber-500 transition-colors">حفظ الملاحظات</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div class="card p-6 rounded-xl shadow-md">
+                                    <h3 class="text-xl font-bold mb-4">معلومات العميل</h3>
+                                    <div class="space-y-2 text-sm">
+                                        <p><strong><i class="fas fa-user w-5 text-secondary"></i> الاسم:</strong> ${escapeHTML(customer.name)}</p>
+                                        <p><strong><i class="fas fa-phone w-5 text-secondary"></i> الهاتف:</strong> <span dir="ltr">${escapeHTML(customer.phone)}</span></p>
+                                        <div class="pt-2">
+                                            <p><strong><i class="fas fa-map-marker-alt w-5 text-secondary"></i> العناوين المسجلة:</strong></p>
+                                            <ul class="list-disc pr-8 mt-1 text-secondary space-y-1">
+                                                ${customer.addresses.map(addr => `<li>${escapeHTML(addr)}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="card p-6 rounded-xl shadow-md text-center">
+                                    <p class="text-secondary text-sm">إجمالي ما تم إنفاقه</p>
+                                    <p class="text-4xl font-bold text-green-500 my-2">${(customer.totalSpent || 0).toLocaleString()} ج.م</p>
+                                    <p class="text-secondary text-sm">عبر ${customer.orderCount} طلبات</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('back-to-customers-btn').addEventListener('click', () => navigateTo('customers'));
+                document.getElementById('save-notes-btn').addEventListener('click', () => saveCustomerNotes(customerPhone));
+                document.querySelectorAll('.view-order-btn').forEach(b => b.addEventListener('click', () => viewOrderDetails(b.dataset.id)));
+
+            } catch (error) {
+                console.error("Error viewing customer profile:", error);
+                showToast("فشل عرض ملف العميل", "error");
+                navigateTo('customers'); 
+            } finally {
+                hideLoading();
+            }
+        };
+
+        const saveCustomerNotes = async (customerPhone) => {
+            const notesText = document.getElementById('admin-notes-textarea').value;
+            showLoading();
+            try {
+                await setDoc(doc(db, "customer_metadata", customerPhone), { adminNotes: notesText }, { merge: true });
+                showToast("تم حفظ الملاحظات بنجاح");
+            } catch (error) {
+                console.error("Error saving notes:", error);
+                showToast("فشل حفظ الملاحظات", "error");
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // --- Products Page Functions ---
+        const loadProducts = () => {
+            const productsPage = document.getElementById('products-page');
+            if (!productsPage) return;
+            const { itemsPerPage, categoryFilter } = paginationState.products;
+            
+            const filteredProducts = allProductsCache.filter(p => 
+                categoryFilter === 'all' || p.category === categoryFilter
+            ).sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0)); 
+
+            paginationState.products.totalItems = filteredProducts.length;
+
+            if (currentFocusId) {
+                const itemIndex = filteredProducts.findIndex(p => p.id === currentFocusId);
+                if (itemIndex > -1) {
+                    paginationState.products.currentPage = Math.floor(itemIndex / itemsPerPage) + 1;
+                }
+            }
+
+            const { currentPage } = paginationState.products;
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+            renderProductFilters();
+            renderProducts(paginatedProducts);
+            renderPaginationControls('products', document.getElementById('products-pagination-container'));
+        };
+
+        const renderProductFilters = () => {
+            const container = document.getElementById('product-filters-container');
+            if (!container) return;
+            const categories = ['all', ...new Set(allProductsCache.map(p => p.category).filter(Boolean))];
+            container.innerHTML = categories.map(cat => `
+                <button data-category="${cat}" class="product-category-filter pagination-btn !rounded-full !px-4 !py-1 text-sm ${paginationState.products.categoryFilter === cat ? 'active' : ''}">
+                    ${cat === 'all' ? 'الكل' : escapeHTML(cat)}
+                </button>
+            `).join('');
+            document.querySelectorAll('.product-category-filter').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    paginationState.products.categoryFilter = btn.dataset.category;
+                    paginationState.products.currentPage = 1; 
+                    loadProducts();
+                });
+            });
+        };
+
+        const renderProducts = (products) => {
+            const tableBody = document.getElementById('products-table-body');
+            const cardsContainer = document.getElementById('products-cards-container');
+            if (!tableBody || !cardsContainer) return;
+            const noDataHtml = '<tr><td colspan="7" class="text-center p-4">لا توجد منتجات.</td></tr>';
+
+            tableBody.innerHTML = '';
+            cardsContainer.innerHTML = '';
+
+            if (products.length === 0) {
+                tableBody.innerHTML = noDataHtml;
+                cardsContainer.innerHTML = `<div class="text-center p-4 card rounded-lg">${noDataHtml}</div>`;
+            } else {
+                products.forEach(p => {
+                    const featuredIcon = `<button class="toggle-featured-btn text-xl p-1" data-id="${p.id}" title="تمييز المنتج"><i class="fas fa-star ${p.isFeatured ? 'text-amber-400' : 'text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-300'}"></i></button>`;
+                    const actionsHtml = `<a href="product.html?id=${p.id}" target="_blank" title="معاينة" class="text-green-600 hover:underline"><i class="fas fa-external-link-alt"></i></a><button class="edit-product-btn text-blue-600 hover:underline" data-id="${p.id}" title="تعديل"><i class="fas fa-edit"></i></button><button class="delete-product-btn text-red-600 hover:underline" data-id="${p.id}" title="حذف"><i class="fas fa-trash"></i></button>`;
+                    const cardActionsHtml = `<a href="product.html?id=${p.id}" target="_blank" title="معاينة" class="text-green-600 hover:underline"><i class="fas fa-external-link-alt fa-lg"></i></a><button class="edit-product-btn text-blue-600 hover:underline" data-id="${p.id}" title="تعديل"><i class="fas fa-edit fa-lg"></i></button><button class="delete-product-btn text-red-600 hover:underline" data-id="${p.id}" title="حذف"><i class="fas fa-trash fa-lg"></i></button>`;
+                    const priceHtml = p.priceOnRequest ? `<span class="text-blue-600 font-bold">اطلب السعر</span>` : `${(p.price || 0).toLocaleString()} ج.م`;
+                    
+                    tableBody.innerHTML += `<tr id="product-row-${p.id}" class="border-b border-color table-row"><td class="px-2 py-4">${featuredIcon}</td><td class="px-6 py-4"><img src="${escapeHTML(p.images?.[0] || 'https://placehold.co/60x60/eee/ccc?text=?')}" alt="${escapeHTML(p.name)}" class="w-12 h-12 object-cover rounded-md"></td><td class="px-6 py-4 font-medium">${escapeHTML(p.name)}</td><td class="px-6 py-4">${escapeHTML(p.category)}</td><td class="px-6 py-4 font-bold">${priceHtml}</td><td class="px-6 py-4">${p.stock || 0}</td><td class="px-6 py-4 space-x-4 space-x-reverse">${actionsHtml}</td></tr>`;
+                    cardsContainer.innerHTML += `<div id="product-card-${p.id}" class="card rounded-lg shadow-sm border p-4 space-y-3 relative"><div class="absolute top-2 left-2">${featuredIcon}</div><div class="flex items-center gap-4"><img src="${escapeHTML(p.images?.[0] || 'https://placehold.co/60x60/eee/ccc?text=?')}" alt="${escapeHTML(p.name)}" class="w-16 h-16 object-cover rounded-md"><div class="flex-grow"><p class="font-bold">${escapeHTML(p.name)}</p><p class="text-sm text-secondary">${escapeHTML(p.category)}</p></div></div><div class="flex justify-between items-center text-sm pt-2 border-t border-color"><div><p class="text-secondary">السعر</p><p class="font-bold">${priceHtml}</p></div><div><p class="text-secondary">المخزون</p><p class="font-bold">${p.stock || 0}</p></div><div class="flex gap-4">${cardActionsHtml}</div></div></div>`;
+                });
+            }
+            document.getElementById('add-product-btn').addEventListener('click', () => openProductModal());
+            document.querySelectorAll('.edit-product-btn').forEach(b => b.addEventListener('click', () => openProductModal(b.closest('[data-id]').dataset.id)));
+            document.querySelectorAll('.delete-product-btn').forEach(b => b.addEventListener('click', () => deleteProduct(b.closest('[data-id]').dataset.id)));
+            document.querySelectorAll('.toggle-featured-btn').forEach(b => b.addEventListener('click', () => toggleFeaturedProduct(b.dataset.id)));
+            
+            highlightFocusedItem();
+        };
+        
+        const toggleFeaturedProduct = async (productId) => {
+            const productIndex = allProductsCache.findIndex(p => p.id === productId);
+            if (productIndex === -1) return;
+
+            const product = allProductsCache[productIndex];
+            const newStatus = !product.isFeatured;
+
+            showLoading();
+            try {
+                await updateDoc(doc(db, "products", productId), { isFeatured: newStatus });
+                product.isFeatured = newStatus;
+                const message = `تم ${newStatus ? 'تمييز' : 'إلغاء تمييز'} المنتج: ${product.name}`;
+                showToast(message, 'success'); 
+                addNotification({ message, icon: 'fa-star', page: 'products', focusId: productId });
+                loadProducts(); 
+            } catch (error) {
+                console.error("Error toggling featured status:", error);
+                showToast("فشل تحديث حالة التمييز", "error");
+            } finally {
+                hideLoading();
+            }
+        };
+
+        const openProductModal = async (productId = null) => {
+            showLoading();
+            try {
+                const isEditing = !!productId;
+                let product = {};
+                if (isEditing) {
+                    const docSnap = await getDoc(doc(db, "products", productId));
+                    if (docSnap.exists()) product = {id: docSnap.id, ...docSnap.data()};
+                }
+                const bodyHtml = `
+                    <form id="product-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label class="block text-sm font-medium">اسم المنتج</label><input type="text" id="product-name" value="${escapeHTML(product.name || '')}" class="mt-1 block w-full input-style" required></div>
+                            <div><label class="block text-sm font-medium">الفئة</label><input type="text" id="product-category" value="${escapeHTML(product.category || '')}" placeholder="نظارة طبية، نظارة شمسية..." class="mt-1 block w-full input-style" required></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label class="block text-sm font-medium">معرف المجموعة (Group ID)</label><input type="text" id="product-groupId" value="${escapeHTML(product.groupId || '')}" placeholder="لربط المنتجات المتشابهة (اختياري)" class="mt-1 block w-full input-style"></div>
+                            <div><label class="block text-sm font-medium">عنوان اللون (Variation Title)</label><input type="text" id="product-variationTitle" value="${escapeHTML(product.variationTitle || '')}" placeholder="مثال: أحمر، أزرق" class="mt-1 block w-full input-style"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                            <div><label class="block text-sm font-medium">السعر (ج.م)</label><input type="number" id="product-price" value="${product.price || 0}" class="mt-1 block w-full input-style" required></div>
+                            <div class="flex items-center pt-6"><input type="checkbox" id="product-priceOnRequest" ${product.priceOnRequest ? 'checked' : ''} class="h-4 w-4 rounded"><label for="product-priceOnRequest" class="mr-2 block text-sm">تفعيل "اطلب السعر"</label></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label class="block text-sm font-medium">المخزون</label><input type="number" id="product-stock" value="${product.stock || 0}" class="mt-1 block w-full input-style" required></div>
+                            <div><label class="block text-sm font-medium">الخصم (%)</label><input type="number" id="product-discount" value="${product.discount || 0}" class="mt-1 block w-full input-style"></div>
+                            <div class="flex items-center pt-6"><input type="checkbox" id="product-hasOptions" ${product.hasOptions === 'true' || product.hasOptions === true ? 'checked' : ''} class="h-4 w-4 rounded"><label for="product-hasOptions" class="mr-2 block text-sm">يحتاج إلى خيارات (عدسات)</label></div>
+                            <div class="flex items-center pt-6"><input type="checkbox" id="product-isFeatured" ${product.isFeatured ? 'checked' : ''} class="h-4 w-4 rounded"><label for="product-isFeatured" class="mr-2 block text-sm">منتج مميز</label></div>
+                        </div>
+                        <div><label class="block text-sm font-medium">الوصف</label><textarea id="product-description" rows="3" class="mt-1 block w-full input-style">${escapeHTML(product.description || '')}</textarea></div>
+                        <div><label class="block text-sm font-medium">روابط الصور (افصل بفاصلة)</label><textarea id="product-images" rows="3" class="mt-1 block w-full input-style">${escapeHTML((product.images || []).join(', '))}</textarea></div>
+                    </form>`;
+                const footerHtml = `<button id="modal-cancel-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg">إلغاء</button><button id="save-product-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-6 rounded-lg">${isEditing ? 'حفظ' : 'إضافة'}</button>`;
+                openModal(isEditing ? 'تعديل منتج' : 'إضافة منتج', bodyHtml, footerHtml, 'max-w-3xl');
+                document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
+                document.getElementById('save-product-btn').addEventListener('click', () => saveProduct(product.id));
+            } catch (error) {
+                console.error("Error opening product modal:", error);
+                showToast("فشل في فتح نافذة تعديل المنتج", "error");
+            } finally {
+                hideLoading();
+            }
+        };
+
+        const saveProduct = async (productId) => {
+            const form = document.getElementById('product-form');
+            if (!form.checkValidity()) { form.reportValidity(); return; }
+            showLoading();
+            const productName = document.getElementById('product-name').value;
+            const productData = {
+                name: productName,
+                category: document.getElementById('product-category').value,
+                price: parseFloat(document.getElementById('product-price').value) || 0,
+                priceOnRequest: document.getElementById('product-priceOnRequest').checked,
+                stock: parseInt(document.getElementById('product-stock').value),
+                discount: parseFloat(document.getElementById('product-discount').value) || 0,
+                hasOptions: document.getElementById('product-hasOptions').checked.toString(),
+                isFeatured: document.getElementById('product-isFeatured').checked,
+                description: document.getElementById('product-description').value,
+                images: document.getElementById('product-images').value.split(',').map(url => url.trim()).filter(url => url),
+                groupId: document.getElementById('product-groupId').value.trim(),
+                variationTitle: document.getElementById('product-variationTitle').value.trim()
+            };
+            try {
+                let docId = productId;
+                if (productId) {
+                    await updateDoc(doc(db, "products", productId), productData);
+                } else {
+                    productData.dateAdded = serverTimestamp();
+                    const newDocRef = await addDoc(collection(db, "products"), productData);
+                    docId = newDocRef.id;
+                }
+                const message = `تم حفظ المنتج: ${productName}`;
+                showToast(message);
+                addNotification({ message, icon: 'fa-save', page: 'products', focusId: docId });
+                closeModal();
+                await cacheInitialData();
+                loadProducts();
+            } catch (error) { showToast("فشل حفظ المنتج", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const deleteProduct = (productId) => {
+            showConfirmationModal('تأكيد حذف المنتج', 'هل أنت متأكد من حذف هذا المنتج؟', async () => {
+                showLoading();
+                const product = allProductsCache.find(p => p.id === productId);
+                try {
+                    await deleteDoc(doc(db, "products", productId));
+                    showToast(`تم حذف المنتج: ${product?.name || productId}`);
+                    await cacheInitialData();
+                    loadProducts();
+                } catch (error) { showToast("فشل حذف المنتج", "error"); }
+                finally { hideLoading(); }
+            });
+        };
+
+        // --- Blog Page Functions ---
+        const loadBlogPage = () => {
+            const blogPage = document.getElementById('blog-page');
+            if (!blogPage) return;
+            const { itemsPerPage } = paginationState.blog;
+            paginationState.blog.totalItems = allBlogPostsCache.length;
+
+            if (currentFocusId) {
+                const itemIndex = allBlogPostsCache.findIndex(p => p.id === currentFocusId);
+                if (itemIndex > -1) {
+                    paginationState.blog.currentPage = Math.floor(itemIndex / itemsPerPage) + 1;
+                }
+            }
+            
+            const { currentPage } = paginationState.blog;
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedPosts = allBlogPostsCache.slice(startIndex, endIndex);
+
+            renderBlogPosts(paginatedPosts);
+            renderPaginationControls('blog', document.getElementById('blog-pagination-container'));
+        };
+
+        const renderBlogPosts = (posts) => {
+            const tableBody = document.getElementById('blog-posts-table-body');
+            const cardsContainer = document.getElementById('blog-cards-container');
+            if (!tableBody || !cardsContainer) return;
+
+            const noDataHtml = '<tr><td colspan="6" class="text-center p-4">لا توجد مقالات.</td></tr>';
+            tableBody.innerHTML = '';
+            cardsContainer.innerHTML = '';
+
+            if (posts.length === 0) {
+                tableBody.innerHTML = noDataHtml;
+                cardsContainer.innerHTML = `<div class="text-center p-4 card rounded-lg">${noDataHtml}</div>`;
+            } else {
+                posts.forEach(post => {
+                    const statusClass = post.isPublished ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+                    const statusText = post.isPublished ? 'منشور' : 'مسودة';
+                    const actionsHtml = `<a href="post.html?id=${post.id}" target="_blank" title="معاينة" class="text-green-600 hover:underline p-1"><i class="fas fa-external-link-alt"></i></a><button class="edit-blog-post-btn text-blue-600 hover:underline p-1" data-id="${post.id}" title="تعديل"><i class="fas fa-edit"></i></button><button class="delete-blog-post-btn text-red-600 hover:underline p-1" data-id="${post.id}" title="حذف"><i class="fas fa-trash"></i></button>`;
+                    const cardActionsHtml = `<a href="post.html?id=${post.id}" target="_blank" title="معاينة" class="text-green-600 hover:text-green-800 p-2"><i class="fas fa-external-link-alt fa-lg"></i></a><button class="edit-blog-post-btn text-blue-600 hover:text-blue-800 p-2" data-id="${post.id}" title="تعديل"><i class="fas fa-edit fa-lg"></i></button><button class="delete-blog-post-btn text-red-600 hover:text-red-800 p-2" data-id="${post.id}" title="حذف"><i class="fas fa-trash fa-lg"></i></button>`;
+
+                    // Table Row
+                    tableBody.innerHTML += `
+                        <tr id="blog-row-${post.id}" class="border-b border-color table-row">
+                            <td class="px-6 py-4"><img src="${escapeHTML(post.imageUrl || 'https://placehold.co/60x60/eee/ccc?text=?')}" alt="${escapeHTML(post.title)}" class="w-16 h-12 object-cover rounded-md"></td>
+                            <td class="px-6 py-4 font-medium">${escapeHTML(post.title)}</td>
+                            <td class="px-6 py-4">${escapeHTML(post.author)}</td>
+                            <td class="px-6 py-4"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${statusText}</span></td>
+                            <td class="px-6 py-4 text-xs">${formatDate(post.createdAt)}</td>
+                            <td class="px-6 py-4 space-x-2 space-x-reverse">${actionsHtml}</td>
+                        </tr>`;
+                    
+                    // Card
+                    cardsContainer.innerHTML += `
+                        <div id="blog-card-${post.id}" class="card rounded-lg shadow-sm border p-4 space-y-3">
+                            <div class="flex items-start gap-4">
+                                <img src="${escapeHTML(post.imageUrl || 'https://placehold.co/80x80/eee/ccc?text=?')}" alt="${escapeHTML(post.title)}" class="w-20 h-20 object-cover rounded-md">
+                                <div class="flex-grow">
+                                    <span class="text-xs font-semibold px-2 py-1 rounded-full ${statusClass}">${statusText}</span>
+                                    <p class="font-bold mt-1">${escapeHTML(post.title)}</p>
+                                    <p class="text-sm text-secondary">بواسطة: ${escapeHTML(post.author)}</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center pt-3 border-t border-color">
+                                <p class="text-xs text-secondary">تاريخ: ${formatDate(post.createdAt)}</p>
+                                <div class="flex justify-end items-center gap-2 flex-wrap">${cardActionsHtml}</div>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            document.getElementById('add-blog-post-btn').addEventListener('click', () => openBlogPostModal());
+            document.querySelectorAll('.edit-blog-post-btn').forEach(b => b.addEventListener('click', () => openBlogPostModal(b.dataset.id)));
+            document.querySelectorAll('.delete-blog-post-btn').forEach(b => b.addEventListener('click', () => deleteBlogPost(b.dataset.id)));
+            
+            highlightFocusedItem();
+        };
+
+        const openBlogPostModal = async (postId = null) => {
+            showLoading();
+            try {
+                const isEditing = !!postId;
+                let post = {};
+                if (isEditing) {
+                    const docSnap = await getDoc(doc(db, "blogPosts", postId));
+                    if (docSnap.exists()) {
+                        post = { id: docSnap.id, ...docSnap.data() };
+                    }
+                }
+
+                const bodyHtml = `
+                    <form id="blog-post-form" class="space-y-4">
+                        <input type="hidden" id="blog-post-id" value="${post.id || ''}">
+                        <div>
+                            <label class="block text-sm font-medium">عنوان المقال</label>
+                            <input type="text" id="blog-post-title" value="${escapeHTML(post.title || '')}" class="mt-1 block w-full input-style" required>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium">اسم الكاتب</label>
+                                <input type="text" id="blog-post-author" value="${escapeHTML(post.author || '')}" class="mt-1 block w-full input-style" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium">رابط صورة المقال</label>
+                                <input type="text" id="blog-post-imageUrl" value="${escapeHTML(post.imageUrl || '')}" class="mt-1 block w-full input-style">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium">محتوى المقال</label>
+                            <div id="quill-editor" class="mt-1"></div>
+                        </div>
+                        <div class="flex items-center pt-2">
+                            <input type="checkbox" id="blog-post-isPublished" ${post.isPublished ? 'checked' : ''} class="h-4 w-4 rounded">
+                            <label for="blog-post-isPublished" class="mr-2 block text-sm">نشر المقال (جعله مرئياً للجميع)</label>
+                        </div>
+                    </form>
+                `;
+                const footerHtml = `<button id="modal-cancel-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg">إلغاء</button><button id="save-blog-post-btn" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg">${isEditing ? 'حفظ التعديلات' : 'إنشاء المقال'}</button>`;
+                
+                openModal(isEditing ? 'تعديل مقال' : 'مقال جديد', bodyHtml, footerHtml, 'max-w-4xl');
+
+                quillEditorInstance = new Quill('#quill-editor', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'align': [] }],
+                            ['link', 'image'],
+                            ['clean']
+                        ]
+                    }
+                });
+                if (isEditing && post.content) {
+                    quillEditorInstance.root.innerHTML = post.content;
+                }
+
+                document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
+                document.getElementById('save-blog-post-btn').addEventListener('click', saveBlogPost);
+
+            } catch (error) {
+                console.error("Error opening blog post modal:", error);
+                showToast("فشل في فتح نافذة المقال", "error");
+            } finally {
+                hideLoading();
+            }
+        };
+
+        const saveBlogPost = async () => {
+            const form = document.getElementById('blog-post-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                showToast("يرجى ملء الحقول المطلوبة.", "error");
+                return;
+            }
+            showLoading();
+            
+            const postId = document.getElementById('blog-post-id').value;
+            const isEditing = !!postId;
+            
+            const postData = {
+                title: document.getElementById('blog-post-title').value,
+                author: document.getElementById('blog-post-author').value,
+                imageUrl: document.getElementById('blog-post-imageUrl').value,
+                isPublished: document.getElementById('blog-post-isPublished').checked,
+                content: quillEditorInstance.root.innerHTML, 
+                updatedAt: serverTimestamp()
+            };
+
+            try {
+                let docId = postId;
+                if (isEditing) {
+                    await updateDoc(doc(db, "blogPosts", postId), postData);
+                } else {
+                    postData.createdAt = serverTimestamp();
+                    const newDocRef = await addDoc(collection(db, "blogPosts"), postData);
+                    docId = newDocRef.id;
+                }
+                
+                showToast("تم حفظ المقال بنجاح");
+                addNotification({ message: `تم حفظ المقال: ${postData.title}`, icon: 'fa-save', page: 'blog', focusId: docId });
+                closeModal();
+                await cacheInitialData(); 
+                loadBlogPage();
+
+            } catch (error) {
+                console.error("Error saving blog post:", error);
+                showToast("فشل حفظ المقال", "error");
+            } finally {
+                hideLoading();
+            }
+        };
+
+        const deleteBlogPost = (postId) => {
+            showConfirmationModal('تأكيد حذف المقال', 'هل أنت متأكد من حذف هذا المقال نهائياً؟', async () => {
+                showLoading();
+                const post = allBlogPostsCache.find(p => p.id === postId);
+                try {
+                    await deleteDoc(doc(db, "blogPosts", postId));
+                    showToast(`تم حذف المقال: ${post?.title || postId}`);
+                    await cacheInitialData();
+                    loadBlogPage();
+                } catch (error) {
+                    showToast("فشل حذف المقال", "error");
+                } finally {
+                    hideLoading();
+                }
+            });
+        };
+
+        // --- Reviews Page Functions ---
+        const loadReviews = async () => {
+            const reviewsPage = document.getElementById('reviews-page');
+            if (!reviewsPage) return;
+            try {
+                const reviewsSnapshot = await getDocs(query(collection(db, "reviews")));
+                const reviews = reviewsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                const productMap = new Map(allProductsCache.map(p => [p.name, p]));
+                
+                reviewsWithProductData = reviews.map(review => {
+                    const product = productMap.get(review.productName || review.productId);
+                    return { ...review, productCategory: product?.category || 'غير معروف', productId: product?.id || null };
+                });
+
+                const categoryFilter = document.getElementById('review-category-filter');
+                const categories = [...new Set(allProductsCache.map(p => p.category).filter(Boolean))];
+                categoryFilter.innerHTML = '<option value="all">كل الفئات</option>';
+                categories.forEach(cat => {
+                    categoryFilter.innerHTML += `<option value="${escapeHTML(cat)}">${escapeHTML(cat)}</option>`;
+                });
+                
+                document.getElementById('review-status-filter').addEventListener('change', renderFilteredReviews);
+                document.getElementById('review-category-filter').addEventListener('change', renderFilteredReviews);
+                document.getElementById('review-sort-order').addEventListener('change', renderFilteredReviews);
+
+                renderFilteredReviews();
+
+            } catch (error) {
+                console.error("Error loading reviews:", error);
+                document.getElementById('reviews-container').innerHTML = `<div class="text-center py-10 text-red-500"><i class="fas fa-exclamation-triangle fa-2x mb-3"></i><p>فشل تحميل المراجعات.</p></div>`;
+            }
+        };
+
+        const renderFilteredReviews = () => {
+            const statusFilter = document.getElementById('review-status-filter').value;
+            const categoryFilter = document.getElementById('review-category-filter').value;
+            const sortOrder = document.getElementById('review-sort-order').value;
+            const container = document.getElementById('reviews-container');
+            if (!container) return;
+
+            let filteredReviews = [...reviewsWithProductData];
+            if (statusFilter !== 'all') filteredReviews = filteredReviews.filter(r => r.status === statusFilter);
+            if (categoryFilter !== 'all') filteredReviews = filteredReviews.filter(r => r.productCategory === categoryFilter);
+
+            filteredReviews.sort((a, b) => {
+                const dateA = a.createdAt?.toMillis() || 0;
+                const dateB = b.createdAt?.toMillis() || 0;
+                return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+
+            container.innerHTML = '';
+            if (filteredReviews.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-secondary"><i class="fas fa-comment-slash fa-2x mb-3"></i><p>لا توجد مراجعات تطابق الفلاتر المحددة.</p></div>`;
+                return;
+            }
+
+            filteredReviews.forEach(review => {
+                const card = document.createElement('div');
+                card.className = 'card rounded-lg shadow-sm border p-4 space-y-3';
+                const statusColor = STATUS_COLORS[review.status] || 'bg-gray-100 text-gray-800';
+
+                card.innerHTML = `
+                    <div class="flex flex-wrap justify-between items-start gap-2">
+                        <div>
+                            <p class="font-bold">${escapeHTML(review.userName)}</p>
+                            <p class="text-sm text-secondary">للمنتج: <strong class="font-semibold text-primary">${escapeHTML(review.productName || review.productId)}</strong></p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            ${generateStarsHTML(review.rating)}
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full ${statusColor}">${REVIEW_STATUSES[review.status] || review.status}</span>
+                        </div>
+                    </div>
+                    <p class="review-comment-box text-primary p-3 rounded-md">${escapeHTML(review.comment)}</p>
+                    <div class="flex flex-wrap justify-between items-center pt-3 border-t border-color mt-3">
+                        <p class="text-xs text-secondary">تاريخ: ${formatDate(review.createdAt)}</p>
+                        <div class="flex items-center gap-2">
+                            <a href="product.html?id=${review.productId}" target="_blank" class="view-product-btn text-sm text-green-600 hover:text-green-800 p-2 rounded-md hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors ${!review.productId ? 'hidden' : ''}" title="عرض المنتج">
+                                <i class="fas fa-external-link-alt"></i><span class="hidden sm:inline mr-1">المنتج</span>
+                            </a>
+                            <button class="edit-review-btn text-sm text-blue-600 hover:text-blue-800 p-2 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors" data-id="${review.id}" title="تعديل المراجعة">
+                                <i class="fas fa-edit"></i><span class="hidden sm:inline mr-1">تعديل</span>
+                            </button>
+                            <button class="delete-review-btn text-sm text-red-600 hover:text-red-800 p-2 rounded-md hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors" data-id="${review.id}" title="حذف المراجعة">
+                                <i class="fas fa-trash"></i><span class="hidden sm:inline mr-1">حذف</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            
+            document.querySelectorAll('.edit-review-btn').forEach(b => b.addEventListener('click', () => openReviewEditModal(b.dataset.id)));
+            document.querySelectorAll('.delete-review-btn').forEach(b => b.addEventListener('click', () => deleteReview(b.dataset.id)));
+        };
+
+        const openReviewEditModal = (reviewId) => {
+            const review = reviewsWithProductData.find(r => r.id === reviewId);
+            if (!review) { showToast("لم يتم العثور على المراجعة", "error"); return; }
+            const bodyHtml = `
+                <form id="review-edit-form" class="space-y-4">
+                    <div><label for="review-edit-userName" class="block text-sm font-medium">اسم المستخدم</label><input type="text" id="review-edit-userName" value="${escapeHTML(review.userName)}" class="mt-1 w-full input-style"></div>
+                    <div><label for="review-edit-rating" class="block text-sm font-medium">التقييم</label><select id="review-edit-rating" class="mt-1 w-full input-style">${[1,2,3,4,5].map(n => `<option value="${n}" ${review.rating == n ? 'selected' : ''}>${'⭐'.repeat(n)}</option>`).join('')}</select></div>
+                    <div><label for="review-edit-comment" class="block text-sm font-medium">التعليق</label><textarea id="review-edit-comment" rows="4" class="mt-1 w-full input-style">${escapeHTML(review.comment)}</textarea></div>
+                    <div><label for="review-edit-status" class="block text-sm font-medium">الحالة</label><select id="review-edit-status" class="mt-1 w-full input-style">${Object.entries(REVIEW_STATUSES).map(([key, value]) => `<option value="${key}" ${key === review.status ? 'selected' : ''}>${value}</option>`).join('')}</select></div>
+                </form>`;
+            const footerHtml = `<button id="modal-cancel-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg">إلغاء</button><button id="save-review-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-6 rounded-lg">حفظ التعديلات</button>`;
+            openModal(`تعديل مراجعة`, bodyHtml, footerHtml, 'max-w-2xl');
+            document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
+            document.getElementById('save-review-btn').addEventListener('click', () => saveReview(review.id));
+        };
+
+        const saveReview = async (reviewId) => {
+            showLoading();
+            const updatedData = {
+                userName: document.getElementById('review-edit-userName').value,
+                rating: parseInt(document.getElementById('review-edit-rating').value),
+                comment: document.getElementById('review-edit-comment').value,
+                status: document.getElementById('review-edit-status').value,
+            };
+            try {
+                await updateDoc(doc(db, "reviews", reviewId), updatedData);
+                showToast("تم تحديث المراجعة بنجاح");
+                closeModal();
+                await loadReviews(); 
+            } catch (error) { console.error("Error saving review:", error); showToast("فشل حفظ المراجعة", "error"); } 
+            finally { hideLoading(); }
+        };
+
+        const deleteReview = (reviewId) => {
+            showConfirmationModal('تأكيد حذف المراجعة', 'هل أنت متأكد من حذف هذه المراجعة نهائياً؟', async () => {
+                showLoading();
+                try {
+                    await deleteDoc(doc(db, "reviews", reviewId));
+                    showToast("تم حذف المراجعة بنجاح");
+                    await loadReviews();
+                } catch (error) { showToast("فشل حذف المراجعة", "error"); }
+                finally { hideLoading(); }
+            });
+        };
+
+        // --- Reports Page Functions ---
+        const loadReportsPage = () => {
+            const reportsPage = document.getElementById('reports-page');
+            if (!reportsPage) return;
+            renderLowStockReport();
+            renderPromoCodeReport();
+            setupExportButtons();
+        };
+
+        const setupExportButtons = () => {
+            document.getElementById('export-orders-btn')?.addEventListener('click', () => exportToCSV(allOrdersCache, 'orders'));
+            document.getElementById('export-customers-btn')?.addEventListener('click', () => exportToCSV(allCustomersCache, 'customers'));
+            document.getElementById('export-products-btn')?.addEventListener('click', () => exportToCSV(allProductsCache, 'products'));
+        };
+
+        const renderLowStockReport = () => {
+            const lowStockThreshold = 5;
+            const lowStockProducts = allProductsCache.filter(p => p.stock <= lowStockThreshold);
+            const tableBody = document.getElementById('low-stock-report-body');
+            const cardsContainer = document.getElementById('low-stock-cards-container');
+            if (!tableBody || !cardsContainer) return;
+
+            tableBody.innerHTML = '';
+            cardsContainer.innerHTML = '';
+
+            if (lowStockProducts.length === 0) {
+                const noDataHtml = `<tr><td colspan="5" class="text-center p-4 text-secondary">لا توجد منتجات ذات مخزون منخفض.</td></tr>`;
+                tableBody.innerHTML = noDataHtml;
+                cardsContainer.innerHTML = `<div class="text-center p-4 card rounded-lg">${noDataHtml}</div>`;
+                return;
+            }
+
+            lowStockProducts.forEach(p => {
+                const stockClass = p.stock === 0 ? 'text-red-500 font-bold' : 'text-yellow-600';
+                const editButtonHtml = `<button class="edit-product-btn text-blue-600 hover:underline" data-id="${p.id}" title="تعديل المخزون"><i class="fas fa-edit"></i> تعديل</button>`;
+                
+                // Table Row
+                tableBody.innerHTML += `
+                    <tr class="border-b border-color table-row">
+                        <td class="px-6 py-4"><img src="${escapeHTML(p.images?.[0] || 'https://placehold.co/48x48/eee/ccc?text=?')}" class="w-12 h-12 rounded-lg object-cover"></td>
+                        <td class="px-6 py-4 font-medium">${escapeHTML(p.name)}</td>
+                        <td class="px-6 py-4">${escapeHTML(p.category)}</td>
+                        <td class="px-6 py-4 ${stockClass}">${p.stock}</td>
+                        <td class="px-6 py-4">${editButtonHtml}</td>
+                    </tr>`;
+
+                // Card
+                cardsContainer.innerHTML += `
+                    <div class="card rounded-lg shadow-sm border p-4 space-y-3">
+                        <div class="flex items-center gap-4">
+                            <img src="${escapeHTML(p.images?.[0] || 'https://placehold.co/60x60/eee/ccc?text=?')}" class="w-16 h-16 object-cover rounded-md">
+                            <div class="flex-grow">
+                                <p class="font-bold">${escapeHTML(p.name)}</p>
+                                <p class="text-sm text-secondary">${escapeHTML(p.category)}</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t border-color">
+                            <div>
+                                <p class="text-xs text-secondary">الكمية المتبقية</p>
+                                <p class="font-bold text-lg ${stockClass}">${p.stock}</p>
+                            </div>
+                            ${editButtonHtml.replace('class="', 'class="p-2 ')}
+                        </div>
+                    </div>`;
+            });
+
+            document.querySelectorAll('.edit-product-btn').forEach(b => b.addEventListener('click', () => openProductModal(b.dataset.id)));
+        };
+
+        const renderPromoCodeReport = () => {
+            const promoPerformance = {};
+            allOrdersCache.forEach(order => {
+                if (order.promoCode && order.discount > 0) {
+                    const code = order.promoCode.toUpperCase().trim();
+                    if (!promoPerformance[code]) {
+                        promoPerformance[code] = { usageCount: 0, totalDiscount: 0 };
+                    }
+                    promoPerformance[code].usageCount++;
+                    promoPerformance[code].totalDiscount += order.discount;
+                }
+            });
+
+            const tableBody = document.getElementById('promo-code-report-body');
+            if (!tableBody) return;
+            tableBody.innerHTML = '';
+            
+            const performanceEntries = Object.entries(promoPerformance);
+            if (performanceEntries.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="3" class="text-center p-4 text-secondary">لم يتم استخدام أكواد خصم في أي طلبات.</td></tr>`;
+                return;
+            }
+
+            performanceEntries.sort(([, a], [, b]) => b.usageCount - a.usageCount);
+            performanceEntries.forEach(([code, data]) => {
+                tableBody.innerHTML += `
+                    <tr class="border-b border-color table-row">
+                        <td class="px-6 py-4 font-mono font-bold">${escapeHTML(code)}</td>
+                        <td class="px-6 py-4 text-center">${data.usageCount}</td>
+                        <td class="px-6 py-4 font-semibold text-center">${data.totalDiscount.toLocaleString('ar-EG', { style: 'currency', currency: 'EGP' })}</td>
+                    </tr>`;
+            });
+        };
+
+        const exportToCSV = (data, filename) => {
+            if (!data || data.length === 0) {
+                showToast("لا توجد بيانات للتصدير", "error");
+                return;
+            }
+
+            const header = Object.keys(data[0]);
+            const csvData = data.map(row => {
+                return header.map(fieldName => {
+                    let value = row[fieldName];
+                    if (value && typeof value === 'object') {
+                        if (value.toDate) { 
+                            value = value.toDate().toISOString();
+                        } else if (Array.isArray(value)) {
+                            value = value.map(item => typeof item === 'object' ? JSON.stringify(item) : item).join('; ');
+                        } else {
+                            value = JSON.stringify(value);
+                        }
+                    }
+                    let strValue = String(value).replace(/"/g, '""');
+                    if (strValue.includes(',')) {
+                        strValue = `"${strValue}"`;
+                    }
+                    return strValue;
+                }).join(',');
+            });
+            
+            csvData.unshift(header.join(','));
+            const csv = csvData.join('\r\n');
+
+            const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", `${filename}_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            showToast(`تم تصدير ${filename}.csv بنجاح`);
+        };
+
+        // --- Settings Page Functions ---
+        const loadSettings = () => {
+            const settingsPage = document.getElementById('settings-page');
+            if (!settingsPage) return;
+            const tabs = document.querySelectorAll('#settings-tabs button');
+            const contentContainer = document.getElementById('settings-tab-content');
+            const switchTab = (tabId) => {
+                tabs.forEach(tab => {
+                    tab.classList.toggle('border-amber-500', tab.dataset.tab === tabId);
+                    tab.classList.toggle('text-amber-600', tab.dataset.tab === tabId);
+                    tab.classList.toggle('text-primary', tab.dataset.tab !== tabId);
+                    tab.classList.toggle('border-transparent', tab.dataset.tab !== tabId);
+                });
+                contentContainer.innerHTML = '<div class="p-10 text-center text-secondary">جاري التحميل...</div>';
+                const actions = { lenses: renderLensesSettings, promocodes: renderPromoCodesSettings, shipping: renderShippingSettings, marquee: renderMarqueeSettings };
+                actions[tabId]?.();
+            };
+            tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
+            switchTab('marquee');
+        };
+        
+		const renderMarqueeSettings = async () => {
+            const contentContainer = document.getElementById('settings-tab-content');
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "marquee"));
+                const marqueeData = docSnap.exists() ? docSnap.data() : { text: '' };
+                contentContainer.innerHTML = `
+                    <div class="card p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">إعدادات الشريط المتحرك</h3>
+                        <p class="text-secondary mb-4">أدخل النص الذي تريد عرضه في الشريط المتحرك أعلى المتجر. يمكنك استخدام أكواد HTML لإضافة أيقونات، مثل: <code>&lt;i class="fas fa-star"&gt;&lt;/i&gt;</code></p>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="marquee-text-input" class="block text-sm font-medium">نص الشريط</label>
+                                <input type="text" id="marquee-text-input" value="${escapeHTML(marqueeData.text || '')}" class="mt-1 block w-full input-style" placeholder="مرحباً بكم في متجرنا...">
+                            </div>
+                            <div class="text-left">
+                                <button id="save-marquee-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-6 rounded-lg hover:bg-amber-500 transition-colors">حفظ النص</button>
+                            </div>
+                        </div>
+                    </div>`;
+                document.getElementById('save-marquee-btn').addEventListener('click', saveMarqueeText);
+            } catch (error) { 
+                console.error("Error loading marquee settings:", error);
+                contentContainer.innerHTML = `<p class="text-red-500 p-6">فشل تحميل إعدادات الشريط المتحرك.</p>`; 
+            }
+        };
+
+        const saveMarqueeText = async () => {
+            const newText = document.getElementById('marquee-text-input').value;
+            showLoading();
+            try {
+                await setDoc(doc(db, "settings", "marquee"), { text: newText });
+                showToast("تم حفظ نص الشريط بنجاح", "success");
+            } catch (error) {
+                console.error("Error saving marquee text:", error);
+                showToast("فشل حفظ النص", "error");
+            } finally {
+                hideLoading();
+            }
+        };
+		
+        const renderLensesSettings = async () => {
+            const contentContainer = document.getElementById('settings-tab-content');
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "lenses"));
+                const lenses = docSnap.exists() ? docSnap.data() : {};
+                const tableRows = Object.entries(lenses).map(([name, price]) => `
+                    <tr class="border-b border-color table-row"><td class="px-6 py-4"><input type="text" value="${escapeHTML(name)}" class="w-full p-2 border rounded-md readonly-input" readonly></td><td class="px-6 py-4"><input type="number" value="${price}" class="setting-input w-full p-2 border rounded-md input-style" data-key="${escapeHTML(name)}" data-field="price"></td><td class="px-6 py-4"><button class="delete-setting-btn text-red-500" data-key="${escapeHTML(name)}" data-type="lenses"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+                contentContainer.innerHTML = `<div class="card p-6 rounded-lg shadow-md"><div class="overflow-x-auto"><table class="w-full text-sm text-right"><thead><tr class="table-header"><th class="px-6 py-3">اسم العدسة</th><th class="px-6 py-3">السعر</th><th class="px-6 py-3">حذف</th></tr></thead><tbody id="lenses-tbody">${tableRows}</tbody></table></div><div class="mt-4 flex gap-4"><input type="text" id="new-lens-name" placeholder="اسم العدسة" class="flex-grow p-2 border rounded-md input-style"><input type="number" id="new-lens-price" placeholder="السعر" class="w-32 p-2 border rounded-md input-style"><button id="add-lens-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-4 rounded-lg">إضافة</button></div></div>`;
+                document.querySelectorAll('#lenses-tbody .setting-input').forEach(i => i.addEventListener('change', (e) => updateSettingValue('lenses', e.target.dataset.key, parseFloat(e.target.value))));
+                document.querySelectorAll('#lenses-tbody .delete-setting-btn').forEach(b => b.addEventListener('click', (e) => deleteSettingKey('lenses', e.currentTarget.dataset.key, renderLensesSettings)));
+                document.getElementById('add-lens-btn').addEventListener('click', addNewSettingKey);
+            } catch (error) { contentContainer.innerHTML = `<p class="text-red-500 p-6">فشل تحميل الإعدادات.</p>`; }
+        };
+
+        const renderShippingSettings = async () => {
+            const contentContainer = document.getElementById('settings-tab-content');
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "shippingRates"));
+                const rates = docSnap.exists() ? docSnap.data() : {};
+                const tableRows = Object.entries(rates).map(([city, rate]) => `
+                    <tr class="border-b border-color table-row"><td class="px-6 py-4">${escapeHTML(city)}</td><td class="px-6 py-4"><input type="number" value="${rate}" class="setting-input w-full p-2 border rounded-md input-style" data-key="${escapeHTML(city)}"></td><td class="px-6 py-4"><button class="delete-setting-btn text-red-500" data-key="${escapeHTML(city)}" data-type="shippingRates"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+                contentContainer.innerHTML = `<div class="card p-6 rounded-lg shadow-md"><div class="overflow-x-auto"><table class="w-full text-sm text-right"><thead><tr class="table-header"><th class="px-6 py-3">المدينة</th><th class="px-6 py-3">سعر الشحن</th><th class="px-6 py-3">حذف</th></tr></thead><tbody id="shipping-tbody">${tableRows}</tbody></table></div><div class="mt-4 flex gap-4"><input type="text" id="new-shipping-city" placeholder="اسم المدينة" class="flex-grow p-2 border rounded-md input-style"><input type="number" id="new-shipping-rate" placeholder="السعر" class="w-32 p-2 border rounded-md input-style"><button id="add-shipping-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-4 rounded-lg">إضافة</button></div></div>`;
+                document.querySelectorAll('#shipping-tbody .setting-input').forEach(i => i.addEventListener('change', (e) => updateSettingValue('shippingRates', e.target.dataset.key, parseFloat(e.target.value))));
+                document.querySelectorAll('#shipping-tbody .delete-setting-btn').forEach(b => b.addEventListener('click', (e) => deleteSettingKey('shippingRates', e.currentTarget.dataset.key, renderShippingSettings)));
+                document.getElementById('add-shipping-btn').addEventListener('click', addNewSettingKey);
+            } catch (error) { contentContainer.innerHTML = `<p class="text-red-500 p-6">فشل تحميل الإعدادات.</p>`; }
+        };
+        
+        const renderPromoCodesSettings = async () => {
+            const contentContainer = document.getElementById('settings-tab-content');
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "promocodes"));
+                const codes = docSnap.exists() ? docSnap.data() : {};
+                allPromoCodesCache = codes; 
+                
+                let tableRows = '';
+                let cardHtml = '';
+
+                const sortedCodes = Object.entries(codes).sort(([,a],[,b]) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+
+                if (sortedCodes.length === 0) {
+                    const noDataHtml = `<div class="text-center p-4 text-secondary">لا توجد أكواد خصم.</div>`;
+                    tableRows = `<tr><td colspan="7" class="text-center p-4">${noDataHtml}</td></tr>`;
+                    cardHtml = noDataHtml;
+                } else {
+                    sortedCodes.forEach(([name, data]) => {
+                        const statusClass = data.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                        const statusText = data.active ? 'فعال' : 'غير فعال';
+                        const actionsHtml = `<button class="edit-promocode-btn text-blue-600 hover:underline p-1" data-code='${escapeHTML(JSON.stringify({name, ...data}))}'><i class="fas fa-edit"></i></button><button class="delete-promocode-btn text-red-600 hover:underline p-1" data-name="${escapeHTML(name)}"><i class="fas fa-trash"></i></button>`;
+                        const cardActionsHtml = `<button class="edit-promocode-btn text-blue-600 hover:text-blue-800 p-2" data-code='${escapeHTML(JSON.stringify({name, ...data}))}'><i class="fas fa-edit fa-lg"></i></button><button class="delete-promocode-btn text-red-600 hover:text-red-800 p-2" data-name="${escapeHTML(name)}"><i class="fas fa-trash fa-lg"></i></button>`;
+
+                        tableRows += `<tr class="border-b border-color table-row"><td class="px-6 py-4 font-mono">${escapeHTML(name)}</td><td class="px-6 py-4">${data.type === 'percentage' ? 'نسبة' : 'مبلغ ثابت'}</td><td class="px-6 py-4">${data.value}${data.type === 'percentage' ? '%' : ' ج.م'}</td><td class="px-6 py-4">${data.used || 0} / ${data.maxUses}</td><td class="px-6 py-4">${formatDate(data.expiresAt)}</td><td class="px-6 py-4"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${statusText}</span></td><td class="px-6 py-4 space-x-2 space-x-reverse">${actionsHtml}</td></tr>`;
+                        
+                        cardHtml += `<div class="card rounded-lg shadow-sm border p-4 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <p class="font-bold font-mono text-lg">${escapeHTML(name)}</p>
+                                <span class="px-2 text-xs leading-5 font-semibold rounded-full ${statusClass}">${statusText}</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm pt-2 border-t border-color">
+                                <div><p class="text-xs text-secondary">القيمة</p><p class="font-bold">${data.value}${data.type === 'percentage' ? '%' : ' ج.م'}</p></div>
+                                <div><p class="text-xs text-secondary">الاستخدام</p><p class="font-bold">${data.used || 0} / ${data.maxUses}</p></div>
+                            </div>
+                            <div class="flex justify-between items-center pt-3 border-t border-color">
+                                <p class="text-xs text-secondary">ينتهي في: ${formatDate(data.expiresAt)}</p>
+                                <div class="flex items-center gap-2">${cardActionsHtml}</div>
+                            </div>
+                        </div>`;
+                    });
+                }
+
+                contentContainer.innerHTML = `<div class="card p-4 md:p-6 rounded-lg shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">أكواد الخصم</h3>
+                        <button id="add-promocode-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-4 rounded-lg">إضافة كود</button>
+                    </div>
+                    <div class="hidden md:block overflow-x-auto">
+                        <table class="w-full text-sm text-right">
+                            <thead class="text-xs uppercase table-header">
+                                <tr><th class="px-6 py-3">الكود</th><th class="px-6 py-3">النوع</th><th class="px-6 py-3">القيمة</th><th class="px-6 py-3">الاستخدام</th><th class="px-6 py-3">الانتهاء</th><th class="px-6 py-3">الحالة</th><th class="px-6 py-3">إجراءات</th></tr>
+                            </thead>
+                            <tbody>${tableRows}</tbody>
+                        </table>
+                    </div>
+                    <div class="md:hidden space-y-4">${cardHtml}</div>
+                </div>`;
+
+                document.getElementById('add-promocode-btn').addEventListener('click', () => openPromoCodeModal());
+                document.querySelectorAll('.edit-promocode-btn').forEach(b => b.addEventListener('click', () => { const data = JSON.parse(b.dataset.code); if (data.expiresAt?.seconds) data.expiresAt = Timestamp.fromMillis(data.expiresAt.seconds * 1000); openPromoCodeModal(data); }));
+                document.querySelectorAll('.delete-promocode-btn').forEach(b => b.addEventListener('click', () => deleteSettingKey('promocodes', b.dataset.name, renderPromoCodesSettings)));
+            } catch (error) { contentContainer.innerHTML = `<p class="text-red-500 p-6">فشل تحميل الإعدادات.</p>`; }
+        };
+
+        const openPromoCodeModal = (code = null) => {
+            const isEditing = !!code;
+            const bodyHtml = `
+                <form id="promocode-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-sm">كود الخصم</label><input type="text" id="code-name" value="${escapeHTML(code?.name || '')}" ${isEditing ? 'readonly' : ''} class="mt-1 w-full input-style ${isEditing ? 'bg-gray-200 dark:bg-gray-700' : ''}" required></div>
+                        <div><label class="block text-sm">نوع الخصم</label><select id="code-type" class="mt-1 w-full input-style"><option value="percentage" ${code?.type === 'percentage' ? 'selected' : ''}>نسبة مئوية (%)</option><option value="fixed" ${code?.type === 'fixed' ? 'selected' : ''}>مبلغ ثابت (ج.م)</option></select></div>
+                        <div><label class="block text-sm">قيمة الخصم</label><input type="number" id="code-value" value="${code?.value || 0}" class="mt-1 w-full input-style" required></div>
+                        <div><label class="block text-sm">الحد الأقصى للاستخدام</label><input type="number" id="code-max-uses" value="${code?.maxUses || 100}" class="mt-1 w-full input-style" required></div>
+                        <div><label class="block text-sm">تاريخ الانتهاء</label><input type="date" id="code-expires-at" value="${formatTimestampToDateInput(code?.expiresAt)}" class="mt-1 w-full input-style" required></div>
+                        <div class="flex items-center pt-6"><input type="checkbox" id="code-active" class="h-4 w-4 rounded" ${code?.active ?? true ? 'checked' : ''}><label for="code-active" class="mr-2">فعال</label></div>
+                    </div>
+                </form>`;
+            const footerHtml = `<button id="modal-cancel-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg">إلغاء</button><button id="save-promocode-btn" class="bg-amber-400 text-gray-800 font-bold py-2 px-6 rounded-lg">${isEditing ? 'حفظ' : 'إضافة'}</button>`;
+            openModal(isEditing ? 'تعديل كود' : 'إضافة كود', bodyHtml, footerHtml, 'max-w-2xl');
+            document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
+            document.getElementById('save-promocode-btn').addEventListener('click', () => savePromoCode(isEditing ? code.name : null, isEditing ? code.used : 0));
+        };
+
+        const savePromoCode = async (codeName, currentUsedCount) => {
+            const form = document.getElementById('promocode-form');
+            if (!form.checkValidity()) { form.reportValidity(); return; }
+            showLoading();
+            const name = document.getElementById('code-name').value.toUpperCase().trim();
+            if (!name) { showToast("اسم الكود مطلوب", "error"); hideLoading(); return; }
+            const expiryDateString = document.getElementById('code-expires-at').value;
+            if (!expiryDateString) { showToast("تاريخ الانتهاء مطلوب", "error"); hideLoading(); return; }
+            const expiryDate = new Date(expiryDateString);
+            expiryDate.setHours(23, 59, 59, 999);
+            const codeData = {
+                active: document.getElementById('code-active').checked,
+                type: document.getElementById('code-type').value,
+                value: parseFloat(document.getElementById('code-value').value),
+                maxUses: parseInt(document.getElementById('code-max-uses').value),
+                expiresAt: Timestamp.fromDate(expiryDate),
+                used: codeName ? currentUsedCount : 0,
+            };
+            if (!codeName) codeData.createdAt = serverTimestamp();
+            try {
+                await setDoc(doc(db, "settings", "promocodes"), { [name]: codeData }, { merge: true });
+                showToast("تم حفظ الكود");
+                closeModal();
+                renderPromoCodesSettings();
+            } catch (error) { showToast("فشل حفظ الكود", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const addNewSettingKey = async (e) => {
+            const type = e.currentTarget.id.includes('lens') ? 'lenses' : 'shippingRates';
+            const nameInput = document.getElementById(type === 'lenses' ? 'new-lens-name' : 'new-shipping-city');
+            const valueInput = document.getElementById(type === 'lenses' ? 'new-lens-price' : 'new-shipping-rate');
+            const key = nameInput.value.trim();
+            const value = parseFloat(valueInput.value);
+            if (!key || isNaN(value)) { showToast("يرجى إدخال بيانات صحيحة", "error"); return; }
+            const callback = type === 'lenses' ? renderLensesSettings : renderShippingSettings;
+            await updateSettingValue(type, key, value, true, callback);
+            nameInput.value = '';
+            valueInput.value = '';
+        };
+
+        const updateSettingValue = async (type, key, value, isNew = false, callback = null) => {
+            if (isNaN(value)) { showToast("القيمة غير صحيحة", "error"); return; }
+            showLoading();
+            try {
+                await setDoc(doc(db, "settings", type), { [key]: value }, { merge: true });
+                showToast(isNew ? "تمت الإضافة" : "تم التحديث");
+                if (isNew && callback) callback();
+            } catch (error) { showToast("فشل تحديث الإعداد", "error"); }
+            finally { hideLoading(); }
+        };
+
+        const deleteSettingKey = async (type, key, callback) => {
+            showConfirmationModal(`تأكيد الحذف`, `هل أنت متأكد من حذف "${key}"؟`, async () => {
+                showLoading();
+                try {
+                    const docRef = doc(db, "settings", type);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        delete data[key];
+                        await setDoc(docRef, data);
+                        showToast("تم الحذف");
+                        if (callback) callback();
+                    }
+                } catch(error) { showToast("فشل الحذف", "error"); }
+                finally { hideLoading(); }
+            });
+        };
+
+        // --- Pagination ---
+        const renderPaginationControls = (pageType, container) => {
+            if (!container) return;
+            const state = paginationState[pageType];
+            const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = `<div class="flex items-center gap-2">`;
+            html += `<button class="pagination-btn" ${state.currentPage === 1 ? 'disabled' : ''} data-page="${state.currentPage - 1}" data-type="${pageType}">السابق</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === state.currentPage || i === 1 || i === totalPages || (i >= state.currentPage - 1 && i <= state.currentPage + 1)) {
+                    html += `<button class="pagination-btn ${i === state.currentPage ? 'active' : ''}" ${i === state.currentPage ? 'disabled' : ''} data-page="${i}" data-type="${pageType}">${i}</button>`;
+                } else if (i === state.currentPage - 2 || i === state.currentPage + 2) {
+                    html += `<span class="px-4 py-2">...</span>`;
+                }
+            }
+
+            html += `<button class="pagination-btn" ${state.currentPage === totalPages ? 'disabled' : ''} data-page="${state.currentPage + 1}" data-type="${pageType}">التالي</button>`;
+            html += `</div>`;
+            container.innerHTML = html;
+
+            container.querySelectorAll('.pagination-btn[data-page]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.dataset.type;
+                    paginationState[type].currentPage = parseInt(btn.dataset.page);
+                    const pageLoaders = {
+                        orders: loadOrders,
+                        products: loadProducts,
+                        customers: () => loadCustomersPage(document.getElementById('customer-search-input')?.value || ''),
+                        blog: loadBlogPage
+                    };
+                    pageLoaders[type]();
+                });
+            });
+        };
+
+        // --- Global Search & Navigation ---
+        const handleGlobalSearch = () => {
+            const query = globalSearchInput.value.toLowerCase().trim();
+            if (query.length < 2) {
+                globalSearchResults.classList.add('hidden');
+                return;
+            }
+
+            let resultsHtml = '';
+            
+            const productResults = allProductsCache.filter(p => p.name.toLowerCase().includes(query)).slice(0, 3);
+            if (productResults.length > 0) {
+                resultsHtml += `<div class="p-2 text-xs font-bold text-secondary border-b border-color">المنتجات</div>`;
+                productResults.forEach(p => {
+                    resultsHtml += `<a href="#" data-page="products" data-focus-id="${p.id}" class="search-result-item flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <img src="${escapeHTML(p.images?.[0] || 'https://placehold.co/40x40/eee/ccc?text=?')}" class="w-10 h-10 rounded-md object-cover">
+                        <div><p class="font-semibold">${escapeHTML(p.name)}</p><p class="text-xs text-secondary">${escapeHTML(p.category)}</p></div></a>`;
+                });
+            }
+
+            const orderResults = allOrdersCache.filter(o => o.customerName.toLowerCase().includes(query) || o.trackingId.includes(query)).slice(0, 3);
+            if (orderResults.length > 0) {
+                resultsHtml += `<div class="p-2 text-xs font-bold text-secondary border-b border-color">الطلبات</div>`;
+                orderResults.forEach(o => {
+                    resultsHtml += `<a href="#" data-page="orders" data-focus-id="${o.id}" class="search-result-item block p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <p class="font-semibold">${escapeHTML(o.customerName)}</p><p class="text-xs text-secondary">#${escapeHTML(o.trackingId)} - ${formatDate(o.date)}</p></a>`;
+                });
+            }
+
+            const customerResults = allCustomersCache.filter(c => c.name.toLowerCase().includes(query) || c.phone.includes(query)).slice(0, 3);
+            if (customerResults.length > 0) {
+                resultsHtml += `<div class="p-2 text-xs font-bold text-secondary border-b border-color">العملاء</div>`;
+                customerResults.forEach(c => {
+                    resultsHtml += `<a href="#" data-page="customers" data-focus-id="${c.id}" class="search-result-item block p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <p class="font-semibold">${escapeHTML(c.name)}</p><p class="text-xs text-secondary">${escapeHTML(c.phone)}</p></a>`;
+                });
+            }
+            
+            const blogResults = allBlogPostsCache.filter(p => p.title.toLowerCase().includes(query)).slice(0, 3);
+            if (blogResults.length > 0) {
+                resultsHtml += `<div class="p-2 text-xs font-bold text-secondary border-b border-color">المدونة</div>`;
+                blogResults.forEach(p => {
+                    resultsHtml += `<a href="#" data-page="blog" data-focus-id="${p.id}" class="search-result-item block p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <p class="font-semibold">${escapeHTML(p.title)}</p><p class="text-xs text-secondary">بواسطة: ${escapeHTML(p.author)}</p></a>`;
+                });
+            }
+
+            globalSearchResults.innerHTML = resultsHtml || `<p class="p-4 text-center text-secondary">لا توجد نتائج.</p>`;
+            globalSearchResults.classList.remove('hidden');
+        };
+
+        const handleNavigation = (page, focusId) => {
+            if (page === 'customers' && focusId && allCustomersCache.some(c => c.id === focusId)) {
+                viewCustomerProfile(focusId);
+                return;
+            }
+            navigateTo(page, focusId);
+        };
+        
+        const highlightFocusedItem = () => {
+            if (!currentFocusId) return;
+            setTimeout(() => {
+                const element = document.getElementById(`product-row-${currentFocusId}`) || document.getElementById(`product-card-${currentFocusId}`) || document.getElementById(`order-row-${currentFocusId}`) || document.getElementById(`order-card-${currentFocusId}`) || document.getElementById(`blog-row-${currentFocusId}`) || document.getElementById(`blog-card-${currentFocusId}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    element.classList.add('highlight-item');
+                    setTimeout(() => element.classList.remove('highlight-item'), 2000);
+                }
+                currentFocusId = null; 
+            }, 100);
+        };
+
+        globalSearchInput.addEventListener('input', () => {
+            let debounceTimer;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(handleGlobalSearch, 300);
+        });
+        
+        globalSearchResults.addEventListener('click', (e) => {
+            const item = e.target.closest('.search-result-item');
+            if (item) {
+                e.preventDefault();
+                const { page, focusId } = item.dataset;
+                handleNavigation(page, focusId);
+                globalSearchResults.classList.add('hidden');
+                globalSearchInput.value = '';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!globalSearchInput.contains(e.target) && !globalSearchResults.contains(e.target)) {
+                globalSearchResults.classList.add('hidden');
+            }
+            if (!notificationsBtn.contains(e.target) && !notificationsDropdown.contains(e.target)) {
+                notificationsDropdown.classList.add('hidden');
+            }
+        });
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            }
+        });
+    </script>
+</body>
+</html>
